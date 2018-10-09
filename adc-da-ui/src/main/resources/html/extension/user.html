@@ -1,0 +1,233 @@
+<meta charset="UTF-8">
+<div class="portlet  ">
+
+    <div class="portlet-title " id="user_protit">
+        <!--列表 头部信息-->
+        <div class="caption"><i class="iconbars"></i>用户列表</div>
+        <div class="actions tabletools">
+            <a href="javascript:;" class="btn blue" id="tableConfig" rbut="config" ><i class="icon-cogs"></i> 附表管理</a>
+            <a href="javascript:;" class="btn blue" id="userAdd" rbut="add"><i class="icon-plus"></i> 新增</a>
+            <a href="javascript:;" class="btn blue" id="userUpdate" rbut="update"><i class="icon-pencil"></i> 编辑</a>
+            <a href="javascript:;" class="btn blue" id="updatePwd" rbut="modpassword"><i class="icon-pencil"></i> 修改密码</a>
+            <a href="javascript:;" class="btn blue" id="userDelete" rbut="delete"><i class="icon-remove"></i> 删除</a>
+            <a href="javascript:;" class="btn blue" id="userMessage" rbut="view"><i class="icon-file"></i> 查看</a>
+            <!--<a href="javascript:;" class="btn blue" id="toRolebutton" rbut="setroles"><i class="icon-wrench"></i> 设置用户角色</a>-->
+        </div>
+    </div>
+
+    <div class="clearfix search">
+        <div class="portlet">
+            <div class="portlet-title">
+                <label for="searchuser">用户名：
+                    <input type="text" id="searchuser" name="searchuser" placeholder="用户名" />
+                </label>
+                <label>角色名称：
+                    <select id="searchrole" name="searchrole" data-placeholder="角色名称" >
+                        <option value=" ">---请选择---</option>
+                    </select>
+                </label>
+                <button id="searchbutton" class="searchbutton" onclick="searchparam()" type="button"><i class="iconsearch"></i>检索</button>
+            </div>
+        </div>
+        <!--  表头的 自己画-->
+        <table class="table table-bordered" id="usertable">
+            <thead>
+            <tr>
+                <th style="width:8px;"><input type="checkbox" class="group-checkable" data-set="#sample_1 .checkboxes" /></th>
+                <th style="width:15px;">#</th>
+                <!--<th>用户ID</th>-->
+                <th  style="width:150px;">用户名</th>
+                <th style="width:100px;">登录名</th>
+                <!-- <th>角色名称</th> -->
+                <th style="width:15px;">操作</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+    <div class="pagination ">
+        <div class="pagesize" style="width:300px;">
+            每页<select id="pagesize" name="pagesize" style="width:50px"></select>条,
+            <span class="totalcount" id="totalcount" ></span>
+        </div>
+
+        <nav aria-label="Page navigation">
+            <ul id="paglist"  style="float: right;margin-top:-1px"  class="pagination">  </ul>
+        </nav>
+    </div>
+</div>
+</div>
+
+<div id="editPwd" class="block-flat">
+    <form class="form-horizontal" id="pwdfrom">
+        <div class="control-group">
+            <label class="control-label" style="width:140px" for="password">新密码：</label>
+            <div class="col-sm-7">
+                <input type="password" id="newPwd" name="password" placeholder="密码">
+            </div>
+        </div>
+        <div class="control-group" >
+            <label class="control-label" style="width:140px" for="pwd">重新输入新密码：</label>
+            <div class="col-sm-7">
+                <input type="password" id="pwd" name="pwd" placeholder="密码">
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="subUserTabel" class="block-flat">
+    <div class="actions fieldtabletools">
+        <a href="javascript:;" class="btn blue" id="fieldAdd" rbut="add"><i class="icon-plus"></i> 新增</a>
+        <a href="javascript:;" class="btn blue" id="fieldUpdate" rbut="update"><i class="icon-pencil"></i> 编辑</a>
+        <a href="javascript:;" class="btn blue" id="fieldDelete" rbut="delete"><i class="icon-trash"></i> 删除</a>
+        <a href="javascript:;" class="btn blue" id="fieldMessage" rbut="view"><i class="icon-file"></i> 查看</a>
+    </div>
+    <table class="table table-bordered" id="userFieldTable" >
+        <thead>
+        <tr>
+            <th style="width:8px;"><input type="checkbox" class="group-checkable" data-set="#sample_1 .checkboxes1" /></th>
+            <th style="width:15px;">#</th>
+            <th>字段ID</th>
+            <th>字段名</th>
+            <th>字段描述</th>
+            <th>字段类型</th>
+            <th>字段长度</th>
+            <th>允许空值</th>
+            <th>列表是否显示</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <div class="pagination ">
+        <div class="pagesize" style="width:180px;">
+            每页<select id="userFieldTablePageSize" name="userFieldTablePageSize" style="width:50px"></select>条,
+            <span class="totalcount" id="userFieldTableTotalcount" ></span>
+        </div>
+
+        <nav aria-label="Page navigation" style="float: right;margin-top:-11px">
+            <ul id="userFieldTablePagelist"  style="float: left;margin-top:-1px"  class="pagination">  </ul>
+        </nav>
+    </div>
+</div>
+
+<div id="usAdd" class="block-flat">
+    <!-- form表单要自己设计内容。 -->
+    <form class="form-horizontal" role="form" id="userform">
+        <div class="control-group"><input type="hidden" id="USID" name="USID"></div>
+        <div class="control-group">
+            <label for="USNAME" class="control-label">用户名称：</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" id="USNAME" name="USNAME"  placeholder="用户名称">
+            </div>
+        </div>
+        <div class="control-group">
+            <label for="ACCOUNT" class="control-label">登录名：</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" id="ACCOUNT" name="ACCOUNT" placeholder="登录名">
+            </div>
+        </div>
+        <div class="control-group" id="passwordDiv">
+            <label for="password" class="control-label">密码：</label>
+            <div class="col-sm-7">
+                <input type="password" class="form-control" id="PASSWORD" name="PASSWORD" placeholder="密码">
+            </div>
+        </div>
+
+    </form>
+
+</div>
+
+<div id="roleSet" class="form-horizontal block-flat">
+    <!-- form表单要自己设计内容。 -->
+
+        <div class="control-group">
+            <label class="control-label" for="rnameSet">角色名称：</label>
+            <div class="controls">
+                <select class="form-control" id="rnameSet" data-placeholder="选择角色"></select>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="rdescadd">角色描述：</label>
+            <div class="controls" onkeypress="javascript:return false">
+                <textarea rows="4" id="rdescadd" name="rdesc"   placeholder="角色描述"></textarea>
+            </div>
+        </div>
+</div>
+
+
+
+<div id="propertyAdd" class="block-flat">
+    <!-- form表单要自己设计内容。 -->
+    <form class="form-horizontal" role="form" id="fieldform">
+        <input type="hidden" id="fieldIdAdd" name="id">
+        <div class="control-group">
+            <label for="fieldNameAdd" class="control-label">字段名称：</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" id="fieldNameAdd" name="fieldName"  placeholder="字段名称">
+            </div>
+        </div>
+        <div class="control-group">
+            <label for="contentAdd" class="control-label">字段描述：</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" id="contentAdd" name="content" placeholder="字段描述">
+            </div>
+        </div>
+        <div class="control-group">
+            <label for="type" class="control-label">字段类型：</label>
+            <div class="col-sm-7">
+                <!-- <input type="text" class="form-control" id="type" name="type" placeholder="字段类型"> -->
+                <select id="type" name="fieldType" data-placeholder="字段类型" style="margin-top:7px">
+                    <option value="0">---请选择---</option>
+                    <option value="VARCHAR2">VARCHAR2</option>
+                    <option value="NUMBER">NUMBER</option>
+                    <option value="DATE">DATE</option>
+                </select>
+            </div>
+        </div>
+        <div class="control-group">
+            <label for="fieldLength" class="control-label">字段长度：</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" id="fieldLength" name="fieldLength" placeholder="字段长度">
+            </div>
+        </div>
+        <div class="control-group">
+            <label for="isNull" class="control-label">允许空值：</label>
+            <div class="col-sm-7">
+                <select id="isNull" name="isNull" data-placeholder="允许空值" style="margin-top:7px">
+                    <option value="NULL">NULL</option>
+                    <option value="NOT NULL">NOT NULL</option>
+                </select>
+            </div>
+        </div>
+        <div class="control-group">
+            <label for="isShow" class="col-sm-5 control-label">列表是否显示：</label>
+            <div class="col-sm-5">
+                <select id="isShow" name="isShow" data-placeholder="列表是否显示" style="margin-top:7px">
+                    <option value="否">否</option>
+                    <option value="是">是</option>
+                </select>
+            </div>
+        </div>
+        <div class="control-group">
+            <label for="showType" class="control-label">表单控件类型：</label>
+            <div class="col-sm-7">
+                <select id="showType" name="showType" data-placeholder="表单控件类型" style="margin-top:7px">
+                    <option value="text">文本框</option>
+                    <option value="textarea">多行文本框</option>
+                    <option value="radio">单选框 </option>
+                    <!-- <option value="checkbox">多选框</option>-->
+                    <option value="dropdownlist">下拉框 </option>
+                    <option value="file">文件</option>
+                    <option value="image">图片</option>
+                    <option value="Date">日期(yyyy-MM-dd)</option>
+                    <option value="Time">时间(yyyy-MM-dd HH:mm:ss)</option>
+                </select>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="../../js/html/extension/user.js" type="text/javascript"></script>
+
+

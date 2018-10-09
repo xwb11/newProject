@@ -1,0 +1,18 @@
+/**
+*   补充css
+*/
+
+.systable{
+    min-width: 700px;
+}
+
+/*  内容项目 */
+@media screen and  (max-width: 1366px){
+    #mainContents{ min-height: 350px; }
+}
+@media screen and (min-width: 1366px) and (max-width: 1920px){
+    #mainContents{ min-height: 400px; }
+}
+@media screen and (min-width: 1920px) {
+    #mainContents{ min-height: 650px; }
+}

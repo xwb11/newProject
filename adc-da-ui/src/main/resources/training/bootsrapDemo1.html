@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.bootcss.com/bootstrap/2.3.2/css/bootstrap.css" rel="stylesheet">
+
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <!--<h1> hello world!</h1>-->
+    <div class="row">
+        <div class="span1">1</div>
+        <div class="span1">1</div>
+        <div class="span1">1</div>
+        <div class="span1">1</div>
+        <div class="span1">1</div>
+        <div class="span1">1</div>
+        <div class="span1">1</div>
+        <div class="span1">1</div>
+        <div class="span1">1</div>
+        <div class="span1">1</div>
+        <div class="span1">1</div>
+        <div class="span1">1</div>
+    </div>
+</body>
+<script>
+//    jsonp  ----script
+    $.ajax({
+        url:'http://192.168.1.111:8080',
+        type:'post/get/put/detele',
+        data:{'sid':'1728905'},
+        dataType:'json',
+        success:function (data) {
+            
+        },
+        error:function () {
+            
+        }
+    });
+</script>
+</html>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.adc.da.generate.dao.UserLoginEODao" >
+  <!-- Result Map-->
+  <resultMap id="BaseResultMap" type="com.adc.da.generate.entity.UserLoginEO" >
+    <id column="pk_login" property="pkLogin" />
+    <result column="name" property="name" />
+    <result column="password" property="password" />
+  </resultMap>
+
+  <!-- TS_USER_LOGIN table all fields -->
+  <sql id="Base_Column_List" >
+     pk_login, name, password
+  </sql>
+
+  <!-- 查询条件 -->
+  <sql id="Base_Where_Clause">
+    where 1=1
+    <trim suffixOverrides="," >
+      <if test="pkLogin != null" >
+        and pk_login ${pkLoginOperator} #{pkLogin}
+      </if>
+      <if test="name != null" >
+        and name ${nameOperator} #{name}
+      </if>
+      <if test="password != null" >
+        and password ${passwordOperator} #{password}
+      </if>
+    </trim>
+  </sql>
+
+  <!-- 插入记录 -->
+  <insert id="insert" parameterType="com.adc.da.generate.entity.UserLoginEO" >
+    <!-- <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="pk_login">
+        SELECT SEQ_TS_USER_LOGIN.NEXTVAL FROM DUAL
+    </selectKey> -->
+    insert into TS_USER_LOGIN(<include refid="Base_Column_List" />)
+    values (#{pkLogin, jdbcType=INTEGER}, #{name, jdbcType=VARCHAR}, #{password, jdbcType=VARCHAR})
+  </insert>
+
+  <!-- 动态插入记录 主键是序列 -->
+  <insert id="insertSelective" parameterType="com.adc.da.generate.entity.UserLoginEO" >
+        <!-- <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="pk_login">
+        SELECT SEQ_TS_USER_LOGIN.NEXTVAL FROM DUAL
+    </selectKey> -->
+        insert into TS_USER_LOGIN
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+                <if test="pkLogin != null" >pk_login,</if>
+                <if test="name != null" >name,</if>
+                <if test="password != null" >password,</if>
+            </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+                <if test="pkLogin != null" >#{pkLogin, jdbcType=INTEGER},</if>
+                <if test="name != null" >#{name, jdbcType=VARCHAR},</if>
+                <if test="password != null" >#{password, jdbcType=VARCHAR},</if>
+            </trim>
+  </insert>
+
+  <!-- 根据pk，修改记录-->
+  <update id="updateByPrimaryKey" parameterType="com.adc.da.generate.entity.UserLoginEO" >
+    update TS_USER_LOGIN
+       set  name = #{name},
+            password = #{password}
+     where  pk_login = #{pkLogin}
+  </update>
+
+  <!-- 修改记录，只修改只不为空的字段 -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.adc.da.generate.entity.UserLoginEO" >
+    update TS_USER_LOGIN
+    <set >
+      <if test="name != null" >
+        name = #{name},
+      </if>
+      <if test="password != null" >
+        password = #{password},
+      </if>
+    </set>
+     where pk_login = #{pkLogin}
+  </update>
+
+  <!-- 根据id查询 TS_USER_LOGIN -->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select <include refid="Base_Column_List" /> 
+      from TS_USER_LOGIN
+     where pk_login = #{value}
+
+  </select>
+
+  <!-- 删除记录 -->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from TS_USER_LOGIN
+     where pk_login = #{value}
+
+  </delete>
+
+  <!-- TS_USER_LOGIN 列表总数-->
+  <select id="queryByCount" resultType="java.lang.Integer" parameterType="com.adc.da.base.page.BasePage">
+    select count(1) from TS_USER_LOGIN
+    <include refid="Base_Where_Clause"/>
+  </select>
+
+  <!-- 查询TS_USER_LOGIN列表 -->
+  <select id="queryByPage" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">
+	select <include refid="Base_Column_List" /> from
+		(select tmp_tb.* , rownum rn from
+			(select <include refid="Base_Column_List" /> from TS_USER_LOGIN
+			 <include refid="Base_Where_Clause"/>
+			 <if test="pager.orderCondition != null and pager.orderCondition != ''" >
+			 	${pager.orderCondition}
+			 </if>
+			) tmp_tb where rownum &lt;= ${pager.endIndex})
+			where rn &gt;= ${pager.startIndex}
+  </select>
+
+  <select id="queryByList" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">
+    select <include refid="Base_Column_List"/> from TS_USER_LOGIN
+    <include refid="Base_Where_Clause"/>
+    <if test="pager.orderCondition != null and pager.orderCondition != ''" >
+       ${pager.orderCondition}
+    </if>
+  </select>
+
+</mapper>

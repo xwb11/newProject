@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jQuery.i18n.properties: Tests</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="content-script-type" content="text/javascript" />
+
+    <!-- JS -->
+    <script type="text/javascript" src="../js/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="../js/jquery-i18n-properties.js"></script>
+
+</head>
+<body>
+<h2>jQuery.i18n.properties :: Tests</h2>
+<h4>checkKeyNamespace Test</h4>
+<h4>checkKeyNamespace Test</h4>
+
+<button id="en"> English</button>
+<button id="ch">Chinese</button>
+<p></p>
+
+<script type="text/javascript">
+    // load I18N bundles
+    $('button').on('click',function () {
+        var language = $(this)[0].innerText == 'English'?'pt_BR':'pt';
+//        var lan =  language == 'English'?'en':'ch';
+            languages(language);
+    })
+    function languages(lan) {
+        jQuery.i18n.properties({
+            name:'Messages',
+            path:'bundle/',
+            mode:'both',
+            language: lan ,//'pt_BR',
+            async: true,
+            callback: function() {
+                jQuery.i18n.prop('msg_hello');
+                jQuery.i18n.prop('msg_complex', 'John');
+                alert(msg_hello +' '+ msg_world);
+                alert(msg_complex('John'));
+            }
+        });
+    }
+</script>
+</body>
+</htmL>

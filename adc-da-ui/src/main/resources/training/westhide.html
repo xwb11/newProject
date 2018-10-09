@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8" >
+    <script type="text/javascript" src="../../js/jquery-1.12.4.min.js"></script>
+    <title>Title</title>
+    <style>
+        *{margin: 0;padding: 0;}
+        .content{width:10px;  height:100px; border: 1px solid #000;  left:0;  top:200px;  position:fixed;}
+        .content-w{width: 100px;}
+    </style>
+        <script type="text/javascript">
+        $(function(){
+            /*$(".content").mouseover(function(){
+                $(this).stop().animate({
+                    width: "100px"
+                }).mouseout(function(){
+                    $(this).stop().animate({
+                        width:"10px"
+                    });
+                });
+            });*/
+            $(".but").on('click',function () {
+                $(".content").toggle(3000);
+
+            })
+        })
+    </script>
+
+</head>
+<body>
+<button class="but"> 点击</button>
+<div class="content"></div>
+</body>
+</html>

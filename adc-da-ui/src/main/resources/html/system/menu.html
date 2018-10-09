@@ -1,0 +1,217 @@
+<div class="portlet">
+    <div class="portlet-title">
+        <div class="caption"><i class="icon-reorder"></i>资源列表</div>
+        <div class="actions tabletools">
+            <a href="#" class="btn blue" id="menuadd"><i class="icon-plus"></i> 新增</a>
+            <a href="#" class="btn blue" id="menudelete"><i class="icon-plus"></i> 删除</a>
+        </div>
+    </div>
+    <div class="portlet-body">
+        <div class="span4" id="menutreediv">
+            <ul id="menutree" class="ztree" ></ul>
+            <div>节点数 个</div>
+        </div>
+        <div class="span8">
+            <form id="menuform" name="menuform" class="form-horizontal">
+                <div class="control-group">
+                    <input type="hidden"  name="id" id="menuid"/>
+                    <input type="hidden"  name="parentIds" id="parentIds" />
+                    <input type="hidden"  name="parentId"  id="parentId" />
+                    <input type="hidden" id="type"/>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" >名称：</label>
+                    <div class="controls">
+                        <input type="text"  name="name" placeholder="名称">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" >路径：</label>
+                    <div class="controls">
+                        <input type="text" name="href" placeholder="路径" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" >标志：</label>
+                    <div class="controls">
+                        <input type="text" name="permission" placeholder="标志">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" >备注：</label>
+                    <div class="controls">
+                        <textarea rows="4"  name="remarks" placeholder="备注"></textarea>
+
+                    </div>
+                </div>
+
+            </form>
+            <div class="control-group" style="float: right;">
+                <button class="btn" id="ss">保存</button>
+                <button class="btn" id="rr">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var pageSize =5, pageNo=1, totalCounts = 1, myid ="menu" , myname="资源";
+    var searchmsg = {menuname:''};
+    var url ='', myurl= addr+"/api/sys/menu";
+    var pagearr = [5,10,15,20];
+    $("#"+myid+"crud").hide();
+    // 工具栏 点击弹窗
+    $("#menuadd").on('click',function () {
+        var nodes =zTreeOjb.getSelectedNodes();
+//            zTreeOjb.getCheckedNodes(true);
+        var len = nodes.length;
+        if(len == 1){
+            $("#"+myid+"form")[0].reset();
+//            $("#menuid").val('');
+            $('#parentId').val(nodes[0].id);
+            $('#parentIds').val(nodes[0].parentIds+nodes[0].id+",");
+            $("#type").val('add');
+        }else{
+            layer.msg("请选择一个节点！"+len);
+        }
+    });
+    $("#ss").on('click',function () {
+        var fmsg = $("#"+myid+"form").serializeArray();
+        var params ="{";
+        for(var i in fmsg){
+            params+="\""+ fmsg[i].name+"\":\""+fmsg[i].value+"\"" ;
+            if(i<fmsg.length-1){params +=',';}
+        }
+        if($("#type").val()=="update") params += ",\"delFlag\":0";
+        params += "}";
+        console.log(params);
+        if($("#type").val() == "add"){
+            addlist(myurl,'POST',params,'资源');
+        }else{
+            addlist(myurl,'PUT',params,'资源');
+        }
+    });
+    $("#rr").on('click',function () {
+        $("#"+myid+"form")[0].reset();
+    });
+    $("#menudelete").on('click',function () {
+        layer.confirm('是否要删除此条信息？', {
+            btn: ['删除','取消'] //按钮
+        }, function(){
+            dellist($("#menuid").val());
+        });
+    });
+    /*$(".tabletools").on('click','a',function () {
+     var html= "",title ="",htmlstr = $("#"+myid+"crud");
+     var checkboxs = $("input[name='checkboxes']:checked");
+
+     switch ($(this)[0].id){
+     case myid+'add':
+     title = "新增"+myname+"信息";
+     layerfn(htmlstr,title,'add');
+     break;
+     case myid+'update':
+     title = "修改"+myname+"信息";
+     if(checkboxs.length == 1 ){
+     getform(checkboxs.val(),htmlstr,title,'update');
+     }else {
+     layer.msg("请选择一条记录！");
+     }
+     break;
+     case myid+'delete':
+     title = "删除"+myname+"信息";
+     if(checkboxs.length ){
+     dellist(checkboxs.val());
+     }else {
+     layer.msg("请选择一条记录！");
+     }
+     break;
+     case myid+'view':
+     title = "查看"+myname+"信息";
+     if(checkboxs.length == 1 ){
+     getform(checkboxs.val(),htmlstr,title,'view');
+     }else {
+     layer.msg("请选择一条记录！");
+     }
+     break;
+     }
+     });*/
+    // 资源树
+    var zTreeOjb='';
+    var setting = {
+        data: {
+            simpleData: {
+                enable: true
+            }
+        },
+        view: {
+            nameIsHTML: true
+        },
+        callback:{
+            onClick:menuTreeClick ,
+            onNodeCreated: onNodeCreated
+        }
+    };
+    function menuTree( ) {
+        showNodeCount =0;
+        $("#menutreediv").css({"height":parseInt(window.screen.availHeight - 240),'overflow':'auto'});
+        var zNodes="";
+        $.ajax({
+            url: myurl,
+            success:function (data) {
+                var cur = data.data ,str=[], option;
+                for(var i=0;i<cur.length;i++){
+                    option =  { id:cur[i].id, pId:cur[i].parentId,parentId:cur[i].parentId,name:cur[i].name ,parentIds:cur[i].parentIds, remarks: cur[i].remarks, href: cur[i].href, permission: cur[i].permission};
+                    str.push(option);
+                }
+                zNodes = str;
+                zTreeOjb = $.fn.zTree.init($("#menutree"), setting, zNodes);
+                $("#menutreediv div").html("节点数"+showNodeCount);
+            }
+        });
+    }
+    menuTree();
+    function menuTreeClick(treeId, treeNode, clickFlag) {
+        loadData(clickFlag);
+        $("#type").val('update');
+    };
+
+    //增修保存信息
+    function addlist(aurl,type,param, msg) {
+        $.ajax({
+            url:aurl,
+            type:type,
+            data: param,
+            contentType:"application/json; charset=UTF-8",
+            success:function (data) {
+                if(data.ok){
+                    pageNo =1;
+                    layer.msg(msg+'成功！');
+                }
+            },
+            error:function (data) {
+                layer.msg(msg+'失败！');
+            }
+        });
+    }
+    // 删除信息
+    function dellist(id) {
+        $.ajax({
+            url: myurl +"/"+ id,
+            type: 'DELETE',
+            success: function (data) {
+                if (data.ok) {
+                    $("#"+myid+"form")[0].reset();
+                    layer.msg('删除成功！');
+                }
+            }
+        });
+    }
+
+    var showNodeCount = 0;
+    function onNodeCreated(event, treeId, treeNode) {
+        showNodeCount++;
+    }
+
+
+</script>

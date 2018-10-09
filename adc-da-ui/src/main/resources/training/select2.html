@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>select2</title>
+    <link rel="stylesheet" href="../../../css/select2.min.css">
+    <script src="../../../js/jquery-1.12.4.min.js"></script>
+    <script src="../../../js/select2.full.min.js"></script>
+</head>
+<body>
+    <p>
+        <select name="sela" class="js-example-basic-single" id="sela" style="width: 180px;"></select>
+    </p>
+    <p>
+        <select name="selb" class="js-example-basic-single" id="selb" style="width: 180px;"></select>
+    </p>
+</body>
+</html>
+<script>
+    var data = [
+            {
+                "id": 1,
+                "text": "Option 1"
+            },
+            {
+                "id": 2,
+                "text": "Option 2"
+                , "selected": true
+            },
+            {
+                "id": 3,
+                "text": "Option 3"
+//                ,"disabled": true
+            }
+        ];
+
+    $("#sela").select2({
+        data: data,
+        placeholder:{"id":2,"text":"Option 2"},
+        allowClear:true
+    });
+    $("#selb").select2({
+        ajax: {
+            url: "./bundle/select.json",
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                console.log(params);
+                return {
+                    q: params.term
+                };
+            }
+        }
+    });
+    $("#selb").on("change",function () {
+        console.log($(this).val());
+        console.log($(this).select2('data')[0].text);
+    })
+
+</script>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jQuery Validation</title>
+    <script src="../../js/jquery-1.12.4.min.js"></script>
+    <script src="../../js/jquery.validate1.16.0.js"></script>
+    <script src="./bundle/messages_zh.js"></script>
+    <script src="./bundle/additional-methods.js"></script>
+</head>
+<body>
+<form  id="commentForm" method="get" action="">
+    <fieldset>
+        <legend>输入您的名字，邮箱，URL，备注。</legend>
+        <p>
+            <label for="cname">Name (必需, 最小两个字母)</label>
+            <input id="cname" name="name" minlength="2" type="text" required>
+        </p>
+        <p>
+            <label for="cemail">E-Mail (必需)</label>
+            <input id="cemail" type="email" name="email" required>
+        </p>
+        <p>
+            <label for="curl">URL (可选)</label>
+            <input id="curl" type="url" name="url">
+        </p>
+        <p>
+            <label for="ccomment">备注 (必需)</label>
+            <textarea id="ccomment" name="comment" required></textarea>
+        </p>
+        <p>
+            <label for="tel">电话</label>
+            <input id="tel" name="tel" />
+        </p>
+        <p>
+            <label for="tt">电话t</label>
+            <input id="tt" name="tt" />
+        </p>
+        <p>
+            <div id="pp"></div>
+            <input class="submit" type="submit" value="Submit">
+        </p>
+
+    </fieldset>
+</form>
+<style>
+    .mm{color:red;}
+</style>
+
+<script>
+
+    $().ready(function () {
+        $("#commentForm").validate({
+            debug: true,
+
+            rules:{
+                tel:{
+                    required:true,
+                    isZipCode:"isZipCode"
+                },
+                tt:{
+                    required: true,
+                    isnumber: 'isnumber'
+                }
+
+            },errorPlacement: function(error, element) {
+                // Append error within linked label
+//                $(element)
+                $("#pp").html(error);
+            },errorElement: "span",errorClass:'mm'
+
+        });
+    });
+</script>
+</body>
+</html>

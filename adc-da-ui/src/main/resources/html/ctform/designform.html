@@ -1,0 +1,470 @@
+<style>
+
+    .pagesize{float: left;}
+    .totalcount{ padding: 9px 12px 0px 5px; line-height: 20px;}
+    .search label{display: inline;}
+    .searchbutton{ margin-top: -9px; text-align: center; font-size: 14px; height: 30px;line-height:      30px;width: 60px;}
+    .search>div{ display: inline;}
+    .searchbox{  margin-left: 10px;margin-right: 0;}
+    #pagesize{width: 70px;}
+
+    .ddd li{display: inline;}
+
+    .table > thead > tr > th {color: #563d7c; background-color: #f8f6fa;}
+    .table > tbody > tr > td {height: 21px; line-height: 21px;}
+    .table-striped tbody>tr:nth-child(even)>td,
+    .table-striped tbody>tr:nth-child(even)>th{background-color:#f8f6fa;}
+    .table-striped tbody>tr:nth-child(odd)>td,
+    .table-striped tbody>tr:nth-child(odd)>th{background-color:transparent;}
+    .table-hover tbody tr:hover>td,.table-hover tbody tr:hover>th{background-color:#f5f5f5}
+    .search button{color:#563d7c; background-color:#f8f6fa; border-color:#927ab5;}
+    .search button:hover, .search button:focus, .search button:active,
+    .search button.active{color:#FFF; background-color:#927ab5; border-color:#927ab5;}
+    .type_but{color:#563d7c; background-color:#f8f6fa; border-color:#927ab5;margin-top:10px;margin-bottom: 10px;margin-left: 435px }
+    .type_but:active.type_but:hover,.type_but:focus{
+        color:#FFF; background-color:#927ab5; border-color:#927ab5;
+    }
+</style>
+
+<div class="portlet">
+
+    <div class="portlet-title">
+        <!--列表 头部信息-->
+        <div class="caption"><i class="icon-reorder"></i>表单设计</div>
+    </div>
+
+    <div class="portlet-body" id="makeForm">
+
+        <div class="clearfix search">
+            <!-- xiala  start -->
+            <div class="portlet">
+                <div class="portlet-title">
+                    <label >表单名称：
+                        <input type="text" id="tableName"  name="tableName" placeholder="表单名称"/>
+                    </label>
+                    <label style="margin-left: 30px;">表单编码：
+                        <input type="text" id="tableCode"  name="tableCode" placeholder="表单编码"/>
+                    </label>
+                    <label style="margin-left: 30px;">填报表单：
+                        <select id="isWrite" name="isWrite" data-placeholder="填报表单">
+		                    <option value="0">---请选择---</option>
+		                    <option value="1">是</option>
+		                    <option value="2">否</option>
+		                </select>
+                    </label>
+                    <button  class="searchbutton"  id="savebutton" onclick="saveform()"><i class="icon-plus"></i>保存</button>
+                </div>
+
+            </div>
+
+            <!-- xiala  end-->
+
+        </div>
+
+        <!--  表头的 自己画-->
+         <div>
+    		<form id="form" method="post">
+		        <input type="hidden" name="fields" id="fields" value="0">
+		        <script type="text/plain" id="myEditor" name="myEditor">
+
+        		</script>
+      <!--  <input type="submit" value="通过input的submit提交">-->
+    		</form>
+		</div>
+
+        
+
+    </div>
+</div>
+
+<div id="previewForm" style="display:none;width: 500px">
+</div>
+
+<script type="text/javascript">
+		var form_id = $("#formid").val();
+		//alert(form_id);
+		if(form_id.length>0){
+			$.ajax({
+	            url: addr + "/api/form/"+ form_id,
+	            type: "GET",
+	            success: function (data) {
+	            	$("#tableCode").val(data.data.formCode);
+	            	$("#tableName").val(data.data.formName);
+	            	var ue = UE.getEditor('myEditor');
+	            	console.log(data.data.contentHtml);
+	            	ue.ready(function() {
+	            	    ue.setContent(data.data.contentHtml, true);});
+	            	$("#formid").val("");
+	            },
+	            error: function (data) {
+	                layer.msg("获取信息失败")
+	            },
+	            beforeSend: function () {
+	                ShowDiv();
+	            },
+	            complete: function () {
+	                HiddenDiv();
+	            }
+	        }); 
+		}
+		
+		
+		//显示加载数据
+	    function ShowDiv() {
+	        index = layer.load(1, {shade: [0.8, '#ccc'],content:'玩命同步中...',success: function(layero){
+	            layero.find('.layui-layer-content').css({'padding-top': '40px','width':'150px'});
+	        }})
+	    }
+
+	    function HiddenDiv() {
+	        layer.close(index);
+	    }
+		
+</script>
+
+<script type="text/javascript">
+    function saveform()
+    {
+    	catarcFormDesign.fnCheckForm('save');
+    }
+
+    UE.delEditor('myEditor');//解决UEditor 第一次加载正常，第二次无法正常加载问题
+    var leipiEditor = UE.getEditor('myEditor',{toolbars: [
+        ['fullscreen', 'source', 'undo', 'redo', 'bold', 'fontfamily', 'fontsize', 'indent', 'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify',
+            'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols']
+    ],initialFrameHeight:400,//关闭字数统计
+        wordCount:false,//关闭elementPath
+        elementPathEnabled:false});
+
+    var catarcFormDesign = {
+        /*执行控件*/
+        exec : function (method) {
+            leipiEditor.execCommand(method);
+        },
+        /*
+         Javascript 解析表单
+         template 表单设计器里的Html内容
+         fields 字段总数
+         */
+        parse_form:function(template,fields)
+        {
+            //正则  radios|checkboxs|select 匹配的边界 |--|  因为当使用 {} 时js报错
+            var preg =  /(\|-<span(((?!<span).)*catarcplugins=\"(radios|checkboxs|select)\".*?)>(.*?)<\/span>-\||<(img|input|textarea|select).*?(<\/select>|<\/textarea>|\/>))/gi,preg_attr =/(\w+)=\"(.?|.+?)\"/gi,preg_group =/<input.*?\/>/gi;
+            if(!fields) fields = 0;
+
+            var template_parse = template,template_data = new Array(),add_fields=new Object(),checkboxs=0;
+
+            var pno = 0;
+            template.replace(preg, function(plugin,p1,p2,p3,p4,p5,p6){
+                var parse_attr = new Array(),attr_arr_all = new Object(),name = '', select_dot = '' , is_new=false;
+                var p0 = plugin;
+                var tag = p6 ? p6 : p4;
+                //alert(tag + " \n- t1 - "+p1 +" \n-2- " +p2+" \n-3- " +p3+" \n-4- " +p4+" \n-5- " +p5+" \n-6- " +p6);
+
+                if(tag == 'radios' || tag == 'checkboxs')
+                {
+                    plugin = p2;
+                }else if(tag == 'select')
+                {
+                    plugin = plugin.replace('|-','');
+                    plugin = plugin.replace('-|','');
+                }
+                plugin.replace(preg_attr, function(str0,attr,val) {
+                    if(attr=='name')
+                    {
+                        if(val=='catarcNewField')
+                        {
+                            is_new=true;
+                            fields++;
+                            val = 'data_'+fields;
+                        }
+                        name = val;
+                    }
+
+                    if(tag=='select' && attr=='value')
+                    {
+                        if(!attr_arr_all[attr]) attr_arr_all[attr] = '';
+                        attr_arr_all[attr] += select_dot + val;
+                        select_dot = ',';
+                    }else
+                    {
+                        attr_arr_all[attr] = val;
+                    }
+                    var oField = new Object();
+                    oField[attr] = val;
+                    parse_attr.push(oField);
+                })
+                /*alert(JSON.stringify(parse_attr));return;*/
+                if(tag =='checkboxs') /*复选组  多个字段 */
+                {
+                    plugin = p0;
+                    plugin = plugin.replace('|-','');
+                    plugin = plugin.replace('-|','');
+                    var name = 'checkboxs_'+checkboxs;
+                    attr_arr_all['parse_name'] = name;
+                    attr_arr_all['name'] = '';
+                    attr_arr_all['value'] = '';
+
+                    attr_arr_all['content'] = '<span catarcplugins="checkboxs"  title="'+attr_arr_all['title']+'">';
+                    var dot_name ='', dot_value = '';
+                    p5.replace(preg_group, function(parse_group) {
+                        var is_new=false,option = new Object();
+                        parse_group.replace(preg_attr, function(str0,k,val) {
+                            if(k=='name')
+                            {
+                                if(val=='catarcNewField')
+                                {
+                                    is_new=true;
+                                    fields++;
+                                    val = 'data_'+fields;
+                                }
+
+                                attr_arr_all['name'] += dot_name + val;
+                                dot_name = ',';
+
+                            }
+                            else if(k=='value')
+                            {
+                                attr_arr_all['value'] += dot_value + val;
+                                dot_value = ',';
+
+                            }
+                            option[k] = val;
+                        });
+
+                        if(!attr_arr_all['options']) attr_arr_all['options'] = new Array();
+                        attr_arr_all['options'].push(option);
+                        //if(!option['checked']) option['checked'] = '';
+                        var checked = option['checked'] !=undefined ? 'checked="checked"' : '';
+                        attr_arr_all['content'] +='<input type="checkbox" name="'+option['name']+'" value="'+option['value']+'"  '+checked+'/>'+option['value']+'&nbsp;';
+
+                        if(is_new)
+                        {
+                            var arr = new Object();
+                            arr['name'] = option['name'];
+                            arr['catarcplugins'] = attr_arr_all['catarcplugins'];
+                            add_fields[option['name']] = arr;
+
+                        }
+
+                    });
+                    attr_arr_all['content'] += '</span>';
+
+                    //parse
+                    template = template.replace(plugin,attr_arr_all['content']);
+                    template_parse = template_parse.replace(plugin,'{'+name+'}');
+                    template_parse = template_parse.replace('{|-','');
+                    template_parse = template_parse.replace('-|}','');
+                    template_data[pno] = attr_arr_all;
+                    checkboxs++;
+
+                }else if(name)
+                {
+                    if(tag =='radios') /*单选组  一个字段*/
+                    {
+                        plugin = p0;
+                        plugin = plugin.replace('|-','');
+                        plugin = plugin.replace('-|','');
+                        attr_arr_all['value'] = '';
+                        attr_arr_all['content'] = '<span catarcplugins="radios" name="'+attr_arr_all['name']+'" title="'+attr_arr_all['title']+'">';
+                        var dot='';
+                        p5.replace(preg_group, function(parse_group) {
+                            var option = new Object();
+                            parse_group.replace(preg_attr, function(str0,k,val) {
+                                if(k=='value')
+                                {
+                                    attr_arr_all['value'] += dot + val;
+                                    dot = ',';
+                                }
+                                option[k] = val;
+                            });
+                            option['name'] = attr_arr_all['name'];
+                            if(!attr_arr_all['options']) attr_arr_all['options'] = new Array();
+                            attr_arr_all['options'].push(option);
+                            //if(!option['checked']) option['checked'] = '';
+                            var checked = option['checked'] !=undefined ? 'checked="checked"' : '';
+                            attr_arr_all['content'] +='<input type="radio" name="'+attr_arr_all['name']+'" value="'+option['value']+'"  '+checked+'/>'+option['value']+'&nbsp;';
+
+                        });
+                        attr_arr_all['content'] += '</span>';
+
+                    }else
+                    {
+                        attr_arr_all['content'] = is_new ? plugin.replace(/catarcNewField/,name) : plugin;
+                    }
+                    //attr_arr_all['itemid'] = fields;
+                    //attr_arr_all['tag'] = tag;
+                    template = template.replace(plugin,attr_arr_all['content']);
+                    template_parse = template_parse.replace(plugin,'{'+name+'}');
+                    template_parse = template_parse.replace('{|-','');
+                    template_parse = template_parse.replace('-|}','');
+                    if(is_new)
+                    {
+                        var arr = new Object();
+                        arr['name'] = name;
+                        arr['catarcplugins'] = attr_arr_all['catarcplugins'];
+                        add_fields[arr['name']] = arr;
+                    }
+                    template_data[pno] = attr_arr_all;
+
+
+                }
+                pno++;
+            })
+            var parse_form = new Object({
+                'fields':fields,//总字段数
+                'template':template,//完整html
+                'parse':template_parse,//控件替换为{data_1}的html
+                'data':template_data,//控件属性
+                'add_fields':add_fields//新增控件
+            });
+            return JSON.stringify(parse_form);
+        },
+        /*type  =  save 保存设计 versions 保存版本  close关闭 */
+        fnCheckForm : function ( type ) {
+            if(leipiEditor.queryCommandState( 'source' ))
+                leipiEditor.execCommand('source');//切换到编辑模式才提交，否则有bug
+
+            if(leipiEditor.hasContents()){
+                leipiEditor.sync();/*同步内容*/
+
+              //  alert("1你点击了保存,这里可以异步提交，请自行处理....");
+                //return false;
+                //--------------以下仅参考-----------------------------------------------------------------------------------------------------
+                var type_value='',formid=0,fields=$("#fields").val(),formeditor='';//$("#fields").val()
+                if( typeof type!=='undefined' ){
+                    type_value = type;
+                }
+                //获取表单设计器里的内容
+                formeditor=leipiEditor.getContent();
+                //解析表单设计器控件
+                var parse_form = this.parse_form(formeditor,fields);
+               // alert(addr);
+				var formCode = $("#tableCode").val();
+				var formName = $("#tableName").val();
+				var isWrite = $("#tableName").val();
+				var dataSourceId = "";
+				var objForm = eval("("+parse_form+")");
+				var contentHtml = objForm['template'].replace(/\"/g, "'").replace("{|-","").replace("-|}","").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+				var params ="{";
+				params += '"id":"' + form_id + '",';
+				params += '"formName":"' + formName + '",';
+				params += '"formCode":"' + formCode + '",';
+				params += '"formWrite":"0",';
+				params += '"dataSourceId":"' + dataSourceId + '",';
+				params += '"contentHtml":"' + contentHtml + '",';
+				params += '"delFlag":"0"}';
+				//alert(params);
+				//alert(form_id);
+				if(form_id.length>0){
+					addForm(addr+"/api/form","PUT",params);
+				}else{
+					addForm(addr+"/api/form","POST",params);
+				}
+                 
+
+            } else {
+            	layer.msg('表单内容不能为空！')
+                $('#submitbtn').button('reset');
+                return false;
+            }
+        } ,
+        /*预览表单*/
+        fnReview : function (){
+            if(leipiEditor.queryCommandState( 'source' ))
+                leipiEditor.execCommand('source');/*切换到编辑模式才提交，否则部分浏览器有bug*/
+
+            if(leipiEditor.hasContents()){
+                leipiEditor.sync();       /*同步内容*/
+                var type_value='',formid=0,fields=0,formeditor='';
+                /* if( typeof type!='undefined' ){
+                 type_value = type;
+                 }*/
+                //alert(1);
+                //获取表单设计器里的内容
+                formeditor=leipiEditor.getContent();
+                //解析表单设计器控件
+                var parse_form = this.parse_form(formeditor,fields);
+                var jsonobj= eval("("+parse_form+")");
+                //alert(jsonobj['template']);
+                $("#previewForm").html("");
+                $("#previewForm").append("<div class='container'><div class='page-header'><h1>预览表单 <small>如无问题请保存你的设计</small></h1><a class='easyui-linkbutton' id='btn' onclick='showForm()'>返回编辑</a></div>"+jsonobj['template'].replace('{|-','').replace('-|}',''));
+                $("#previewForm table").attr("class","table table-bordered");
+                $("#previewForm").show();
+                $("#makeForm").hide();
+                $("#btn").show();
+
+                //alert("你点击了预览,请自行处理....");
+
+                //  return false;
+                //--------------以下仅参考-------------------------------------------------------------------
+
+
+                /*设计form的target 然后提交至一个新的窗口进行预览*/
+                // document.saveform.target="mywin";
+                // window.open('','mywin',"menubar=0,toolbar=0,status=0,resizable=1,left=0,top=0,scrollbars=1,width=" +(screen.availWidth-10) + ",height=" + (screen.availHeight-50) + "\"");
+
+                // document.saveform.action="/index.php?s=/index/preview.html";
+                // document.saveform.submit(); //提交表单
+            } else {
+            	layer.msg('表单内容不能为空！');
+                return false;
+            }
+        }
+    };
+    
+    function addForm(url,type,params){
+    	//异步提交数据
+        $.ajax({
+           type: type,//'POST',
+           url : url,//addr+"/api/form",
+           contentType:"application/json; charset=UTF-8",
+           data : params,
+           success : function(data){
+              /*  if(confirm('查看js解析后，提交到服务器的数据，请临时允许弹窗'))
+               {
+                   win_parse=window.open('','','width=800,height=600');
+                   //这里临时查看，所以替换一下，实际情况下不需要替换
+                   data  = data.replace(/<\/+textarea/,'&lt;textarea');
+                   win_parse.document.write('<textarea style="width:100%;height:100%">'+data+'</textarea>');
+                   win_parse.focus();
+               }
+*/
+               
+				 if(data.ok){
+					layer.msg('保存成功');
+                //$('#submitbtn').button('reset');
+                }else{
+               	 layer.msg('保存失败！');
+                }
+           }
+       }); 
+    }
+    
+    function showForm() {
+        $("#previewForm").hide();
+        $("#makeForm").show();
+        $("#btn").hide();
+    }
+
+    //--自动切换提交地址----
+    /*var doc=document,
+        version = editor_a.options.serverUrl || editor_a.options.imageUrl || "php",
+        form=doc.getElementById("form");
+
+    if(version.match(/php/)){
+        form.action="./server/getContent.php";
+    }else if(version.match(/net/)){
+        form.action="./server/getContent.ashx";
+    }else if(version.match(/jsp/)){
+        form.action="./server/getContent.jsp";
+    }else if(version.match(/asp/)){
+        form.action="./server/getContent.asp";
+    }*/
+    //-----
+
+
+
+</script>
+
+

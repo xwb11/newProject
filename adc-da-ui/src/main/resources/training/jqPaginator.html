@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>分页</title>
+    <link rel="stylesheet" href="../../../css/bootstrap2.3.2.min.css">
+    <style>
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <p id="p1"></p>
+    <div class="pagination">
+        <ul  id="pagination1"></ul>
+    </div>
+
+    <p id="p2"></p>
+    <div class="pagination">
+        <ul  id="pagination2"></ul>
+    </div>
+
+    <p id="p3"></p><input type="text" id="input3" type="number">
+    <div class="pagination">
+        <ul  id="pagination3"></ul>
+    </div>
+
+</div>
+
+
+    <script src="../../../js/jquery-1.12.4.min.js"></script>
+    <script src="../../../js/jqPaginator.min.js"></script>
+    <script type="text/javascript">
+        $.jqPaginator('#pagination1', {
+            totalPages: 100,
+            visiblePages: 10,
+            currentPage: 3,
+            onPageChange: function (num, type) {
+                $('#p1').text(type + '：' + num);
+            }
+        });
+
+        $.jqPaginator('#pagination2', {
+            totalPages: 100,
+            visiblePages: 10,
+            currentPage: 3,
+            prev: '<li class="prev"><a href="javascript:;">Previous</a></li>',
+            next: '<li class="next"><a href="javascript:;">Next</a></li>',
+            page: '<li class="page"><a href="javascript:;">{{page}}</a></li>',
+            onPageChange: function (num, type) {
+                $('#p2').text(type + '：' + num);
+            }
+        });
+
+        var opition3 ={
+            totalPages: 100,
+            visiblePages: 5,
+            currentPage: 3,
+
+            prev: '<li class="prev"><a href="javascript:;">Previous</a></li>',
+            next: '<li class="next"><a href="javascript:;">Next</a></li>',
+            page: '<li class="page"><a href="javascript:;">{{page}}</a></li>',
+            onPageChange: function (num, type) {
+                $('#p3').text(type + '：' + num);
+            }};
+        $.jqPaginator('#pagination3',opition3);
+        $("#input3").on("change",function () {
+            var curpage = $(this).val();
+            console.log(typeof curpage === "number" );
+            if(typeof parseInt(curpage) == "number" && curpage<=100 &&curpage>0 ){
+                $('#p3').text( 'change ：' + curpage);
+                $('#pagination3').jqPaginator('option',{
+                    currentPage: parseInt(curpage)
+                });
+            }else {
+                alert('请填写正确的页数！');
+            }
+
+        });
+
+    </script>
+</body>
+</html>

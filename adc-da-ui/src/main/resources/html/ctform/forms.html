@@ -1,0 +1,472 @@
+<style>
+    .pagesize{width: 60px;line-height: 20px; padding: 0; margin: 0 0 10px 25px;}
+    .search label{display: inline;}
+    .search select{ width: 150px;height: 35px;line-height: 35px; margin-left: 10px;margin-bottom: 25px;
+        appearance:none; -moz-appearance:none; -webkit-appearance:none;}
+    .search input{ width: 150px; border-radius: 2px;}
+    .search label{margin-left: 10px;}
+    .search a{margin-left: 10px;}
+    .search button{color:#563d7c; background-color:#f8f6fa; border-color:#927ab5;margin-bottom: 10px;height:28px;}
+    .search button:hover, .search button:focus, .search button:active,
+    .search button.active{color:#FFF; background-color:#927ab5; border-color:#927ab5;}
+    .search_screen{
+        float:left;height:40px;
+    }
+</style>
+
+<div class="portlet  ">
+
+    <div class="portlet-title ">
+        <!--列表 头部信息-->
+        <div class="caption"><i class="icon-reorder"></i>表单管理</div>
+
+
+
+        </div>
+        <!--<div class="tools tabbletools">-->
+            <!--<a id="userAdd" href="javascript:;" class="plus"></a>-->
+            <!--<a id="userUpdate" href="javascript:;" class="config"></a>-->
+            <!--<a id="userDelete" href="javascript:;" class="delete"></a>-->
+        <!--</div>-->
+
+    </div>
+
+<div class="portlet-body">
+        <div class="search">
+            <div style="float:left;width:230px;height:40px"> <span style="float:left;margin-top: 4px;  margin-right: 10px;" >表单名:</span>
+            <input style="float:left" type="text" id="searchform" name="searchform" placeholder="表单名"/>
+           </div>
+            
+            <button  style="margin-left: 10px;" class="search" onclick="searchparam()" id="searchbutton"><i class="icon-search"></i>检索</button>
+
+            <button  style="margin-left: 10px;float:right;" class="search"  onclick="delALL()" id="delAll"><i class="icon-trash"></i>删除</button>
+            <button  style="margin-left: 10px;float:right;" class="search"  onclick="btnlisten(this)" id="formAdd"><i class="icon-plus"></i>新增</button>
+
+        </div>
+        <!--  表头的 自己画-->
+        <table class="table table-striped table-bordered table-hover systable" id="formtable">
+            <thead>
+            <tr>
+                <th style="width:8px;"><input type="checkbox" class="group-checkable" data-set="#sample_1 .checkboxes" /></th>
+                <th style="width:60px;">序号</th>
+                <th>表单名称</th>
+                <th>表单编号</th>
+                <th >创建时间</th>
+                <th >操作</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <div class="pagination" >
+            每页显示<select class="pagesize " id="pagesize"></select>条
+            <div style="float: right">
+            <ul id="paglist"></ul>
+            </div>
+        </div>
+
+</div>
+
+
+<div id="viewid">
+	<div class="form-group"><input type="hidden" id="formId" name="formId"></div>
+	<form role="form" id="ctform" name="ctform" class="form-horizontal">
+	
+	</form>
+</div>
+<script>
+$("#viewid").hide();
+var pageSize =8, pageNo=1, totalSize = 1, totalCounts = 1,
+    id ="formtable" ;
+var tid = "userFieldTable",fieldTotalCounts = 1,fieldPageSize =8, fieldPageNo=1;
+var searchmsg = {formname:''};
+var url ='';
+var pagearr = [1,3,5,8,10,15,20];
+var checkboxesLen = 0;
+var tableId ="1";
+var header;
+
+// 获取列表
+var getlist = function(type ){
+    // url =addr+"/api/sys/tuser?pageNo="+pageNo+"&pageSize="+pageSize
+    //      + "&usname="+searchmsg.usname+ "&rolestr="+searchmsg.rolestr;
+    url = addr+"/api/form";
+    $.ajax({
+        url: url ,
+        data:{pageNo:pageNo,pageSize:pageSize,formName:searchmsg.formname},
+        type:"GET",
+        success:function (data) {
+           // alert(JSON.stringify(data.data.list));
+            var cur = data.data.list, str="",
+               formid="", name="", code = "" , time = "";
+
+            totalCounts = data.data.count|| 1;
+            pagecount = data.data.pageCount;
+            if(type != 'change') {
+                setjqpage();
+                $(".checkboxes").change(function () {
+                    console.log(3);
+                });
+            }
+
+            for(var i=0 ;i<cur.length; i ++){
+            	formid = cur[i].id;
+                name = cur[i].formName;
+                code = cur[i].formCode;
+                time = cur[i].createTime;
+
+                str+= "<tr><td><input type='checkbox' name='checkboxes' class='checkboxes' rowno = '"+i+"' value='"+formid+"' /></td>"
+                    + "<td>"+parseInt(i+1)+"</td>"
+                    + "<td>"+name+"</td><td>"+code+"</td>"
+                    + "<td>"+time+"</td>"
+                    + "<td><a href=\"javascript:;\" id=\"formUpdate\" onclick=\"btnlisten(this)\"><i class=\"icon-pencil\" ></i> 编辑</a>" +
+                    "<a href=\"javascript:;\" style=\"margin-left:10px;\" id=\"formDelete\" onclick=\"btnlisten(this)\"><i class=\"icon-trash\"></i> 删除</a><a  style=\"margin-left:10px;\" href=\"javascript:;\" id=\"formCheck\" onclick=\"btnlisten(this)\"><i class=\"icon-file\"></i> 查看</a></div></td></tr>";
+                    
+                
+                str+="</tr>";
+
+            }
+            $("#"+id+" tbody").html(str);
+        }
+    });
+}
+
+function writeForm(obj){
+   //alert(obj.id);
+   htmlstr = $("#viewid");
+   title = "填写表单";
+   $("#formId").val(obj.id);
+   htmlstr = getformView(obj.id, htmlstr, title);
+}
+/**********/
+
+getlist('init');
+setjqpage();
+getpagesize();
+//页面表格分页
+function setjqpage() {
+    pageSize = parseInt(pageSize);
+    $('#paglist').jqPaginator({
+        totalCounts:totalCounts,
+        pageSize:pageSize,
+        visiblePages: 5,
+        currentPage: pageNo,
+        first: '<li class="first"><a href="javascript:void(0);">首页</a></li>',
+        prev: '<li class="prev"><a href="javascript:void(0);">上一页</a></li>',
+        next: '<li class="next"><a href="javascript:void(0);">下一页</a></li>',
+        last: '<li class="last"><a href="javascript:void(0);">尾页</a></li>',
+        page: '<li class="page"><a href="javascript:void(0);">{{page}}</a></li>',
+        onPageChange: function (num,type) {
+            pageNo = num;
+            //alert(pageNo);
+            if(type == 'change') {
+                //alert(1);
+                getlist('change');
+            }
+            var pagesizearr='';
+            for(var i  in pagearr){
+                pagesizearr +='<option value = "'+ pagearr[i] +'">'+ pagearr[i]+'</option>'
+            }
+
+            $('#totalcount').html('共 ' + Math.ceil(totalCounts) + " 条");
+            $('#pagesize').html(pagesizearr).val(pageSize);
+        }
+    });
+}
+
+// 全选
+$(".group-checkable").change(function () {
+    var isChecked = $(this).prop("checked");
+    $("input[name='checkboxes']").prop("checked", isChecked);
+});
+
+function getpagesize() {
+    var pagesizearr = '';
+    for (var i  in pagearr) {
+        pagesizearr += '<option value = "' + pagearr[i] + '">' + pagearr[i] + '</option>'
+    }
+    $('#pagesize').html(pagesizearr).val(pageSize);
+}
+
+//每页显示条数
+$("#pagesize").on('change',function () {
+    if(pageSize != $(this).val()){
+        pageSize =  $(this).val();
+        pageNo = 1;
+        getlist('init');
+    }
+});
+
+
+
+
+// 查找
+function searchparam() {
+    pageNo = 1;
+    searchmsg.formname = $("#searchform").val();
+    getlist('init');
+}
+
+
+// 工具栏 点击弹窗
+	function btnlisten(obj){
+        var html= "",title ="",htmlstr="",checkboxes;
+        $('input:checkbox').removeAttr('checked');
+
+        $($($(obj).parents("tr")).find("input")[0]).attr("checked","true");
+        checkboxes = $("input[name='checkboxes']:checked") ;
+        switch (obj.id){
+            case 'formAdd':
+            	Index.mainContents('ctform/designform.html','mainContents');
+                break;
+            case 'formUpdate':
+                title = "修改表单";
+                if($("input[name='checkboxes']:checked").length ==1){
+                   // htmlstr = getform(checkboxes.val(),$("#usAdd"),title,"update");
+                    $("#formid").val(checkboxes.val());
+                	Index.mainContents('ctform/designform.html','mainContents');
+                }else {
+                    layer.msg("请选择任意一条且仅一条记录！");
+                }
+                break;
+            case 'formDelete':
+                title = "删除表单";
+                var chk_value = [];
+                checkboxes.each(function(){
+                    chk_value.push($(this).val());
+                });
+                if($("input[name='checkboxes']:checked").length ){
+                    dellist(chk_value);
+                }else {
+                    layer.msg("请选择至少一条记录！");
+                }
+                break;
+            case 'formCheck':
+              //  title = "预览表单";
+                if($("input[name='checkboxes']:checked").length ==1){
+                	htmlstr = $("#viewid");
+                    title = "预览表单";
+                    htmlstr = getformView(checkboxes.val(), htmlstr, title);
+                }else {
+                    layer.msg("请选择任意一条且仅一条记录！");
+                }
+                break;
+        }
+        
+    }
+
+function getHtml(){
+	var strRet="[";
+	$("#ctform :input").each(function(i,input){
+		var sel = $(input);
+		var catarcplugins = $(input).attr("catarcplugins");
+		var types = $(input).attr("type");
+		//console.log("value="+sel.val()+"   name="+sel.attr("name")+"   type="+sel.attr("type"));
+		//var intputValue = $(input).val();
+		//$(input).attr("value",intputValue);
+		if(i!=0){
+			strRet+=",";
+		}
+		if(types == "radio"){
+			if($(input).attr("checked")){
+				strRet+= "{";
+				strRet+= "'name':'"+$(input).attr("name")+"',";
+				strRet+= "'type':'"+$(input).attr("type")+"',";
+				strRet+= "'value':'"+$(input).val()+"',";
+				strRet+= "'catarcplugins':'"+$(input).attr("id")+"'";
+				strRet+= "}";
+				/* if('input:radio[name="'+$(input).attr("name")+'"]:checked'){
+						  alert($('input:radio[name="'+$(input).attr("name")+'"]:checked').val());
+					strRet+= ",'leipiplugins':'checked'";
+				}  */
+			}else{
+				strRet+= "{";
+				strRet+= "'name':'"+$(input).attr("name")+"',";
+				strRet+= "'type':'"+$(input).attr("type")+"',";
+				strRet+= "'value':'"+$(input).val()+"',";
+				strRet+= "'catarcplugins':'noCheck'";
+				strRet+= "}";
+			}
+		}else if(types == "checkbox"){
+			if($(input).attr("checked")){
+				strRet+= "{";
+				strRet+= "'name':'"+$(input).attr("name")+"',";
+				strRet+= "'type':'"+$(input).attr("type")+"',";
+				strRet+= "'value':'"+$(input).val()+"',";
+				strRet+= "'catarcplugins':'"+$(input).attr("id")+"'";
+				strRet+= "}";
+				/* if('input:radio[name="'+$(input).attr("name")+'"]:checked'){
+						  alert($('input:radio[name="'+$(input).attr("name")+'"]:checked').val());
+					strRet+= ",'leipiplugins':'checked'";
+				}  */
+			}else{
+				strRet+= "{";
+				strRet+= "'name':'"+$(input).attr("name")+"',";
+				strRet+= "'type':'"+$(input).attr("type")+"',";
+				strRet+= "'value':'"+$(input).val()+"',";
+				strRet+= "'catarcplugins':'noCheck'";
+				strRet+= "}";
+			}
+		}else{
+			strRet+= "{";
+			strRet+= "'name':'"+$(input).attr("name")+"',";
+			strRet+= "'type':'"+$(input).attr("type")+"',";
+			strRet+= "'value':'"+$(input).val()+"',";
+			strRet+= "'catarcplugins':'"+$(input).attr("catarcplugins")+"'";
+	    	strRet+= "}";
+		}
+	})
+	strRet+="]";
+	return strRet;
+}
+
+/*****************************************/
+function layerfn(htmlstr,title,type) {
+	var btn = [];
+    if(title == '预览表单'){
+        btn = ['关闭'];
+    }
+    else{
+    	btn = [ '保存待发','提交', '关闭'];
+    }
+    layer.open({
+        type: 1,
+        title:title,
+        skin: 'ayui-layer-molv,demo-class', //加上边框
+        area: ['800px', '400px'], //宽高
+        content: htmlstr,
+        anim: 2, //弹出动画
+        shadeClose: false, //开启遮罩关闭
+        btn: btn,
+        btnAlign:'b',
+        btn1: function(index, layero){	
+        	if(btn!="关闭"){
+        		var content = getHtml();
+        		var formId = $("#formId").val();
+        		var params ="{";
+        		params += '"formId":"' + formId + '","formContent":"' + content + '","formState":"待发"}';
+                alert(params);
+                addlist(addr+"/api/formdata","POST",params);
+        	}
+            layer.closeAll(); 
+        } ,
+        btn2: function(index, layero){
+           // $('#userform')[0].reset;
+            return false 
+        } ,
+        btn3: function(index, layero){
+        	$("#viewform").hide();
+        	layer.closeAll();
+            //return false 
+        }
+
+    });
+}
+
+
+
+
+
+
+function addlist(url,type,param) {
+    // var param  = JSON.parse(params);;
+    //alert(param);
+    $.ajax({
+        url:url,
+        type:type,
+        data: param,
+        contentType:"application/json; charset=UTF-8",
+        success:function (data) {
+            if(data.ok){
+                pageNo =1;
+                getlist('init');
+            }
+        }
+    });
+}
+
+
+
+function getformView(id, htmlstr, title) {
+	//layerfn(htmlstr, title, "userMessage");
+     $.ajax({
+        url: addr + "/api/form/"+ id,
+        type: "GET",
+        success: function (data) {
+
+            layerfn(htmlstr, title, "userMessage");
+            $("#ctform").html(data.data.contentHtml);
+            //loadDataView(data.data.userInfo[0]);
+        },
+        error: function (data) {
+            layer.msg("获取表单信息失败！")
+        },
+        beforeSend: function () {
+            ShowDiv();
+        },
+        complete: function () {
+            HiddenDiv();
+        }
+    }); 
+}
+function delALL(){
+    var chk_value = [];
+    $("input[name='checkboxes']:checked").each(function(){
+        chk_value.push($(this).val());
+    });
+    if($("input[name='checkboxes']:checked").length ){
+        dellist(chk_value);
+    }else {
+        layer.msg("请选择至少一条记录！");
+    }
+}
+
+function dellist(id) {
+    layer.confirm('确定删除表单？', {
+        btn: ['删除','取消'] //按钮
+    }, function(){
+        $.ajax({
+            url:addr+'/api/form/delete/'+id,
+            type:'DELETE',
+            success:function (data) {
+                if(data.ok){
+                    getlist('init');
+                    layer.msg('删除成功！');
+                }
+            },error:function (data) {
+                console.log(data);
+                layer.msg('删除失败！');
+            }
+        });
+    });
+}
+//显示加载数据
+function ShowDiv() {
+    index = layer.load(1, {shade: [0.8, '#ccc'],content:'玩命同步中...',success: function(layero){
+        layero.find('.layui-layer-content').css({'padding-top': '40px','width':'150px'});
+    }})
+}
+
+function HiddenDiv() {
+    layer.close(index);
+}
+//获取当前系统时间 yyy-MM-dd HH:MM:SS
+function getNowFormatDate() {
+    var date = new Date();
+    var seperator1 = "-";
+    var seperator2 = ":";
+    var month = date.getMonth() + 1;
+    var strDate = date.getDate();
+    if (month >= 1 && month <= 9) {
+        month = "0" + month;
+    }
+    if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+    }
+    var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+        + " " + date.getHours() + seperator2 + date.getMinutes()
+        + seperator2 + date.getSeconds();
+    return currentdate;
+}
+</script>
+

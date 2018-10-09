@@ -1,0 +1,545 @@
+<style>
+    .search button{color:#563d7c; background-color:#f8f6fa; border-color:#927ab5;margin-bottom: 10px;height:30px;}
+    .search button:hover, .search button:focus, .search button:active,
+    .search button.active{color:#FFF; background-color:#927ab5; border-color:#927ab5;}
+</style>
+<script src="http://mockjs.com/dist/mock.js"></script>
+<div class="portlet  ">
+    <div class="portlet-title">
+        <!--列表 头部信息-->
+        <div class="caption"><i class="icon-reorder"></i>组织机构列表</div>
+        <div class="actions tabletools">
+        <a href="#" class="btn blue" id="orgadd"><i class="icon-plus"></i> 新增</a>
+        <div class="btn-group ">
+            <a class="btn green" href="#" data-toggle="dropdown">
+                <i class="icon-cogs"></i> 操作
+                <i class="icon-angle-down"></i>
+            </a>
+            <ul class="dropdown-menu pull-right">
+                <li><a href="javascript:;" id="orgupdate"><i class="icon-pencil"></i> 编辑</a></li>
+                <li><a href="javascript:;" id="orgdelete"><i class="icon-trash"></i> 删除</a></li>
+                <li><a href="javascript:;" id="orgview"><i class="icon-file"></i> 查看</a></li>
+                <li><a href="javascript:;" id="orgconfig"><i class="icon-tags"></i> 配置用户</a></li>
+            </ul>
+        </div>
+    </div>
+
+
+    </div>
+    <div class="portlet-body">
+        <div class="search">
+            <label >组织机构名称：
+                <input type="text" id="searchname" name="searchname" placeholder="组织机构名称"/>
+                <button  class="search" onclick="searchparam()" id="searchbutton"><i class="icon-search"></i>检索</button>
+            </label>
+
+        </div>
+    </div>
+</div>
+<div class="container">
+    <table id="tb" style="width:1000px"></table>
+</div>
+
+<div id="orgCrud" class="span12">
+    <!-- form表单要自己设计内容。 -->
+    <form class="form-horizontal" id="orgform" name="orgform">
+        <input type="hidden" id="orgIdAdd" name="id" >
+        <div class="control-group" style="margin-top: 5px;">
+            <label class="control-label col-sm-2" for="orgNameAdd">组织机构名称：</label>
+            <div class="controls col-sm-4">
+                <input type="text" id="orgNameAdd" name="name" placeholder="组织机构名称">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="orgDescAdd">组织机构描述：</label>
+            <div class="controls">
+                <input type="text" id="orgDescAdd" name="orgDesc" placeholder="组织机构描述">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="orgCodeAdd">部门代码：</label>
+            <div class="controls">
+                <input type="text" id="orgCodeAdd" name="orgCode" placeholder="部门代码">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="orgTypeAdd">机构类型：</label>
+            <div class="controls">
+                <select id="orgTypeAdd" name="orgType" class="form-control selectmultiple" >
+                </select>
+            </div>
+
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="orgParentAdd">上级部门：</label>
+            <div class="controls">
+                <select id="orgParentAdd" name="parentId" class="form-control selectmultiple" >
+                    <!--          <option value="level11" parent="root">Level 1.1</option>
+                        <option value="level12" parent="root">Level 1.2</option>
+                        <option value="level21" parent="level12">Level 2.1</option>
+                        <option value="level22" parent="level12">Level 2.2</option>
+                        <option value="level13" parent="root">Level 1.3</option> -->
+                </select>
+            </div>
+        </div>
+        <input type="hidden"  name="parentIds" >
+    </form>
+</div>
+
+<script>
+
+    $('#orgCrud').hide();
+
+    var  myid ="org" , myname="组织机构";
+    function doEdit(obj){
+        //alert(obj.id);
+        var htmlstr = $("#orgCrud");
+        var title = "修改组织机构";
+        obj.id=$.trim(obj.id);
+
+        getform(obj.id,htmlstr,title,'update');
+
+        // layerfn(htmlstr,title,'modify');
+    }
+
+    function doDelete(obj){
+        // alert(obj.name);
+        layer.confirm('是否要删除此条信息？', {
+            btn: ['删除','取消'] //按钮
+        }, function(){
+            $.ajax({
+                url:addr+'/api/sys/org/delete/'+obj.name,
+                type:'DELETE',
+                success:function (data) {
+                    if(data.ok){
+                        getlist("init");
+                        layer.msg('删除成功！');
+                    }
+                    else{
+                        layer.msg(data.message);
+                    }
+                }
+            });
+        });
+    }
+
+    // 获取信息
+    function getform(id,htmlstr,title,type){
+
+        $.ajax({
+            url: addr + "/api/sys/org/"+ id,
+            type: "GET",
+            success:function (data) {
+                layerfn(htmlstr,title,type);
+                console.log(data);
+                //     $("#orgTypeAdd,#orgParentAdd").select2("*", "");
+                loadData(data.data);
+
+                if(type == 'view'){
+                    $('input,select,textarea',$('form[name="'+myid+'form"]')).prop('readonly',true);
+                }
+
+            },
+            error:function (data) {
+                layer.msg('获取信息失败！');
+            }
+        });
+    }
+
+    // 加载信息
+    function loadData(obj) {
+        $("#passwordDiv").hide();
+        initSelect();
+        loaddata_select2();
+
+        $("#orgTypeAdd").val(obj.orgType);
+        $("#orgParentAdd").val(obj.parentId);
+
+        $("#select2-orgParentAdd-container").text($("#orgParentAdd").find("option:selected").text());
+
+        var key,value,tagName,type,arr;
+
+        //  alert(JSON.stringify(obj));
+        for(x in obj ){
+            key = x;
+            value = obj[x];
+            $("[name='"+key+"'],[name='"+key+"[]']").each(function(){
+                tagName = $(this)[0].tagName;
+                type = $(this).attr('type');
+
+                if(tagName=='INPUT'){
+                    if(type=='radio'){
+                        $(this).attr('checked',$(this).val()==value);
+                    }else if(type=='checkbox'){
+                        arr = value.split(',');
+                        for(var i =0;i<arr.length;i++){
+                            if($(this).val()==arr[i]){
+                                $(this).attr('checked',true);
+                                break;
+                            }
+                        }
+
+                    }else{
+                        $(this).val(value);
+                    }
+                }else if(tagName=='SELECT' ){
+                    // $(this).val( value.split(',')).select2();
+                    var select_id = $(this)[0].id;
+
+                    if(select_id=="orgParentAdd"){
+                        //  alert(value);
+                        //alert(select_id);
+                        //$("#"+select_id).val(value);
+
+                        $("#orgParentAdd option[value='"+value+"']").attr("selected","selected");
+                        //$("#orgParentAdd").find("option[value='"+value+"']").attr("selected",true);
+                    }
+                    else{
+                        $("#orgTypeAdd option[id='"+value+"']").attr("selected","selected");
+                        //   $('#orgTypeAdd').val([value]).trigger('change');
+                        //   $("#"+select_id).find("option[id='"+value+"']").attr("selected",true);
+
+                    }
+
+                    //$("#"+select_id).val(value);
+                }else if( tagName=='TEXTAREA'){
+                    $(this).val(value);
+                }
+
+            });
+        }
+    }
+
+
+    //弹窗
+    function layerfn(htmlstr,title,type) {
+        layer.open({
+            type: 1,
+            title:title,
+            skin: 'ayui-layer-molv,demo-class', //加上边框
+            area: ['500px', '350px'], //宽高
+            content: htmlstr,
+            anim: 2, //弹出动画
+            shadeClose: false, //开启遮罩关闭
+            btn: [ '提交','重置', '关闭'],
+            btnAlign:'b',
+            btn1: function(index, layero){
+                var fmsg = $("#orgform").serializeArray();
+                var params ="{";
+                var paramArray2 = $("#orgParentAdd option[value=" + fmsg[5].value +" ]").attr("value2")+fmsg[5].value+",";
+                fmsg[6].value = paramArray2;
+                fmsg[6].name="parentIds";
+                //  var roleids ='[';
+                for(var i in fmsg){
+                    params+='"'+fmsg[i].name+'":"'+fmsg[i].value+'"' ;
+                    params +=',';
+                }
+                // params = params.length==2?params:params.substr(0,params.length-1);
+                // roleids = (roleids.length==1?roleids:roleids.substr(0,roleids.length-1))+']';
+                //   params += '"roles": [], "rolesstr":'+roleids;
+                params = (params.length==1?params:params.substr(0,params.length-1))+"}";
+
+                params = JSON.parse(params);
+                if(type == 'add'){
+                    addlist(addr+"/api/sys/org","POST",params);
+                }else if(type=='update'){
+                    var parentIds = $($("#orgParentAdd").find("option")[$("#orgParentAdd")[0].selectedIndex]).attr("value2");
+                    var paramArray=parentIds.split(",");
+                    var i;
+                    for(i=0;i<paramArray.length;i++){
+                        if(paramArray[i]==fmsg[0].value||fmsg[5].value==fmsg[0].value){
+                            break;
+                        }
+                    }
+
+                    if(i<paramArray.length){
+                        layer.msg("所选上级部门不能为自己的子级部门或者自己！");
+                        return;
+                    }
+                    addlist(addr+"/api/sys/org","PUT",params);
+                }
+                layer.closeAll();
+            } ,
+            btn2: function(index, layero){
+                $('#orgform')[0].reset;
+                return false //开启该代码可禁止点击该按钮关闭
+            } ,
+            btn3: function(index, layero){
+//               $('#userform').reset;
+                //return false 开启该代码可禁止点击该按钮关闭
+            }
+
+        });
+
+    }
+
+    // 工具栏 点击弹窗
+    $(".tabletools").on('click','a',function () {
+        var html= "",title ="",htmlstr = $("#"+myid+"Crud");
+        // var checkboxs = $("input[name='checkboxes']:checked");
+
+        switch ($(this)[0].id){
+            case myid+'add':
+                title = "新增"+myname+"信息";
+                loaddata_select2();
+                $("#orgTypeAdd").val(0);
+                layerfn(htmlstr,title,'add');
+                break;
+            case myid+'update':
+                title = "修改"+myname+"信息";
+                if(checkboxs.length == 1 ){
+                    getform(checkboxs.val(),htmlstr,title,'update');
+
+                }else {
+                    layer.msg("请选择一条记录！");
+                }
+                break;
+            case myid+'delete':
+                title = "删除"+myname+"信息";
+                if(checkboxs.length ){
+                    dellist(checkboxs.val());
+                }else {
+                    layer.msg("请选择一条记录！");
+                }
+                break;
+            case myid+'view':
+                title = "查看"+myname+"信息";
+                if(checkboxs.length == 1 ){
+                    getform(checkboxs.val(),htmlstr,title,'view');
+
+                }else {
+                    layer.msg("请选择一条记录！");
+                }
+                break;
+        }
+        $('#orgform')[0].reset();
+        initSelect();
+    });
+
+    function initSelect(){
+        $("#orgTypeAdd").select2({
+            ajax:orgTypeList
+
+        });
+        $("#orgParentAdd").select2({
+            theme: "classic"
+        });
+        getOrgTreeList();
+
+        $("#orgParentAdd").select2tree();
+    }
+
+    //   $(".icon,.icon-chevron-down,.switch").css("padding","0px 0px 0px 0px");
+    // 角色列表
+    var orgTypeList = {
+        url:addr+"/api/sys/dictype/page?dicId=S3G79EH2ME",
+        delay: 250,
+        allowClear: true,
+        placeholder: {
+            id: '-1', // the value of the option
+            text: '请选择1'
+        },
+        processResults: function (data) {
+
+            console.log(data.data);
+            var cur = data.data.list, selectorgtype = [{"id":" ", "text":"---请选择---"}];
+            for (var i =0;i<cur.length;i++){
+                var land = cur[i];
+                var option = {"id":land.id, "text": land.dicTypeName};
+                selectorgtype.push(option);
+            }
+            return {
+                results: selectorgtype
+            };
+        },
+        templateResult: function (data) {
+            if (data.id === '') { // adjust for custom placeholder values
+                return '请选择';
+            }
+            return data.text;
+        },
+        cache:true
+    }
+    function loaddata_select2(){
+        $.ajax({
+            url: addr+"/api/sys/dictype/page?dicId=S3G79EH2ME",
+            type: "GET",
+            async:false,
+            success:function (obj) {
+                var i;
+                data=obj.data.list;
+                $("#orgTypeAdd").append(new Option("请选择",0 , false, true));
+                for(i=0;i<data.length;i++){
+                    $("#orgTypeAdd").append(new Option(data[i].dicTypeName,data[i].id , false, true));
+                }
+
+            },
+            error:function (data) {
+                layer.msg('获取信息失败！');
+
+            }
+        });
+    }
+
+    function getOrgTreeList(){
+
+        $.ajax({
+            url: addr+"/api/sys/org/listOrgByOrgName",
+            type: "GET",
+            async:false,
+            success:function (data) {
+
+                var cur = data.data;
+                var option='<option value="0" value2="">---请选择---</option>';
+                for (var i =0;i<cur.length;i++){
+                    var land = cur[i];
+                    if(land.parentId!=0){
+                        option +='<option value="'+land.id+'" value2="'+land.parentIds+'" parent="'+land.parentId+'">'+land.name+'</option>';
+                    }
+                    else{
+                        option +='<option value="'+land.id+'" value2="'+land.parentIds+'">'+land.name+'</option>';
+                    }
+
+
+                    // var option1 = {"id":land.id,"value":land.id,"parent":land.parentId, "text": land.name};
+                    // selectorg.push(option);
+                }
+                //  alert(option);
+
+                $("#orgParentAdd").empty();
+
+                $("#orgParentAdd").append(option);
+                $("#orgParentAdd option:first").prop("selected", 'selected');
+                var i;
+                //           for(i=0;i<$("#orgParentAdd").find("li").length)
+                //              $("#orgParentAdd").find("input").val();
+
+            },
+            error:function (data) {
+                layer.msg('获取信息失败！');
+            }
+        });
+
+    }
+
+    //增
+    function addlist(url,type,param) {
+        param  = JSON.stringify(param);
+        $.ajax({
+            url:url,
+            type:type,
+            data: param,
+            contentType:"application/json; charset=UTF-8",
+            success:function (data) {
+                console.log(data);
+                if(data.ok){
+                    //pageNo =1;
+                    getlist("init");
+                    layer.msg("成功");
+//                   layer.msg(data.respMsg);
+                }else{
+                    layer.msg(data.respMsg);
+                }
+            },error:function () {
+                layer.msg(data.respMsg);
+            }
+        });
+    }
+
+    var orgTreeList = {
+        url:addr+"/api/sys/org/listOrgByOrgName",
+        delay: 250,
+        allowClear: true,
+        placeholder: {
+            value: '-1', // the value of the option
+            parent:'',
+            text: '请选择1'
+        },
+        processResults: function (data) {
+
+            var cur = data.data;
+            var selectorg=[];
+            for (var i =0;i<cur.length;i++){
+                var land = cur[i];
+                var option = {"id":land.id,"value":land.id,"parent":land.parentId, "text": land.name};
+                selectorg.push(option);
+            }
+            console.log(selectorg);
+
+            return {
+                results: selectorg
+            };
+        },
+        templateResult: function (data) {
+            if (data.id === '') { // adjust for custom placeholder values
+                return '请选择';
+            }
+            return data.text;
+        },
+        cache:true
+    }
+
+    function getlist(orgName){
+        // console.log(orgName);
+        var ourl;
+        if(orgName=="init"){
+            ourl = addr+"/api/sys/org/listOrgByOrgName";
+        }
+        else{
+            ourl = addr+"/api/sys/org/listOrgByOrgName?orgName="+orgName;
+        }
+
+        $('#tb').empty();
+        console.log(ourl);
+        $('#tb').treegridData({
+            id: 'id',
+            parentColumn: 'parentId',
+            type: "GET", //请求数据的ajax类型
+            url: ourl,   //请求数据的ajax的url
+            // ajaxParams: {}, //请求数据的ajax的data属性
+            expandColumn: null,//在哪一列上面显示展开按钮
+            striped: true,   //是否各行渐变色
+            bordered: true,  //是否显示边框
+            expandAll: false,  //是否全部展开
+            columns: [
+                {
+                    title: '机构名称',
+                    field: 'name'
+                },
+                {
+                    title: '机构描述',
+                    field: 'orgDesc'
+                },
+                {
+                    title: '部门代码',
+                    field: 'orgCode'
+                },
+                {
+                    title: '机构类型',
+                    field: 'orgType'
+                }
+                ,
+                {
+                    title: '操作',
+                    field: 'operate'
+                }
+            ]
+        });
+    }
+
+    function searchparam(){
+        var orgName = $("#searchname").val();
+        if(orgName.length>0){
+            getlist(orgName);
+        }
+        else{
+            getlist("init");
+        }
+    }
+
+    $(document).ready(function () {
+
+        getlist("init");
+
+    });
+</script>

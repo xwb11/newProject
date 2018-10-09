@@ -1,0 +1,27 @@
+<style>
+    .breadcrumb > li + li:before {
+        /*color: #CCCCCC;*/
+        content:'>'  ;
+        padding: 0 5px;
+    }
+
+    .welcome{
+        font-size: 24px;
+        color: blue;
+        text-align: center;
+        height: 100%;
+        line-height: 100%;
+        width: 100%;
+    }
+</style>
+
+<div style="min-height: 350px;">
+    <p class = "welcome">
+        欢 迎 您 使 用 此 框 架！
+    </p>
+
+</div>
+
+<script>
+    $("#breadcrumb").html('<li> <i class="icon-home"></i> <a href="index.html">首页</a> </li>');
+</script>
