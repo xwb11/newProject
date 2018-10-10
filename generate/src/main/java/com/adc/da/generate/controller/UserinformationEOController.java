@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.adc.da.generate.util.UserinformationEOPrompt;
+import org.apache.ibatis.annotations.Delete;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,14 +60,14 @@ public class UserinformationEOController extends BaseController<UserinformationE
     }
 
     @ApiOperation(value = "|UserinformationEO|修改")
-    @PostMapping(consumes = APPLICATION_JSON_UTF8_VALUE)
+    @PutMapping(consumes = APPLICATION_JSON_UTF8_VALUE)
     public ResponseMessage<UserinformationEO> update(@RequestBody UserinformationEO userinformationEO) throws Exception {
         userinformationEOService.updateByPrimaryKeySelective(userinformationEO);
         return Result.success(userinformationEO);
     }
 
     @ApiOperation(value = "|UserinformationEO|删除")
-    @PostMapping("/{userkey}")
+    @DeleteMapping("/{userkey}")
     public ResponseMessage delete(@PathVariable String userkey) throws Exception {
         userinformationEOService.deleteByPrimaryKey(userkey);
         logger.info("delete from USERINFORMATION where userkey = {}", userkey);
