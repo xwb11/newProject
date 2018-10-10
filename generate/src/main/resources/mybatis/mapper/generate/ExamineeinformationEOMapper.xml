@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.adc.da.generate.dao.ExamineeinformationEODao" >
+  <!-- Result Map-->
+  <resultMap id="BaseResultMap" type="com.adc.da.generate.entity.ExamineeinformationEO" >
+    <id column="ExamineeKey" property="examineekey" />
+    <result column="QuasiexaminationNumber" property="quasiexaminationnumber" />
+    <result column="RealName" property="realname" />
+    <result column="Sex" property="sex" />
+    <result column="RegisteredResidence" property="registeredresidence" />
+    <result column="PoliticalOutlook " property="politicaloutlook " />
+    <result column="NativePlace" property="nativeplace" />
+    <result column="Age" property="age" />
+    <result column="IDCardNumber" property="idcardnumber" />
+    <result column="Chinese" property="chinese" />
+    <result column="Math" property="math" />
+    <result column="ForeignLanguages" property="foreignlanguages" />
+    <result column="Sports" property="sports" />
+    <result column="OtherSynthesis" property="othersynthesis" />
+    <result column="SpecialBonus" property="specialbonus" />
+    <result column="TotalScore" property="totalscore" />
+    <result column="GraduateSchool" property="graduateschool" />
+    <result column="UserKey" property="userkey" />
+    <result column="EMail" property="email" />
+    <result column="PhoneNumber" property="phonenumber" />
+  </resultMap>
+
+  <!-- EXAMINEEINFORMATION table all fields -->
+  <sql id="Base_Column_List" >
+     "ExamineeKey", "QuasiexaminationNumber", "RealName", "Sex", "RegisteredResidence", "PoliticalOutlook" ,
+     "NativePlace", "Age", "IDCardNumber", "Chinese", "Math", "ForeignLanguages", "Sports", "OtherSynthesis",
+      "SpecialBonus", "TotalScore", "GraduateSchool", "UserKey", "EMail", "PhoneNumber"
+  </sql>
+
+  <!-- 查询条件 -->
+  <sql id="Base_Where_Clause">
+    where 1=1
+    <trim suffixOverrides="," >
+      <if test="examineekey != null" >
+        and examineekey ${examineekeyOperator} #{examineekey}
+      </if>
+      <if test="quasiexaminationnumber != null" >
+        and quasiexaminationnumber ${quasiexaminationnumberOperator} #{quasiexaminationnumber}
+      </if>
+      <if test="realname != null" >
+        and realname ${realnameOperator} #{realname}
+      </if>
+      <if test="sex != null" >
+        and sex ${sexOperator} #{sex}
+      </if>
+      <if test="registeredresidence != null" >
+        and registeredresidence ${registeredresidenceOperator} #{registeredresidence}
+      </if>
+      <if test="politicaloutlook  != null" >
+        and politicaloutlook  ${politicaloutlook Operator} #{politicaloutlook }
+      </if>
+      <if test="nativeplace != null" >
+        and nativeplace ${nativeplaceOperator} #{nativeplace}
+      </if>
+      <if test="age != null" >
+        and age ${ageOperator} #{age}
+      </if>
+      <if test="idcardnumber != null" >
+        and idcardnumber ${idcardnumberOperator} #{idcardnumber}
+      </if>
+      <if test="chinese != null" >
+        and chinese ${chineseOperator} #{chinese}
+      </if>
+      <if test="math != null" >
+        and math ${mathOperator} #{math}
+      </if>
+      <if test="foreignlanguages != null" >
+        and foreignlanguages ${foreignlanguagesOperator} #{foreignlanguages}
+      </if>
+      <if test="sports != null" >
+        and sports ${sportsOperator} #{sports}
+      </if>
+      <if test="othersynthesis != null" >
+        and othersynthesis ${othersynthesisOperator} #{othersynthesis}
+      </if>
+      <if test="specialbonus != null" >
+        and specialbonus ${specialbonusOperator} #{specialbonus}
+      </if>
+      <if test="totalscore != null" >
+        and totalscore ${totalscoreOperator} #{totalscore}
+      </if>
+      <if test="graduateschool != null" >
+        and graduateschool ${graduateschoolOperator} #{graduateschool}
+      </if>
+      <if test="userkey != null" >
+        and userkey ${userkeyOperator} #{userkey}
+      </if>
+      <if test="email != null" >
+        and email ${emailOperator} #{email}
+      </if>
+      <if test="phonenumber != null" >
+        and phonenumber ${phonenumberOperator} #{phonenumber}
+      </if>
+    </trim>
+  </sql>
+
+  <!-- 插入记录 -->
+  <insert id="insert" parameterType="com.adc.da.generate.entity.ExamineeinformationEO" >
+    <!-- <selectKey resultType="java.lang.String" order="BEFORE" keyProperty="examineekey">
+        SELECT SEQ_EXAMINEEINFORMATION.NEXTVAL FROM DUAL
+    </selectKey> -->
+    insert into EXAMINEEINFORMATION(<include refid="Base_Column_List" />)
+    values (#{examineekey, jdbcType=VARCHAR}, #{quasiexaminationnumber, jdbcType=VARCHAR}, #{realname, jdbcType=VARCHAR}, #{sex, jdbcType=VARCHAR}, #{registeredresidence, jdbcType=VARCHAR}, #{politicaloutlook , jdbcType=VARCHAR}, #{nativeplace, jdbcType=VARCHAR}, #{age, jdbcType=INTEGER}, #{idcardnumber, jdbcType=VARCHAR}, #{chinese, jdbcType=INTEGER}, #{math, jdbcType=INTEGER}, #{foreignlanguages, jdbcType=INTEGER}, #{sports, jdbcType=INTEGER}, #{othersynthesis, jdbcType=INTEGER}, #{specialbonus, jdbcType=INTEGER}, #{totalscore, jdbcType=INTEGER}, #{graduateschool, jdbcType=VARCHAR}, #{userkey, jdbcType=VARCHAR}, #{email, jdbcType=VARCHAR}, #{phonenumber, jdbcType=VARCHAR})
+  </insert>
+
+  <!-- 动态插入记录 主键是序列 -->
+  <insert id="insertSelective" parameterType="com.adc.da.generate.entity.ExamineeinformationEO" >
+        <!-- <selectKey resultType="java.lang.String" order="BEFORE" keyProperty="examineekey">
+        SELECT SEQ_EXAMINEEINFORMATION.NEXTVAL FROM DUAL
+    </selectKey> -->
+        insert into EXAMINEEINFORMATION
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+                <if test="examineekey != null" >examineekey,</if>
+                <if test="quasiexaminationnumber != null" >quasiexaminationnumber,</if>
+                <if test="realname != null" >realname,</if>
+                <if test="sex != null" >sex,</if>
+                <if test="registeredresidence != null" >registeredresidence,</if>
+                <if test="politicaloutlook  != null" >politicaloutlook ,</if>
+                <if test="nativeplace != null" >nativeplace,</if>
+                <if test="age != null" >age,</if>
+                <if test="idcardnumber != null" >idcardnumber,</if>
+                <if test="chinese != null" >chinese,</if>
+                <if test="math != null" >math,</if>
+                <if test="foreignlanguages != null" >foreignlanguages,</if>
+                <if test="sports != null" >sports,</if>
+                <if test="othersynthesis != null" >othersynthesis,</if>
+                <if test="specialbonus != null" >specialbonus,</if>
+                <if test="totalscore != null" >totalscore,</if>
+                <if test="graduateschool != null" >graduateschool,</if>
+                <if test="userkey != null" >userkey,</if>
+                <if test="email != null" >email,</if>
+                <if test="phonenumber != null" >phonenumber,</if>
+            </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+                <if test="examineekey != null" >#{examineekey, jdbcType=VARCHAR},</if>
+                <if test="quasiexaminationnumber != null" >#{quasiexaminationnumber, jdbcType=VARCHAR},</if>
+                <if test="realname != null" >#{realname, jdbcType=VARCHAR},</if>
+                <if test="sex != null" >#{sex, jdbcType=VARCHAR},</if>
+                <if test="registeredresidence != null" >#{registeredresidence, jdbcType=VARCHAR},</if>
+                <if test="politicaloutlook  != null" >#{politicaloutlook , jdbcType=VARCHAR},</if>
+                <if test="nativeplace != null" >#{nativeplace, jdbcType=VARCHAR},</if>
+                <if test="age != null" >#{age, jdbcType=INTEGER},</if>
+                <if test="idcardnumber != null" >#{idcardnumber, jdbcType=VARCHAR},</if>
+                <if test="chinese != null" >#{chinese, jdbcType=INTEGER},</if>
+                <if test="math != null" >#{math, jdbcType=INTEGER},</if>
+                <if test="foreignlanguages != null" >#{foreignlanguages, jdbcType=INTEGER},</if>
+                <if test="sports != null" >#{sports, jdbcType=INTEGER},</if>
+                <if test="othersynthesis != null" >#{othersynthesis, jdbcType=INTEGER},</if>
+                <if test="specialbonus != null" >#{specialbonus, jdbcType=INTEGER},</if>
+                <if test="totalscore != null" >#{totalscore, jdbcType=INTEGER},</if>
+                <if test="graduateschool != null" >#{graduateschool, jdbcType=VARCHAR},</if>
+                <if test="userkey != null" >#{userkey, jdbcType=VARCHAR},</if>
+                <if test="email != null" >#{email, jdbcType=VARCHAR},</if>
+                <if test="phonenumber != null" >#{phonenumber, jdbcType=VARCHAR},</if>
+            </trim>
+  </insert>
+
+  <!-- 根据pk，修改记录-->
+  <update id="updateByPrimaryKey" parameterType="com.adc.da.generate.entity.ExamineeinformationEO" >
+    update EXAMINEEINFORMATION
+       set  quasiexaminationnumber = #{quasiexaminationnumber},
+            realname = #{realname},
+            sex = #{sex},
+            registeredresidence = #{registeredresidence},
+            politicaloutlook  = #{politicaloutlook },
+            nativeplace = #{nativeplace},
+            age = #{age},
+            idcardnumber = #{idcardnumber},
+            chinese = #{chinese},
+            math = #{math},
+            foreignlanguages = #{foreignlanguages},
+            sports = #{sports},
+            othersynthesis = #{othersynthesis},
+            specialbonus = #{specialbonus},
+            totalscore = #{totalscore},
+            graduateschool = #{graduateschool},
+            userkey = #{userkey},
+            email = #{email},
+            phonenumber = #{phonenumber}
+     where  examineekey = #{examineekey}
+  </update>
+
+  <!-- 修改记录，只修改只不为空的字段 -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.adc.da.generate.entity.ExamineeinformationEO" >
+    update EXAMINEEINFORMATION
+    <set >
+      <if test="quasiexaminationnumber != null" >
+        quasiexaminationnumber = #{quasiexaminationnumber},
+      </if>
+      <if test="realname != null" >
+        realname = #{realname},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex},
+      </if>
+      <if test="registeredresidence != null" >
+        registeredresidence = #{registeredresidence},
+      </if>
+      <if test="politicaloutlook  != null" >
+        politicaloutlook  = #{politicaloutlook },
+      </if>
+      <if test="nativeplace != null" >
+        nativeplace = #{nativeplace},
+      </if>
+      <if test="age != null" >
+        age = #{age},
+      </if>
+      <if test="idcardnumber != null" >
+        idcardnumber = #{idcardnumber},
+      </if>
+      <if test="chinese != null" >
+        chinese = #{chinese},
+      </if>
+      <if test="math != null" >
+        math = #{math},
+      </if>
+      <if test="foreignlanguages != null" >
+        foreignlanguages = #{foreignlanguages},
+      </if>
+      <if test="sports != null" >
+        sports = #{sports},
+      </if>
+      <if test="othersynthesis != null" >
+        othersynthesis = #{othersynthesis},
+      </if>
+      <if test="specialbonus != null" >
+        specialbonus = #{specialbonus},
+      </if>
+      <if test="totalscore != null" >
+        totalscore = #{totalscore},
+      </if>
+      <if test="graduateschool != null" >
+        graduateschool = #{graduateschool},
+      </if>
+      <if test="userkey != null" >
+        userkey = #{userkey},
+      </if>
+      <if test="email != null" >
+        email = #{email},
+      </if>
+      <if test="phonenumber != null" >
+        phonenumber = #{phonenumber},
+      </if>
+    </set>
+     where examineekey = #{examineekey}
+  </update>
+
+  <!-- 根据id查询 EXAMINEEINFORMATION -->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select <include refid="Base_Column_List" /> 
+      from EXAMINEEINFORMATION
+     where examineekey = #{value}
+
+  </select>
+
+  <!-- 删除记录 -->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from EXAMINEEINFORMATION
+     where examineekey = #{value}
+
+  </delete>
+
+  <!-- EXAMINEEINFORMATION 列表总数-->
+  <select id="queryByCount" resultType="java.lang.Integer" parameterType="com.adc.da.base.page.BasePage">
+    select count(1) from EXAMINEEINFORMATION
+    <include refid="Base_Where_Clause"/>
+  </select>
+
+  <!-- 查询EXAMINEEINFORMATION列表 -->
+  <select id="queryByPage" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">
+	select <include refid="Base_Column_List" /> from
+		(select tmp_tb.* , rownum rn from
+			(select <include refid="Base_Column_List" /> from EXAMINEEINFORMATION
+			 <include refid="Base_Where_Clause"/>
+			 <if test="pager.orderCondition != null and pager.orderCondition != ''" >
+			 	${pager.orderCondition}
+			 </if>
+			) tmp_tb where rownum &lt;= ${pager.endIndex})
+			where rn &gt;= ${pager.startIndex}
+  </select>
+
+  <select id="queryByList" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">
+    select <include refid="Base_Column_List"/> from EXAMINEEINFORMATION
+    <include refid="Base_Where_Clause"/>
+    <if test="pager.orderCondition != null and pager.orderCondition != ''" >
+       ${pager.orderCondition}
+    </if>
+  </select>
+    <!---获取有相同身份证号的考生信息的数量  刘志杰 2018-10-08 -->
+    <select id="queryIdCard" >
+        SELECT count("ExamineeKey") FROM EXAMINEEINFORMATION WHERE "PhoneNumber"=#{idcardnumber,jdbcType=VARCHAR}
+    </select>
+    <!---获取有相同手机号的考生信息的数量  刘志杰 2018-10-08 -->
+    <select id="queryPhoneNumber" >
+        SELECT count("ExamineeKey") FROM EXAMINEEINFORMATION WHERE "PhoneNumber"=#{phonenumber,jdbcType=NUMERIC}
+    </select>
+    <!--获取有相同邮箱的考生信息的数量  刘志杰 2018-10-08 -->
+    <select id="queryEMail" >
+        SELECT count("ExamineeKey") FROM EXAMINEEINFORMATION WHERE "PhoneNumber"=#{email,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

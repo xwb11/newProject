@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.adc.da.generate.dao.MajorinformationEODao" >
+  <!-- Result Map-->
+  <resultMap id="BaseResultMap" type="com.adc.da.generate.entity.MajorinformationEO" >
+    <id column="MajorKey" property="majorkey" />
+    <result column="MajorName" property="majorname" />
+    <result column="CreateTime" property="createtime" />
+  </resultMap>
+
+  <!-- MAJORINFORMATION table all fields -->
+  <sql id="Base_Column_List" >
+     "MajorKey", "MajorName","CreateTime"
+  </sql>
+
+  <!-- 查询条件 -->
+  <sql id="Base_Where_Clause">
+    where 1=1
+    <trim suffixOverrides="," >
+      <if test="majorkey != null" >
+        and majorkey ${majorkeyOperator} #{majorkey}
+      </if>
+      <if test="majorname != null" >
+        and majorname ${majornameOperator} #{majorname}
+      </if>
+      <if test="createtime != null" >
+        and createtime ${createtimeOperator} #{createtime}
+      </if>
+      <if test="createtime1 != null" >
+        and createtime &gt;= #{createtime1}
+      </if>
+      <if test="createtime2 != null" >
+        and createtime &lt;= #{createtime2}
+      </if>
+    </trim>
+  </sql>
+
+  <!-- 插入记录 -->
+  <insert id="insert" parameterType="com.adc.da.generate.entity.MajorinformationEO" >
+    <!-- <selectKey resultType="java.lang.String" order="BEFORE" keyProperty="majorkey">
+        SELECT SEQ_MAJORINFORMATION.NEXTVAL FROM DUAL
+    </selectKey> -->
+    insert into MAJORINFORMATION(<include refid="Base_Column_List" />)
+    values (#{majorkey, jdbcType=VARCHAR}, #{majorname, jdbcType=VARCHAR}, #{createtime, jdbcType=TIMESTAMP})
+  </insert>
+
+    <!-- 添加专业信息 -->
+    <insert id="majorInfoAdd" parameterType="com.adc.da.generate.entity.MajorinformationEO">
+        insert into "MAJORINFORMATION"
+        VALUES (#{majorkey, jdbcType=VARCHAR}, #{majorname, jdbcType=VARCHAR}, #{createtime, jdbcType=TIMESTAMP})
+    </insert>
+
+  <!-- 动态插入记录 主键是序列 -->
+  <insert id="insertSelective" parameterType="com.adc.da.generate.entity.MajorinformationEO" >
+        <!-- <selectKey resultType="java.lang.String" order="BEFORE" keyProperty="majorkey">
+        SELECT SEQ_MAJORINFORMATION.NEXTVAL FROM DUAL
+    </selectKey> -->
+        insert into MAJORINFORMATION
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+                <if test="majorkey != null" >majorkey,</if>
+                <if test="majorname != null" >majorname,</if>
+                <if test="createtime != null" >createtime,</if>
+            </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+                <if test="majorkey != null" >#{majorkey, jdbcType=VARCHAR},</if>
+                <if test="majorname != null" >#{majorname, jdbcType=VARCHAR},</if>
+                <if test="createtime != null" >#{createtime, jdbcType=TIMESTAMP},</if>
+            </trim>
+  </insert>
+
+  <!-- 根据pk，修改记录-->
+  <update id="updateByPrimaryKey" parameterType="com.adc.da.generate.entity.MajorinformationEO" >
+    update MAJORINFORMATION
+       set  majorname = #{majorname},
+            createtime = #{createtime}
+     where  majorkey = #{majorkey}
+  </update>
+
+  <!-- 修改记录，只修改只不为空的字段 -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.adc.da.generate.entity.MajorinformationEO" >
+    update MAJORINFORMATION
+    <set >
+      <if test="majorname != null" >
+        "MajorName" = #{majorname},
+      </if>
+      <if test="createtime != null" >
+        "CreateTime" = #{createtime},
+      </if>
+    </set>
+     where "MajorKey" = #{majorkey}
+  </update>
+
+  <!-- 查询 MAJORINFORMATION (模糊查询)-->
+  <select id="selectMajorInfo" resultMap="BaseResultMap" parameterType="java.lang.String">
+      SELECT <include refid="Base_Column_List" /> FROM MAJORINFORMATION
+      WHERE "MajorName" LIKE '%${majorname}%'
+      ORDER BY "CreateTime" DESC
+  </select>
+
+    <!--查询专业信息（分页）-->
+    <select id="queryByMajorInfoPage"  resultMap="BaseResultMap" parameterType="java.lang.String">
+        select <include refid="Base_Column_List" /> from
+        (select tmp_tb.* , rownum rn from
+        (SELECT <include refid="Base_Column_List" /> from MAJORINFORMATION
+        <include refid="Base_Where_Clause"/>
+        <if test="pager.orderCondition != null and pager.orderCondition != ''" >
+            ${pager.orderCondition}
+        </if>
+        ) tmp_tb where rownum &lt;= ${pager.endIndex})
+        where rn &gt;= ${pager.startIndex}
+        ORDER BY "CreateTime" DESC
+    </select>
+
+    <!-- 根据专业名称模糊查询 MAJORINFORMATION -->
+   <select id="selectMajorByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+       select <include refid="Base_Column_List" /> from
+       (select tmp_tb.* , rownum rn from
+       (SELECT * FROM MAJORINFORMATION
+       <where>
+           <if test="majorname!=''">
+               MajorName LIKE '%${majorname}%')
+           </if>
+       </where>
+       ORDER BY CreateTime DESC)tmp_tb where rownum &lt;= ${pager.endIndex})
+       WHERE rn &gt;= ${pager.startIndex}
+   </select>
+
+  <!-- 删除记录 -->
+  <delete id="majorInfoDelete" parameterType="java.lang.String">
+    delete from MAJORINFORMATION
+     where "MajorKey" = #{majorkey}
+
+  </delete>
+
+  <!-- MAJORINFORMATION 列表总数-->
+  <select id="queryByCount" resultType="java.lang.Integer" parameterType="com.adc.da.base.page.BasePage">
+    select count(1) from MAJORINFORMATION
+    <include refid="Base_Where_Clause"/>
+  </select>
+
+  <!-- 查询MAJORINFORMATION列表 -->
+  <select id="queryByPage" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">
+	select <include refid="Base_Column_List" /> from
+		(select tmp_tb.* , rownum rn from
+			(select <include refid="Base_Column_List" /> from MAJORINFORMATION
+			 <include refid="Base_Where_Clause"/>
+			 <if test="pager.orderCondition != null and pager.orderCondition != ''" >
+			 	${pager.orderCondition}
+			 </if>
+			) tmp_tb where rownum &lt;= ${pager.endIndex})
+			where rn &gt;= ${pager.startIndex}
+  </select>
+
+  <select id="queryByList" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">
+    select <include refid="Base_Column_List"/> from MAJORINFORMATION
+    <include refid="Base_Where_Clause"/>
+    <if test="pager.orderCondition != null and pager.orderCondition != ''" >
+       ${pager.orderCondition}
+    </if>
+  </select>
+
+    <select id="majorNameTesting" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select * from MAJORINFORMATION where "MajorName"=#{majorname}
+    </select>
+
+    <select id="majorNameTestingWhenUpdate" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select * from MAJORINFORMATION where "MajorName"=#{majorname} and "MajorKey"!=#{majorkey}
+    </select>
+</mapper>

@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.adc.da.generate.dao.UserinformationEODao" >
+  <!-- Result Map-->
+  <resultMap id="BaseResultMap" type="com.adc.da.generate.entity.UserinformationEO" >
+    <id column="UserKey" property="userkey" />
+    <result column="UserAccount" property="useraccount" />
+    <result column="UserPassword" property="userpassword" />
+    <result column="UserRole" property="userrole" />
+    <result column="CreateTime" property="createtime" />
+  </resultMap>
+
+  <!-- USERINFORMATION table all fields -->
+  <sql id="Base_Column_List" >
+     "UserKey", "UserAccount", "UserPassword", "UserRole", "CreateTime"
+  </sql>
+
+  <!-- 查询条件 -->
+  <sql id="Base_Where_Clause">
+    where 1=1
+    <trim suffixOverrides="," >
+      <if test="userkey != null" >
+        and userkey ${userkeyOperator} #{userkey}
+      </if>
+      <if test="useraccount != null" >
+        and useraccount ${useraccountOperator} #{useraccount}
+      </if>
+      <if test="userpassword != null" >
+        and userpassword ${userpasswordOperator} #{userpassword}
+      </if>
+      <if test="userrole != null" >
+        and userrole ${userroleOperator} #{userrole}
+      </if>
+      <if test="createtime != null" >
+        and createtime ${createtimeOperator} #{createtime}
+      </if>
+      <if test="createtime1 != null" >
+        and createtime &gt;= #{createtime1}
+      </if>
+      <if test="createtime2 != null" >
+        and createtime &lt;= #{createtime2}
+      </if>
+    </trim>
+  </sql>
+
+  <!-- 插入记录 -->
+  <insert id="insert" parameterType="com.adc.da.generate.entity.UserinformationEO" >
+    <!-- <selectKey resultType="java.lang.String" order="BEFORE" keyProperty="userkey">
+        SELECT SEQ_USERINFORMATION.NEXTVAL FROM DUAL
+    </selectKey> -->
+    insert into USERINFORMATION(<include refid="Base_Column_List" />)
+    values (#{userkey, jdbcType=VARCHAR}, #{useraccount, jdbcType=VARCHAR}, #{userpassword, jdbcType=VARCHAR}, #{userrole, jdbcType=VARCHAR}, #{createtime, jdbcType=TIMESTAMP})
+  </insert>
+
+  <!-- 动态插入记录 主键是序列 -->
+  <insert id="insertSelective" parameterType="com.adc.da.generate.entity.UserinformationEO" >
+        <!-- <selectKey resultType="java.lang.String" order="BEFORE" keyProperty="userkey">
+        SELECT SEQ_USERINFORMATION.NEXTVAL FROM DUAL
+    </selectKey> -->
+        insert into USERINFORMATION
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+                <if test="userkey != null" >userkey,</if>
+                <if test="useraccount != null" >useraccount,</if>
+                <if test="userpassword != null" >userpassword,</if>
+                <if test="userrole != null" >userrole,</if>
+                <if test="createtime != null" >createtime,</if>
+            </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+                <if test="userkey != null" >#{userkey, jdbcType=VARCHAR},</if>
+                <if test="useraccount != null" >#{useraccount, jdbcType=VARCHAR},</if>
+                <if test="userpassword != null" >#{userpassword, jdbcType=VARCHAR},</if>
+                <if test="userrole != null" >#{userrole, jdbcType=VARCHAR},</if>
+                <if test="createtime != null" >#{createtime, jdbcType=TIMESTAMP},</if>
+            </trim>
+  </insert>
+
+  <!-- 根据pk，修改记录-->
+  <update id="updateByPrimaryKey" parameterType="com.adc.da.generate.entity.UserinformationEO" >
+    update USERINFORMATION
+       set  useraccount = #{useraccount},
+            userpassword = #{userpassword},
+            userrole = #{userrole},
+            createtime = #{createtime}
+     where  userkey = #{userkey}
+  </update>
+
+  <!-- 修改记录，只修改只不为空的字段 -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.adc.da.generate.entity.UserinformationEO" >
+    update USERINFORMATION
+    <set >
+      <if test="useraccount != null" >
+        useraccount = #{useraccount},
+      </if>
+      <if test="userpassword != null" >
+        userpassword = #{userpassword},
+      </if>
+      <if test="userrole != null" >
+        userrole = #{userrole},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime},
+      </if>
+    </set>
+     where userkey = #{userkey}
+  </update>
+
+  <!-- 根据id查询 USERINFORMATION -->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select <include refid="Base_Column_List" /> 
+      from USERINFORMATION
+     where userkey = #{value}
+
+  </select>
+
+  <!-- 删除记录 -->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from USERINFORMATION
+     where userkey = #{value}
+
+  </delete>
+
+  <!-- USERINFORMATION 列表总数-->
+  <select id="queryByCount" resultType="java.lang.Integer" parameterType="com.adc.da.base.page.BasePage">
+    select count(1) from USERINFORMATION
+    <include refid="Base_Where_Clause"/>
+  </select>
+
+  <!-- 查询USERINFORMATION列表 -->
+  <select id="queryByPage" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">
+	select <include refid="Base_Column_List" /> from
+		(select tmp_tb.* , rownum rn from
+			(select <include refid="Base_Column_List" /> from USERINFORMATION
+			 <include refid="Base_Where_Clause"/>
+			 <if test="pager.orderCondition != null and pager.orderCondition != ''" >
+			 	${pager.orderCondition}
+			 </if>
+			) tmp_tb where rownum &lt;= ${pager.endIndex})
+			where rn &gt;= ${pager.startIndex}
+  </select>
+
+  <select id="queryByList" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">
+    select <include refid="Base_Column_List"/> from USERINFORMATION
+    <include refid="Base_Where_Clause"/>
+    <if test="pager.orderCondition != null and pager.orderCondition != ''" >
+       ${pager.orderCondition}
+    </if>
+  </select>
+    <!--获取所有用户信息（不分页） 刘志杰 2018-10-08 -->
+    <select id="queryUserInfo" resultMap="BaseResultMap" >
+        select <include refid="Base_Column_List"/> from USERINFORMATION
+        ORDER BY "CreateTime" desc
+    </select>
+    <!--获取所有用户信息（分页） 刘志杰 2018-10-08 -->
+    <select id="queryUserInfoByPage" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">
+        select <include refid="Base_Column_List" /> from
+        (select tmp_tb.* , rownum rn from
+        (select <include refid="Base_Column_List" /> from USERINFORMATION userinfo
+        <include refid="Base_Where_Clause"/>
+        <if test="pager.orderCondition != null and pager.orderCondition != ''" >
+            ${pager.orderCondition}
+        </if>
+        ) tmp_tb where rownum &lt;= ${pager.endIndex})
+        where rn &gt;= ${pager.startIndex}
+        ORDER BY "CreateTime" desc
+    </select>
+    <select id="queryAccount" >
+        select count("UserKey") from USERINFORMATION WHERE "UserAccount"=#{useraccount,jdbcType=VARCHAR}
+    </select>
+</mapper>

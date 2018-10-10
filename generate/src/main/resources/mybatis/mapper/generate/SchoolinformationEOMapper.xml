@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.adc.da.generate.dao.SchoolinformationEODao" >
+  <!-- Result Map-->
+  <resultMap id="BaseResultMap" type="com.adc.da.generate.entity.SchoolinformationEO" >
+    <id column="SchoolKey" property="schoolkey" />
+    <result column="ProvinceName" property="provincename" />
+    <result column="SchoolName" property="schoolname" />
+    <result column="BriefIntroduction" property="briefintroduction" />
+    <result column="Phone" property="phone" />
+    <result column="Address" property="address" />
+    <result column="CreateTime" property="createtime" />
+  </resultMap>
+
+  <!-- SCHOOLINFORMATION table all fields -->
+  <sql id="Base_Column_List" >
+     "SchoolKey", "ProvinceName", "SchoolName", "BriefIntroduction", "Phone", "Address","CreateTime"
+  </sql>
+
+  <!-- 查询条件 -->
+  <sql id="Base_Where_Clause">
+    where 1=1
+    <trim suffixOverrides="," >
+      <if test="schoolkey != null" >
+        and schoolkey ${schoolkeyOperator} #{schoolkey}
+      </if>
+      <if test="provincename != null" >
+        and provincename ${provincenameOperator} #{provincename}
+      </if>
+      <if test="schoolname != null" >
+        and schoolname ${schoolnameOperator} #{schoolname}
+      </if>
+      <if test="briefintroduction != null" >
+        and briefintroduction ${briefintroductionOperator} #{briefintroduction}
+      </if>
+      <if test="phone != null" >
+        and phone ${phoneOperator} #{phone}
+      </if>
+      <if test="address != null" >
+        and address ${addressOperator} #{address}
+      </if>
+        <if test="createtime != null" >
+            and createtime ${createtimeOperator} #{createtime}
+        </if>
+    </trim>
+  </sql>
+
+  <!-- 插入记录 -->
+  <insert id="insert" parameterType="com.adc.da.generate.entity.SchoolinformationEO" >
+    <!-- <selectKey resultType="java.lang.String" order="BEFORE" keyProperty="schoolkey">
+        SELECT SEQ_SCHOOLINFORMATION.NEXTVAL FROM DUAL
+    </selectKey> -->
+    insert into SCHOOLINFORMATION(<include refid="Base_Column_List" />)
+    values (#{schoolkey, jdbcType=VARCHAR}, #{provincename, jdbcType=VARCHAR}, #{schoolname, jdbcType=VARCHAR}, #{briefintroduction, jdbcType=VARCHAR}, #{phone, jdbcType=VARCHAR}, #{address, jdbcType=VARCHAR},#{createtime,jdbcType=VARCHAR})
+  </insert>
+
+  <insert id="schoolInfoAdd" parameterType="com.adc.da.generate.entity.SchoolinformationEO">
+      INSERT  into "SCHOOLINFORMATION"
+      values (#{schoolkey,jdbcType=VARCHAR}, #{provincename,jdbcType=VARCHAR}, #{schoolname, jdbcType=VARCHAR}, #{briefintroduction, jdbcType=VARCHAR}, #{phone, jdbcType=VARCHAR}, #{address, jdbcType=VARCHAR},#{createtime,jdbcType=TIMESTAMP})
+  </insert>
+
+  <!-- 动态插入记录 主键是序列 -->
+  <insert id="insertSelective" parameterType="com.adc.da.generate.entity.SchoolinformationEO" >
+        <!-- <selectKey resultType="java.lang.String" order="BEFORE" keyProperty="schoolkey">
+        SELECT SEQ_SCHOOLINFORMATION.NEXTVAL FROM DUAL
+    </selectKey> -->
+        insert into SCHOOLINFORMATION
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+                <if test="schoolkey != null" >schoolkey,</if>
+                <if test="provincename != null" >provincename,</if>
+                <if test="schoolname != null" >schoolname,</if>
+                <if test="briefintroduction != null" >briefintroduction,</if>
+                <if test="phone != null" >phone,</if>
+                <if test="address != null" >address,</if>
+                <if test="createtime != null" >createtime,</if>
+            </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+                <if test="schoolkey != null" >#{schoolkey, jdbcType=VARCHAR},</if>
+                <if test="provincename != null" >#{provincename, jdbcType=VARCHAR},</if>
+                <if test="schoolname != null" >#{schoolname, jdbcType=VARCHAR},</if>
+                <if test="briefintroduction != null" >#{briefintroduction, jdbcType=VARCHAR},</if>
+                <if test="phone != null" >#{phone, jdbcType=VARCHAR},</if>
+                <if test="address != null" >#{address, jdbcType=VARCHAR},</if>
+                <if test="createtime != null" >#{createtime, jdbcType=TIMESTAMP},</if>
+            </trim>
+  </insert>
+
+  <!-- 根据pk，修改记录-->
+  <update id="updateByPrimaryKey" parameterType="com.adc.da.generate.entity.SchoolinformationEO" >
+    update SCHOOLINFORMATION
+       set  provincename = #{provincename},
+            schoolname = #{schoolname},
+            briefintroduction = #{briefintroduction},
+            phone = #{phone},
+            address = #{address},
+            createtime = #{createtime}
+     where  schoolkey = #{schoolkey}
+  </update>
+
+  <!-- 修改记录，只修改只不为空的字段 -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.adc.da.generate.entity.SchoolinformationEO" >
+    update SCHOOLINFORMATION
+    <set >
+      <if test="provincename != null" >
+        "ProvinceName"= #{provincename},
+      </if>
+      <if test="schoolname != null" >
+        "SchoolName" = #{schoolname},
+      </if>
+      <if test="briefintroduction != null" >
+        "BriefIntroduction" = #{briefintroduction},
+      </if>
+      <if test="phone != null" >
+       "Phone" = #{phone},
+      </if>
+      <if test="address != null" >
+        "Address" = #{address},
+      </if>
+        <if test="createtime != null" >
+           "CreateTime" = #{createtime},
+        </if>
+    </set>
+     where "SchoolKey" = #{schoolkey}
+  </update>
+
+  <!-- 根据id查询 SCHOOLINFORMATION -->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select <include refid="Base_Column_List" /> 
+      from SCHOOLINFORMATION
+     where schoolkey = #{value}
+
+  </select>
+
+    <select id="selectSchoolInfo" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT * FROM SCHOOLINFORMATION
+        WHERE "SchoolName" LIKE '%${schoolname}%'
+        ORDER BY "CreateTime" DESC
+    </select>
+    <!--获取学校信息（分页）-->
+    <select id="querySchoolInfoByPage" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select <include refid="Base_Column_List" /> from
+        (select tmp_tb.* , rownum rn from
+        (SELECT <include refid="Base_Column_List" /> from SCHOOLINFORMATION
+        <include refid="Base_Where_Clause"/>
+        <if test="pager.orderCondition != null and pager.orderCondition != ''" >
+            ${pager.orderCondition}
+        </if>
+        ) tmp_tb where rownum &lt;= ${pager.endIndex})
+        where rn &gt;= ${pager.startIndex}
+        ORDER BY "CreateTime" DESC
+    </select>
+
+    <!-- 根据学校名称模糊查询 SCHOOLINFORMATION -->
+    <select id="selectSchoolByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select <include refid="Base_Column_List" /> from
+        (select tmp_tb.* , rownum rn from
+        (SELECT * FROM SCHOOLINFORMATION
+        <where>
+            <if test="schoolname!=''">
+                SchoolName LIKE '%${schoolname}%'
+            </if>
+        </where>
+        ORDER BY CreateTime DESC)tmp_tb where rownum &lt;= ${pager.endIndex})
+        WHERE rn &gt;= ${pager.startIndex}
+    </select>
+
+  <!-- 删除记录 -->
+  <delete id="schoolInfoDelete" parameterType="java.lang.String">
+    delete from SCHOOLINFORMATION
+     where "SchoolKey"= #{schoolkey}
+
+  </delete>
+
+  <!-- SCHOOLINFORMATION 列表总数-->
+  <select id="queryByCount" resultType="java.lang.Integer" parameterType="com.adc.da.base.page.BasePage">
+    select count(1) from SCHOOLINFORMATION
+    <include refid="Base_Where_Clause"/>
+  </select>
+
+  <!-- 查询SCHOOLINFORMATION列表 -->
+  <select id="queryByPage" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">
+	select <include refid="Base_Column_List" /> from
+		(select tmp_tb.* , rownum rn from
+			(select <include refid="Base_Column_List" /> from SCHOOLINFORMATION
+			 <include refid="Base_Where_Clause"/>
+			 <if test="pager.orderCondition != null and pager.orderCondition != ''" >
+			 	${pager.orderCondition}
+			 </if>
+			) tmp_tb where rownum &lt;= ${pager.endIndex})
+			where rn &gt;= ${pager.startIndex}
+  </select>
+
+  <select id="queryByList" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">
+    select <include refid="Base_Column_List"/> from SCHOOLINFORMATION
+    <include refid="Base_Where_Clause"/>
+    <if test="pager.orderCondition != null and pager.orderCondition != ''" >
+       ${pager.orderCondition}
+    </if>
+  </select>
+
+    <select id="schoolNameTesting" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select * from SCHOOLINFORMATION where "SchoolName"=#{schoolname}
+    </select>
+
+    <select id="schoolNameTestingWhenUpdate" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select * from SCHOOLINFORMATION where "SchoolName"=#{schoolname} and "SchoolKey"!=#{schoolkey}
+    </select>
+
+</mapper>

@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.adc.da.generate.dao.ExamineevolunteerinformationEODao" >
+  <!-- Result Map-->
+  <resultMap id="BaseResultMap" type="com.adc.da.generate.entity.ExamineevolunteerinformationEO" >
+    <id column="VolunteerKey" property="volunteerkey" />
+    <result column="ExaminationNumber" property="examinationnumber" />
+    <result column="VolunteerNumber" property="volunteernumber" />
+    <result column="SchoolKey" property="schoolkey" />
+    <result column="MajorKey" property="majorkey" />
+    <result column="DeclareTime" property="declaretime" />
+    <result column="AdmissionStatue" property="admissionstatue" />
+    <result column="AdmissionTime" property="admissiontime" />
+  </resultMap>
+
+  <!-- EXAMINEEVOLUNTEERINFORMATION table all fields -->
+  <sql id="Base_Column_List" >
+     VolunteerKey, ExaminationNumber, VolunteerNumber, SchoolKey, MajorKey, DeclareTime, AdmissionStatue, AdmissionTime
+  </sql>
+
+  <!-- 查询条件 -->
+  <sql id="Base_Where_Clause">
+    where 1=1
+    <trim suffixOverrides="," >
+      <if test="volunteerkey != null" >
+        and volunteerkey ${volunteerkeyOperator} #{volunteerkey}
+      </if>
+      <if test="examinationnumber != null" >
+        and examinationnumber ${examinationnumberOperator} #{examinationnumber}
+      </if>
+      <if test="volunteernumber != null" >
+        and volunteernumber ${volunteernumberOperator} #{volunteernumber}
+      </if>
+      <if test="schoolkey != null" >
+        and schoolkey ${schoolkeyOperator} #{schoolkey}
+      </if>
+      <if test="majorkey != null" >
+        and majorkey ${majorkeyOperator} #{majorkey}
+      </if>
+      <if test="declaretime != null" >
+        and declaretime ${declaretimeOperator} #{declaretime}
+      </if>
+      <if test="declaretime1 != null" >
+        and declaretime &gt;= #{declaretime1}
+      </if>
+      <if test="declaretime2 != null" >
+        and declaretime &lt;= #{declaretime2}
+      </if>
+      <if test="admissionstatue != null" >
+        and admissionstatue ${admissionstatueOperator} #{admissionstatue}
+      </if>
+      <if test="admissiontime != null" >
+        and admissiontime ${admissiontimeOperator} #{admissiontime}
+      </if>
+      <if test="admissiontime1 != null" >
+        and admissiontime &gt;= #{admissiontime1}
+      </if>
+      <if test="admissiontime2 != null" >
+        and admissiontime &lt;= #{admissiontime2}
+      </if>
+    </trim>
+  </sql>
+
+  <!-- 插入记录 -->
+  <insert id="insert" parameterType="com.adc.da.generate.entity.ExamineevolunteerinformationEO" >
+    <!-- <selectKey resultType="java.lang.String" order="BEFORE" keyProperty="volunteerkey">
+        SELECT SEQ_EXAMINEEVOLUNTEERINFORMATION.NEXTVAL FROM DUAL
+    </selectKey> -->
+    insert into EXAMINEEVOLUNTEERINFORMATION(<include refid="Base_Column_List" />)
+    values (#{volunteerkey, jdbcType=VARCHAR}, #{examinationnumber, jdbcType=VARCHAR}, #{volunteernumber, jdbcType=INTEGER}, #{schoolkey, jdbcType=VARCHAR}, #{majorkey, jdbcType=VARCHAR}, #{declaretime, jdbcType=TIMESTAMP}, #{admissionstatue, jdbcType=INTEGER}, #{admissiontime, jdbcType=TIMESTAMP})
+  </insert>
+
+  <!-- 动态插入记录 主键是序列 -->
+  <insert id="insertSelective" parameterType="com.adc.da.generate.entity.ExamineevolunteerinformationEO" >
+        <!-- <selectKey resultType="java.lang.String" order="BEFORE" keyProperty="volunteerkey">
+        SELECT SEQ_EXAMINEEVOLUNTEERINFORMATION.NEXTVAL FROM DUAL
+    </selectKey> -->
+        insert into EXAMINEEVOLUNTEERINFORMATION
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+                <if test="volunteerkey != null" >volunteerkey,</if>
+                <if test="examinationnumber != null" >examinationnumber,</if>
+                <if test="volunteernumber != null" >volunteernumber,</if>
+                <if test="schoolkey != null" >schoolkey,</if>
+                <if test="majorkey != null" >majorkey,</if>
+                <if test="declaretime != null" >declaretime,</if>
+                <if test="admissionstatue != null" >admissionstatue,</if>
+                <if test="admissiontime != null" >admissiontime,</if>
+            </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+                <if test="volunteerkey != null" >#{volunteerkey, jdbcType=VARCHAR},</if>
+                <if test="examinationnumber != null" >#{examinationnumber, jdbcType=VARCHAR},</if>
+                <if test="volunteernumber != null" >#{volunteernumber, jdbcType=INTEGER},</if>
+                <if test="schoolkey != null" >#{schoolkey, jdbcType=VARCHAR},</if>
+                <if test="majorkey != null" >#{majorkey, jdbcType=VARCHAR},</if>
+                <if test="declaretime != null" >#{declaretime, jdbcType=TIMESTAMP},</if>
+                <if test="admissionstatue != null" >#{admissionstatue, jdbcType=INTEGER},</if>
+                <if test="admissiontime != null" >#{admissiontime, jdbcType=TIMESTAMP},</if>
+            </trim>
+  </insert>
+
+  <!-- 根据pk，修改记录-->
+  <update id="updateByPrimaryKey" parameterType="com.adc.da.generate.entity.ExamineevolunteerinformationEO" >
+    update EXAMINEEVOLUNTEERINFORMATION
+       set  examinationnumber = #{examinationnumber},
+            volunteernumber = #{volunteernumber},
+            schoolkey = #{schoolkey},
+            majorkey = #{majorkey},
+            declaretime = #{declaretime},
+            admissionstatue = #{admissionstatue},
+            admissiontime = #{admissiontime}
+     where  volunteerkey = #{volunteerkey}
+  </update>
+
+  <!-- 修改记录，只修改只不为空的字段 -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.adc.da.generate.entity.ExamineevolunteerinformationEO" >
+    update EXAMINEEVOLUNTEERINFORMATION
+    <set >
+      <if test="examinationnumber != null" >
+        examinationnumber = #{examinationnumber},
+      </if>
+      <if test="volunteernumber != null" >
+        volunteernumber = #{volunteernumber},
+      </if>
+      <if test="schoolkey != null" >
+        schoolkey = #{schoolkey},
+      </if>
+      <if test="majorkey != null" >
+        majorkey = #{majorkey},
+      </if>
+      <if test="declaretime != null" >
+        declaretime = #{declaretime},
+      </if>
+      <if test="admissionstatue != null" >
+        admissionstatue = #{admissionstatue},
+      </if>
+      <if test="admissiontime != null" >
+        admissiontime = #{admissiontime},
+      </if>
+    </set>
+     where volunteerkey = #{volunteerkey}
+  </update>
+
+  <!-- 根据id查询 EXAMINEEVOLUNTEERINFORMATION -->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select <include refid="Base_Column_List" /> 
+      from EXAMINEEVOLUNTEERINFORMATION
+     where volunteerkey = #{value}
+
+  </select>
+
+  <!-- 删除记录 -->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from EXAMINEEVOLUNTEERINFORMATION
+     where volunteerkey = #{value}
+
+  </delete>
+
+  <!-- EXAMINEEVOLUNTEERINFORMATION 列表总数-->
+  <select id="queryByCount" resultType="java.lang.Integer" parameterType="com.adc.da.base.page.BasePage">
+    select count(1) from EXAMINEEVOLUNTEERINFORMATION
+    <include refid="Base_Where_Clause"/>
+  </select>
+
+  <!-- 查询EXAMINEEVOLUNTEERINFORMATION列表 -->
+  <select id="queryByPage" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">
+	select <include refid="Base_Column_List" /> from
+		(select tmp_tb.* , rownum rn from
+			(select <include refid="Base_Column_List" /> from EXAMINEEVOLUNTEERINFORMATION
+			 <include refid="Base_Where_Clause"/>
+			 <if test="pager.orderCondition != null and pager.orderCondition != ''" >
+			 	${pager.orderCondition}
+			 </if>
+			) tmp_tb where rownum &lt;= ${pager.endIndex})
+			where rn &gt;= ${pager.startIndex}
+  </select>
+
+  <select id="queryByList" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">
+    select <include refid="Base_Column_List"/> from EXAMINEEVOLUNTEERINFORMATION
+    <include refid="Base_Where_Clause"/>
+    <if test="pager.orderCondition != null and pager.orderCondition != ''" >
+       ${pager.orderCondition}
+    </if>
+  </select>
+
+
+    <resultMap id="ExamineevolunteerinformationMap" type="com.adc.da.generate.entity.ExamineevolunteerinformationVO" >
+        <id column="VolunteerKey" property="volunteerkey" />
+        <result column="ExaminationNumber" property="examinationnumber" />
+        <result column="VolunteerNumber" property="volunteernumber" />
+        <result column="SchoolKey" property="schoolkey" />
+        <result column="MajorKey" property="majorkey" />
+        <result column="DeclareTime" property="declaretime" />
+        <result column="AdmissionStatue" property="admissionstatue" />
+        <result column="AdmissionTime" property="admissiontime" />
+        <result column="SchoolName" property="schoolname" />
+        <result column="briefIntroduction" property="briefintroduction" />
+        <result column="Phone" property="phone" />
+        <result column="Address" property="address" />
+    </resultMap>
+
+    <!-- EXAMINEEVOLUNTEERINFORMATION table all fields -->
+    <sql id="Select_Column_List" >
+        VolunteerKey, ExaminationNumber, VolunteerNumber, SchoolKey, MajorKey, DeclareTime, AdmissionStatue, AdmissionTime
+        ,SchoolName,briefIntroduction,Phone,Address
+    </sql>
+
+    <!--查询已经被学校录取的信息-->
+    <select id="selectAdminssionBySchool" resultMap="ExamineevolunteerinformationMap" parameterType="java.lang.String">
+        SELECT s."SchoolName",e."AdmissionTime",m."MajorName",s."BriefIntroduction",s."Phone",s."Address"
+        from
+        EXAMINEEVOLUNTEERINFORMATION e,SCHOOLINFORMATION s,MAJORINFORMATION m
+        WHERE e."ExaminationNumber"=#{ExaminationNumber,jdbcType=VARCHAR}
+        AND e."MajorKey"=m."MajorKey" and e."SchoolKey"=s."SchoolKey"
+        ORDER BY e."AdmissionTime" DESC
+    </select>
+
+
+</mapper>
