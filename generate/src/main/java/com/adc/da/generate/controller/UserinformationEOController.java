@@ -83,7 +83,7 @@ public class UserinformationEOController extends BaseController<UserinformationE
     @ApiOperation(value = "|UserinformationEO|用户信息删除")
     @PostMapping(consumes = APPLICATION_JSON_UTF8_VALUE,value = "/deleteUserInfo")
     public ResponseMessage deleteUserInfo(@RequestBody UserinformationEO userinformationEO) throws Exception {
-        if("1".equals(userinformationEO.getUserrole())){ //用户 如果不是 管理员身份
+        if(!"1".equals(userinformationEO.getUserrole())){ //用户 如果不是 管理员身份
             return Result.error(UserinformationEOPrompt.USE_PERMIT);
         }
         if(userinformationEO.getUserkey()==null){
@@ -104,7 +104,7 @@ public class UserinformationEOController extends BaseController<UserinformationE
     @PostMapping(consumes = APPLICATION_JSON_UTF8_VALUE,value="/createUserInfo")
     public ResponseMessage<UserinformationEO> createUserInfo(@RequestBody UserinformationEO userinformationEO) throws Exception {
         //身份验证
-        if("1".equals(userinformationEO.getUserrole())){ //用户 如果不是 管理员身份
+        if(!"1".equals(userinformationEO.getUserrole())){ //用户 如果不是 管理员身份
             return Result.error(UserinformationEOPrompt.USE_PERMIT);
         }
         //用户名验重
@@ -126,7 +126,7 @@ public class UserinformationEOController extends BaseController<UserinformationE
     @PostMapping(consumes = APPLICATION_JSON_UTF8_VALUE,value="/updateUserInfo")
     public ResponseMessage<UserinformationEO> updateUserInfo(@RequestBody UserinformationEO userinformationEO) throws Exception {
         //身份验证
-        if("1".equals(userinformationEO.getUserrole())){ //用户 如果不是 管理员身份
+        if(!"1".equals(userinformationEO.getUserrole())){ //用户 如果不是 管理员身份
             return Result.error(UserinformationEOPrompt.USE_PERMIT);
         }
         //用户名验重
