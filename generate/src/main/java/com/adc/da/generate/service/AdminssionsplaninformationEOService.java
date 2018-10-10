@@ -55,15 +55,16 @@ public class AdminssionsplaninformationEOService extends BaseService<Adminssions
         return dao.selectAdmission(adminssionsplaninformationVO);
     }
 
-    /**
-     * 查询去年招考信息
-     * @param adminssionsplaninformationVO
-     * @return
-     */
+
 //    public List<AdminssionsplaninformationVO> selectLastYearAdmission(AdminssionsplaninformationVO adminssionsplaninformationVO){
 //        return dao.selectLastYearAdmission(adminssionsplaninformationVO);
 //    }
 
+    /**
+     * 查询去年招考信息
+     * @param page
+     * @return
+     */
     public List<AdminssionsplaninformationVO> selectLastYearAdmission(AdminssionsplaninformationVOPage page){
         return dao.selectLastYearAdmission(page);
     }
