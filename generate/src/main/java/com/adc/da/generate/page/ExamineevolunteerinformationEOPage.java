@@ -32,7 +32,42 @@ public class ExamineevolunteerinformationEOPage extends BasePage {
     private String admissiontime1;
     private String admissiontime2;
     private String admissiontimeOperator = "=";
+    private String schoolname;
+    private String schoolnameOperator;
+    private String provincename;
+    private String provincenameOperator;
 
+    public String getSchoolname() {
+        return schoolname;
+    }
+
+    public void setSchoolname(String schoolname) {
+        this.schoolname = schoolname;
+    }
+
+    public String getProvincename() {
+        return provincename;
+    }
+
+    public void setProvincename(String provincename) {
+        this.provincename = provincename;
+    }
+
+    public String getProvincenameOperator() {
+        return provincenameOperator;
+    }
+
+    public void setProvincenameOperator(String provincenameOperator) {
+        this.provincenameOperator = provincenameOperator;
+    }
+
+    public String getSchoolnameOperator() {
+        return schoolnameOperator;
+    }
+
+    public void setSchoolnameOperator(String schoolnameOperator) {
+        this.schoolnameOperator = schoolnameOperator;
+    }
     public String getVolunteerkey() {
         return this.volunteerkey;
     }

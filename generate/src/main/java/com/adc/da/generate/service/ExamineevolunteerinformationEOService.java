@@ -13,6 +13,7 @@ import com.adc.da.generate.dao.ExamineevolunteerinformationEODao;
 import com.adc.da.generate.entity.ExamineevolunteerinformationEO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -43,4 +44,53 @@ public class ExamineevolunteerinformationEOService extends BaseService<Examineev
     public List<ExamineevolunteerinformationVO> selectAdminssionBySchool(String examinationnumber){
         return dao.selectAdminssionBySchool(examinationnumber);
     }
+
+
+
+
+    /**
+     * 获取考生志愿
+     * @param examinationnumber
+     * @return
+     */
+    public List<Map<String,Object>> getExamineeVolunteerInformation(String examinationnumber){
+        return dao.getExamineeVolunteerInformation(examinationnumber);
+    }
+
+    /**
+     * 考生学校查重
+     * @param examiationNumber
+     * @param schoolKey
+     * @return
+     */
+    public ExamineevolunteerinformationEO checkExamineeSchool(String examiationNumber,String schoolKey){
+        return dao.checkExamineeSchool(examiationNumber,schoolKey);
+    }
+
+    /**
+     * 考生申报志愿
+     * @param examineevolunteerinformationEO
+     */
+    public void examineeDeclareVolunteer(ExamineevolunteerinformationEO examineevolunteerinformationEO){
+        dao.examineeDeclareVolunteer(examineevolunteerinformationEO);
+    }
+
+    /**
+     * 考生修改志愿
+     * @param examineevolunteerinformationEO
+     */
+    public void examineeUpdateVolunteer(ExamineevolunteerinformationEO examineevolunteerinformationEO){
+        dao.examineeDeclareVolunteer(examineevolunteerinformationEO);
+    }
+
+    /**
+     * 考生志愿批量删除
+     * @param
+     */
+    public void examineeBatchDeleteVolunteer(ExamineevolunteerinformationVO examineevolunteerinformationVO){
+        dao.examineeBatchDeleteVolunteer(examineevolunteerinformationVO);
+    }
+//    public void examineeBatchDeleteVolunteer(List volunteerKeys){
+//        dao.examineeBatchDeleteVolunteer(volunteerKeys);
+//    }
 }

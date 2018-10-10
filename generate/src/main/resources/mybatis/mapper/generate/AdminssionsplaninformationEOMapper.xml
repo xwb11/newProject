@@ -13,7 +13,49 @@
     <result column="OfflineTime" property="offlinetime" />
     <result column="CreateYear" property="createyear" />
   </resultMap>
-
+    <resultMap id="SchoolInformationResultMap" type="java.util.HashMap">
+        <id column="adminssionskey" property="adminssionskey" />
+        <result column="schoolkey" property="schoolkey" />
+        <result column="majorkey" property="majorkey" />
+        <result column="adminssionsnumber" property="adminssionsnumber" />
+        <result column="createtime" property="createtime" />
+        <result column="ispublish" property="ispublish" />
+        <result column="publishtime" property="publishtime" />
+        <result column="offlinetime" property="offlinetime" />
+        <result column="createyear" property="createyear" />
+        <collection property="SchoolInformationEO" ofType="java.util.HashMap">
+            <id column="schoolkey" property="schoolkey" />
+            <result column="provincename" property="provincename" />
+            <result column="schoolname" property="schoolname" />
+            <result column="briefintroduction" property="briefintroduction" />
+            <result column="phone" property="phone" />
+            <result column="address" property="address" />
+            <result column="createtime" property="createtime" />
+        </collection>
+        <collection property="MajorInformationEO" ofType="java.util.HashMap">
+            <id column="majorkey" property="majorkey" />
+            <result column="majorname" property="majorname" />
+            <result column="createtime" property="createtime" />
+        </collection>
+    </resultMap>
+    <resultMap id="MajorInformationResultMap" type="java.util.HashMap">
+        <id column="majorkey" property="majorkey" />
+        <result column="majorname" property="majorname" />
+        <result column="createtime" property="createtime" />
+    </resultMap>
+    <select id = "getSchools" resultMap="SchoolInformationResultMap">
+        select distinct SI."SchoolKey",SI."SchoolName"
+        from ADMINSSIONSPLANINFORMATION APIN, SCHOOLINFORMATION SI
+        where APIN."SchoolKey" = SI."SchoolKey"
+        and "IsPublish" = 1
+    </select>
+    <select id="getSchoolsPublishedMajor" resultMap="MajorInformationResultMap">
+        select distinct MI."MajorKey",MI."MajorName"
+        from ADMINSSIONSPLANINFORMATION APIN,MAJORINFORMATION MI
+        where APIN."SchoolKey" = #{schoolkey,jdbcType=VARCHAR}
+        AND APIN."MajorKey" = MI."MajorKey"
+        AND "IsPublish" = 1
+    </select>
   <!-- ADMINSSIONSPLANINFORMATION table all fields -->
   <sql id="Base_Column_List" >
      AdminssionsKey, SchoolKey, MajorKey, AdminssionsNumber, CreateTime, IsPublish, PublishTime, OfflineTime, CreateYear

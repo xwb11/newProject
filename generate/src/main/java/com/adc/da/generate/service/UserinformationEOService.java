@@ -78,4 +78,19 @@ public class UserinformationEOService extends BaseService<UserinformationEO, Str
         }
         return result;
     }
+
+    /**
+     * 用户登录
+     * @param userAccount
+     * @param userPassword
+     * @return
+     */
+    public UserinformationEO userLogin(String userAccount,String userPassword){
+//        UserinformationEO userinformationEO = new UserinformationEO();
+        if(dao.userLogin(userAccount,userPassword)!=null){
+            return dao.userLogin(userAccount,userPassword);
+        }else{
+            return null;
+        }
+    }
 }

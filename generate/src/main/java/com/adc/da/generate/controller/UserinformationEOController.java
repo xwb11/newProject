@@ -1,5 +1,6 @@
 package com.adc.da.generate.controller;
 
+import static com.adc.da.generate.util.UserinformationEOPrompt.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 import java.util.List;
@@ -59,7 +60,7 @@ public class UserinformationEOController extends BaseController<UserinformationE
         return Result.success(userinformationEO);
     }
 
-    @ApiOperation(value = "|UserinformationEO|修改")
+    @ApiOperation(value = "|UserinformationEO|修改(修改任意值)")
     @PutMapping(consumes = APPLICATION_JSON_UTF8_VALUE)
     public ResponseMessage<UserinformationEO> update(@RequestBody UserinformationEO userinformationEO) throws Exception {
         userinformationEOService.updateByPrimaryKeySelective(userinformationEO);
@@ -163,4 +164,39 @@ public class UserinformationEOController extends BaseController<UserinformationE
         List<UserinformationEO> rows = userinformationEOService.queryUserInfoByPage(page);
         return Result.success(getPageInfo(page.getPager(), rows));
     }
+
+    @ApiOperation(value = "|UserinformationEO|登录")
+    @PostMapping("/userLogin")
+    public ResponseMessage userLogin(@RequestParam String userAccount,@RequestParam String userPassword) throws Exception{
+        UserinformationEO userinformationEO = userinformationEOService.userLogin(userAccount,userPassword);
+        if (userinformationEO != null){
+            String userRole = userinformationEO.getUserrole();
+//            if ("0".equals(userRole)){//考生
+//                return Result.success(EXAMINEE_LOGIN_SUCCESS,userinformationEO);
+//            }else if("1".equals(userRole)){//管理员
+//                return Result.success(ADMIN_LOGIN_SUCCESS,userinformationEO);
+//            }else if("2".equals(userRole)){//招生者
+//                return Result.success(ADMISSIONS_LOGIN_SUCCESS,userinformationEO);
+//            }else if ("3".equals(userRole)){//逻辑删除
+//                return Result.success(USER_IS_FAKEDELETED,userinformationEO);
+//            }else{
+//                return Result.success("角色类型不存在");
+//            }
+            switch(userRole){
+                case "0": //考生
+                    return Result.success(EXAMINEE_LOGIN_SUCCESS,userinformationEO);
+                case "1": //管理员
+                    return Result.success(ADMIN_LOGIN_SUCCESS,userinformationEO);
+                case "2": //招生者
+                    return Result.success(ADMISSIONS_LOGIN_SUCCESS,userinformationEO);
+                case "3": //逻辑删除
+                    return Result.success(USER_IS_FAKEDELETED,userinformationEO);
+                default: //角色类型不存在
+                    return Result.error(USERROLE_NOTEXIST);
+            }
+        }else{
+            return Result.error(LOGIN_FAILED);
+        }
+    }
+
 }

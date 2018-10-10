@@ -12,11 +12,76 @@
     <result column="AdmissionStatue" property="admissionstatue" />
     <result column="AdmissionTime" property="admissiontime" />
   </resultMap>
+    <resultMap id="ResultMap2" type="java.util.HashMap" >
+        <id column="volunteerkey" property="volunteerkey" />
+        <result column="examinationnumber" property="examinationnumber" />
+        <result column="volunteernumber" property="volunteernumber" />
+        <result column="schoolkey" property="schoolkey" />
+        <result column="majorkey" property="majorkey" />
+        <result column="declaretime" property="declaretime" />
+        <result column="admissionstatue" property="admissionstatue" />
+        <result column="admissiontime" property="admissiontime" />
+        <collection property="SchoolInformationEO" ofType="java.util.HashMap">
+            <id column="schoolkey" property="schoolkey" />
+            <result column="provincename" property="provincename" />
+            <result column="schoolname" property="schoolname" />
+            <result column="briefintroduction" property="briefintroduction" />
+            <result column="phone" property="phone" />
+            <result column="address" property="address" />
+            <result column="createtime" property="createtime" />
+        </collection>
+        <collection property="MajorInformationEO" ofType="java.util.HashMap">
+            <id column="majorkey" property="majorkey" />
+            <result column="majorname" property="majorname" />
+            <result column="createtime" property="createtime" />
+        </collection>
+    </resultMap>
+    <select id="getExamineeVolunteerInformation" resultMap="ResultMap2">
+        select distinct SI."SchoolName",MI."MajorName",EVI."DeclareTime",EVI."DeclareTime"
+        from EXAMINEEVOLUNTEERINFORMATION EVI
+        left join SCHOOLINFORMATION SI
+        on EVI."SchoolKey" = SI."SchoolKey"
+        left join MAJORINFORMATION MI
+        on EVI."MajorKey" = MI."MajorKey"
+        where "ExaminationNumber" = #{examinationnumber,jdbcType=VARCHAR}
+        order by EVI."DeclareTime" desc
+    </select>
 
+    <select id="checkExamineeSchool" resultMap="BaseResultMap">
+        select *
+        from EXAMINEEVOLUNTEERINFORMATION EVI
+        where EVI."ExaminationNumber" = #{examinationnumber,jdbcType=VARCHAR} and EVI."SchoolKey" = #{schoolkey,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="examineeDeclareVolunteer" parameterType="com.adc.da.generate.entity.ExamineevolunteerinformationEO">
+        insert into EXAMINEEVOLUNTEERINFORMATION
+        ("VolunteerKey","ExaminationNumber","VolunteerNumber","SchoolKey","MajorKey","DeclareTime")
+        values
+        (SEQ_EXAMINEEVOLUNTEER.nextval,#{examinationnumber},#{volunteernumber},#{schoolkey},#{majorkey},#{declaretime})
+    </insert>
+
+    <update id="examineeUpdateVolunteer" parameterType="com.adc.da.generate.entity.ExamineevolunteerinformationEO">
+        update EXAMINEEVOLUNTEERINFORMATION
+        set
+        "VolunteerNumber" =#{volunteernumber},
+        "SchoolKey" = #{schoolkey},
+        "MajorKey" = #{majorkey}
+        where
+        "VolunteerKey" = #{volunteerkey} and "ExaminationNumber" = #{volunteerkey}
+    </update>
+
+    <delete id="examineeBatchDeleteVolunteer" parameterType="java.util.List">
+        DELETE FROM EXAMINEEVOLUNTEERINFORMATION
+        WHERE
+        <foreach collection="list" index="index" item="item" open="(" separator="or" close=")">
+            "VolunteerKey" = #{item.volunteerkey}
+        </foreach>
+    </delete>
   <!-- EXAMINEEVOLUNTEERINFORMATION table all fields -->
-  <sql id="Base_Column_List" >
-     VolunteerKey, ExaminationNumber, VolunteerNumber, SchoolKey, MajorKey, DeclareTime, AdmissionStatue, AdmissionTime
-  </sql>
+    <sql id="Base_Column_List" >
+/*--      volunteerkey, examinationnumber, volunteernumber, schoolkey, majorkey, declaretime, admissionstatue, admissiontime*/
+    "VolunteerKey","ExaminationNumber","VolunteerNumber","SchoolKey","MajorKey","DeclareTime","AdmissionStatue","AdmissionTime"
+</sql>
 
   <!-- 查询条件 -->
   <sql id="Base_Where_Clause">
@@ -47,7 +112,7 @@
         and declaretime &lt;= #{declaretime2}
       </if>
       <if test="admissionstatue != null" >
-        and admissionstatue ${admissionstatueOperator} #{admissionstatue}
+        and "AdmissionStatue" ${admissionstatueOperator} #{admissionstatue}
       </if>
       <if test="admissiontime != null" >
         and admissiontime ${admissiontimeOperator} #{admissiontime}
@@ -112,35 +177,36 @@
   </update>
 
   <!-- 修改记录，只修改只不为空的字段 -->
-  <update id="updateByPrimaryKeySelective" parameterType="com.adc.da.generate.entity.ExamineevolunteerinformationEO" >
-    update EXAMINEEVOLUNTEERINFORMATION
-    <set >
-      <if test="examinationnumber != null" >
-        examinationnumber = #{examinationnumber},
-      </if>
-      <if test="volunteernumber != null" >
-        volunteernumber = #{volunteernumber},
-      </if>
-      <if test="schoolkey != null" >
-        schoolkey = #{schoolkey},
-      </if>
-      <if test="majorkey != null" >
-        majorkey = #{majorkey},
-      </if>
-      <if test="declaretime != null" >
-        declaretime = #{declaretime},
-      </if>
-      <if test="admissionstatue != null" >
-        admissionstatue = #{admissionstatue},
-      </if>
-      <if test="admissiontime != null" >
-        admissiontime = #{admissiontime},
-      </if>
-    </set>
-     where volunteerkey = #{volunteerkey}
-  </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.adc.da.generate.entity.ExamineevolunteerinformationEO" >
+        update EXAMINEEVOLUNTEERINFORMATION
+        <set >
+            <if test="examinationnumber != null" >
+                "ExaminationNumber" = #{examinationnumber},
+            </if>
+            <if test="volunteernumber != null" >
+                "VolunteerNumber" = #{volunteernumber},
+            </if>
+            <if test="schoolkey != null" >
+                "SchoolKey" = #{schoolkey},
+            </if>
+            <if test="majorkey != null" >
+                "MajorKey" = #{majorkey},
+            </if>
+            <if test="declaretime != null" >
+                "DeclareTime" = #{declaretime},
+            </if>
+            <if test="admissionstatue != null" >
+                "AdmissionStatue" = #{admissionstatue},
+            </if>
+            <if test="admissiontime != null" >
+                "AdmissionTime" = #{admissiontime},
+            </if>
+        </set>
+        where "VolunteerKey" = #{volunteerkey}
+    </update>
 
-  <!-- 根据id查询 EXAMINEEVOLUNTEERINFORMATION -->
+
+    <!-- 根据id查询 EXAMINEEVOLUNTEERINFORMATION -->
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
     select <include refid="Base_Column_List" /> 
       from EXAMINEEVOLUNTEERINFORMATION
@@ -161,18 +227,36 @@
     <include refid="Base_Where_Clause"/>
   </select>
 
-  <!-- 查询EXAMINEEVOLUNTEERINFORMATION列表 -->
-  <select id="queryByPage" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">
-	select <include refid="Base_Column_List" /> from
-		(select tmp_tb.* , rownum rn from
-			(select <include refid="Base_Column_List" /> from EXAMINEEVOLUNTEERINFORMATION
-			 <include refid="Base_Where_Clause"/>
-			 <if test="pager.orderCondition != null and pager.orderCondition != ''" >
-			 	${pager.orderCondition}
-			 </if>
-			) tmp_tb where rownum &lt;= ${pager.endIndex})
-			where rn &gt;= ${pager.startIndex}
-  </select>
+    <!-- 查询EXAMINEEVOLUNTEERINFORMATION列表 -->
+    <select id="queryByPage" resultMap="ResultMap2" parameterType="java.util.HashMap">
+        <!--select <include refid="Base_Column_List" /> from-->
+        select "VolunteerKey","ExaminationNumber","SchoolName","MajorName","DeclareTime","VolunteerNumber" from
+        (select tmp_tb.* , rownum rn from
+        (select  EVI."VolunteerKey",EVI."ExaminationNumber",SI."SchoolName",MI."MajorName",EVI."DeclareTime",EVI."VolunteerNumber"
+        from EXAMINEEVOLUNTEERINFORMATION EVI
+        left join SCHOOLINFORMATION SI
+        on EVI."SchoolKey" = SI."SchoolKey"
+        left join MAJORINFORMATION MI
+        on EVI."MajorKey" = MI."MajorKey"
+        where EVI."AdmissionStatue" = 0
+        <trim suffixOverrides="," >
+            <if test="schoolname != null">
+                and SI."SchoolName" like '%'||#{schoolname}||'%'
+            </if>
+            <if test="provincename != null">
+                and SI."ProvinceName" like '%'||#{provincename}||'%'
+            </if>
+            <if test="admissionstatue != null">
+                and EVI."AdmissionStatue" = #{admissionstatue}
+            </if>
+        </trim>
+        order by EVI."DeclareTime" asc
+        <if test="pager.orderCondition != null and pager.orderCondition != ''" >
+            ${pager.orderCondition}
+        </if>
+        ) tmp_tb where rownum &lt;= ${pager.endIndex})
+        where rn &gt;= ${pager.startIndex}
+    </select>
 
   <select id="queryByList" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">
     select <include refid="Base_Column_List"/> from EXAMINEEVOLUNTEERINFORMATION

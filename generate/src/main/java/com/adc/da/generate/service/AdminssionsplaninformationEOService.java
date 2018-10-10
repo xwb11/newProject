@@ -16,6 +16,7 @@ import com.adc.da.generate.dao.AdminssionsplaninformationEODao;
 import com.adc.da.generate.entity.AdminssionsplaninformationEO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -68,4 +69,15 @@ public class AdminssionsplaninformationEOService extends BaseService<Adminssions
     public List<AdminssionsplaninformationVO> selectLastYearAdmission(AdminssionsplaninformationVOPage page){
         return dao.selectLastYearAdmission(page);
     }
+
+
+
+    public List<Map<String,Object>> getSchools(){
+        return dao.getSchools();
+    }
+
+    public List<Map<String,Object>> getSchoolsPublishedMajor(String schoolKey){
+        return dao.getSchoolsPublishedMajor(schoolKey);
+    }
+
 }

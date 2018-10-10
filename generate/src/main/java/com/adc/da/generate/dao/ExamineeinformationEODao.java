@@ -33,4 +33,8 @@ public interface ExamineeinformationEODao extends BaseDao<ExamineeinformationEO>
      * @return
      */
     int queryEMail(String email);
+
+
+    ExamineeinformationEO checkRegistInfo(ExamineeinformationEO examineeinformationEO);
+
 }
