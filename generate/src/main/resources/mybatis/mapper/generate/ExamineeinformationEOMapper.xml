@@ -24,7 +24,14 @@
     <result column="EMail" property="email" />
     <result column="PhoneNumber" property="phonenumber" />
   </resultMap>
-
+    <!--lxt 1011-->
+    <select id="checkRegistInfo" resultMap="BaseResultMap">
+    SELECT * FROM (select <include refid="Base_Column_List" />
+    FROM EXAMINEEINFORMATION
+    WHERE "QuasiExaminationNumber" = #{quasiexaminationnumber}
+    OR "PhoneNumber" = #{phonenumber}
+    OR "EMail" = #{email})WHERE rownum = 1
+    </select>
   <!-- EXAMINEEINFORMATION table all fields -->
   <sql id="Base_Column_List" >
      "ExamineeKey", "QuasiexaminationNumber", "RealName", "Sex", "RegisteredResidence", "PoliticalOutlook" ,

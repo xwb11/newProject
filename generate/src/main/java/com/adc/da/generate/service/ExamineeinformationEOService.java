@@ -80,4 +80,13 @@ public class ExamineeinformationEOService extends BaseService<Examineeinformatio
         }
         return "true";
     }
+    /**
+     * 注册查重
+     * 刘笑天 20181011
+     * @param examineeinformationEO
+     * @return
+     */
+    public ExamineeinformationEO checkRegistInfo(ExamineeinformationEO examineeinformationEO){
+        return dao.checkRegistInfo(examineeinformationEO);
+    }
 }
