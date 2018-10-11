@@ -43,12 +43,14 @@
         <result column="majorname" property="majorname" />
         <result column="createtime" property="createtime" />
     </resultMap>
+    <!-- 获取已发布专业的学校 刘笑天 20181011-->
     <select id = "getSchools" resultMap="SchoolInformationResultMap">
         select distinct SI."SchoolKey",SI."SchoolName"
         from ADMINSSIONSPLANINFORMATION APIN, SCHOOLINFORMATION SI
         where APIN."SchoolKey" = SI."SchoolKey"
         and "IsPublish" = 1
     </select>
+    <!-- 获取学校发布的专业 刘笑天 20181011-->
     <select id="getSchoolsPublishedMajor" resultMap="MajorInformationResultMap">
         select distinct MI."MajorKey",MI."MajorName"
         from ADMINSSIONSPLANINFORMATION APIN,MAJORINFORMATION MI

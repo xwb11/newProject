@@ -37,9 +37,9 @@ public class ExamineevolunteerinformationVO extends Examineevolunteerinformation
      */
     private String address;
 
-    //刘笑天添加 20181011 list
+    //刘笑天添加 20181011 list volunteers
     public List<ExamineevolunteerinformationEO> list;
-
+    public List<ExamineevolunteerinformationEO> volunteers;
     public List<ExamineevolunteerinformationEO> getList() {
         return list;
     }
@@ -47,6 +47,15 @@ public class ExamineevolunteerinformationVO extends Examineevolunteerinformation
     public void setList(List<ExamineevolunteerinformationEO> list) {
         this.list = list;
     }
+
+    public List<ExamineevolunteerinformationEO> getVolunteers() {
+        return volunteers;
+    }
+
+    public void setVolunteers(List<ExamineevolunteerinformationEO> volunteers) {
+        this.volunteers = volunteers;
+    }
+
     @Override
     public String getVolunteerkey() {
         return volunteerkey;

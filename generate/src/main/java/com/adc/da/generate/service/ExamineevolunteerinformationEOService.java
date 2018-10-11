@@ -79,12 +79,12 @@ public class ExamineevolunteerinformationEOService extends BaseService<Examineev
     }
 
     /**
-     * 考生修改志愿顺序（未完成）
+     * 考生修改志愿顺序
      * 刘笑天 20181011
-     * @param examineevolunteerinformationEO
+     * @param volunteers
      */
-    public void examineeUpdateVolunteer(ExamineevolunteerinformationEO examineevolunteerinformationEO){
-        dao.examineeDeclareVolunteer(examineevolunteerinformationEO);
+    public void examineeUpdateVolunteer(ExamineevolunteerinformationVO examineevolunteerinformationVO){
+        dao.examineeUpdateVolunteer(examineevolunteerinformationVO);
     }
 
     /**

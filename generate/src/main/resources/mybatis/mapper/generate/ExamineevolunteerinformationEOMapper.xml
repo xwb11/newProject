@@ -228,7 +228,7 @@
     <include refid="Base_Where_Clause"/>
   </select>
 
-    <!-- 查询EXAMINEEVOLUNTEERINFORMATION列表 -->
+    <!-- 获取所有考生报考的学校及志愿信息(含分页 模糊查询) 刘笑天 20181011-->
     <select id="queryByPage" resultMap="ResultMap2" parameterType="java.util.HashMap">
         <!--select <include refid="Base_Column_List" /> from-->
         select "VolunteerKey","ExaminationNumber","SchoolName","MajorName","DeclareTime","VolunteerNumber" from

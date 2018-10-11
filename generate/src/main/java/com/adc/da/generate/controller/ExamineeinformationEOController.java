@@ -124,7 +124,7 @@ public class ExamineeinformationEOController extends BaseController<Examineeinfo
         String email = examineeinformationEO.getEmail();//邮箱
         Long phoneNumber = examineeinformationEO.getPhonenumber();//手机号
         ExeclCheck execlCheck = new ExeclCheck();
-        if(execlCheck.execlCheck(quasiExaminationNumber)==1){//若excel中存在 检测数据库中是否存在（包含准考证号 邮箱 手机号）
+        if(execlCheck.execlCheck(quasiExaminationNumber)==1){//若excel中存在 检测数据库中是否存在（）
             if(examineeinformationEOService.checkRegistInfo(examineeinformationEO)!=null){//查重
                 return Result.error(CHECK_FAILED);
             }else{

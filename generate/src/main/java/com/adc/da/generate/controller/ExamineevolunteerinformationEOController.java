@@ -155,10 +155,7 @@ public class ExamineevolunteerinformationEOController extends BaseController<Exa
                                                     @RequestParam String schoolkey,
                                                     @RequestParam String majorkey)
     {
-        /**
-         * 志愿数量验证可以由前端做 通过调用“获取考生志愿”接口 得到志愿list 判断list大小来判断志愿数量
-         * 此处验证只是暂时的
-         */
+        //验证是否到达7条
         List<Map<String,Object>> examineeVolunteers= examineevolunteerinformationEOService.getExamineeVolunteerInformation(examinationnumber);
         System.out.println(examineeVolunteers.size());
         if(examineeVolunteers.size()>=7){
@@ -175,12 +172,16 @@ public class ExamineevolunteerinformationEOController extends BaseController<Exa
         return Result.success(APPLY_SUCCESS);
     }
 
-//    @ApiOperation(value = "|ExamineevolunteerinformationEO|考生修改志愿顺序（未完成）")
-//    @PostMapping("/ExamineeUpdateVolunteer")
-//    public ResponseMessage examineeUpdateVolunteer(@RequestBody ExamineevolunteerinformationEO examineevolunteerinformationEO){
-//        examineevolunteerinformationEOService.examineeUpdateVolunteer(examineevolunteerinformationEO);
-//	    return Result.success();
-//    }
+    @ApiOperation(value = "|ExamineevolunteerinformationEO|考生修改志愿顺序")
+    @PostMapping("/ExamineeUpdateVolunteer")
+    public ResponseMessage examineeUpdateVolunteer(@RequestBody List<ExamineevolunteerinformationEO> volunteers){
+        ExamineevolunteerinformationVO examineevolunteerinformationVO = new ExamineevolunteerinformationVO();
+        if (volunteers!=null||volunteers.size()!=0){
+            examineevolunteerinformationVO.setVolunteers(volunteers);
+        }
+        examineevolunteerinformationEOService.examineeUpdateVolunteer(examineevolunteerinformationVO);
+	    return Result.success(UPDATE_SUCCESS);
+    }
 
     /**
      * 考生批量删除志愿
