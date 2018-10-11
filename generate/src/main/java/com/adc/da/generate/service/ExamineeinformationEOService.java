@@ -2,6 +2,7 @@ package com.adc.da.generate.service;
 
 import com.adc.da.generate.dao.UserinformationEODao;
 import com.adc.da.generate.entity.UserinformationEO;
+import com.adc.da.generate.util.ExamineeinformationEOPrompt;
 import com.adc.da.generate.util.ExamineeinformationPrompt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,23 +60,23 @@ public class ExamineeinformationEOService extends BaseService<Examineeinformatio
                 userinformationEO.getUseraccount()==null||
                 userinformationEO.getUserpassword()==null
                 ) {
-            return ExamineeinformationPrompt.NOT_NULL;
+            return ExamineeinformationEOPrompt.NOT_NULL;
         }
         //身份证号 重复校验
         if (dao.queryIdCard(examineeinformationEO.getIdcardnumber())!=0) {
-            return ExamineeinformationPrompt.IDCARD_REPEAT;
+            return ExamineeinformationEOPrompt.IDCARD_REPEAT;
         }
         //身份证号 长度18位 校验
         if (examineeinformationEO.getIdcardnumber().trim().length() != 18) {
-            return ExamineeinformationPrompt.IDCARD_LENGTH;
+            return ExamineeinformationEOPrompt.IDCARD_LENGTH;
         }
         //手机号 重复校验
         if (dao.queryPhoneNumber(examineeinformationEO.getPhonenumber())!=0) {
-            return ExamineeinformationPrompt.PHONENUMBER_REPEAT;
+            return ExamineeinformationEOPrompt.PHONENUMBER_REPEAT;
         }
         //邮箱 重复校验
         if (dao.queryEMail(examineeinformationEO.getEmail())!=0) {
-            return ExamineeinformationPrompt.EMAIL_REPEAT;
+            return ExamineeinformationEOPrompt.EMAIL_REPEAT;
         }
         return "true";
     }

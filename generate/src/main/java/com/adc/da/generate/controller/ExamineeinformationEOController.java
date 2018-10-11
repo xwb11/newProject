@@ -110,7 +110,7 @@ public class ExamineeinformationEOController extends BaseController<Examineeinfo
         examineeinformationEO.setExamineekey(UUID.randomUUID());
         examineeinformationEOService.insertSelective(examineeinformationEO);
         userinformationEOService.updateByPrimaryKey(userinformationEO);
-        return Result.success(ExamineeinformationPrompt.ENTRY_SUCCESS);
+        return Result.success(ExamineeinformationEOPrompt.ENTRY_SUCCESS);
     }
 
     /**
