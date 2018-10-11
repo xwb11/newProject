@@ -6,6 +6,7 @@ import com.adc.da.generate.VO.AdminssionsplaninformationVO;
 import com.adc.da.generate.page.AdminssionsplaninformationVOPage;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -37,4 +38,18 @@ public interface AdminssionsplaninformationEODao extends BaseDao<Adminssionsplan
     */
 //    List<AdminssionsplaninformationVO> selectLastYearAdmission(AdminssionsplaninformationVO adminssionsplaninformationVO);
     List<AdminssionsplaninformationVO> selectLastYearAdmission(AdminssionsplaninformationVOPage page);
+    /**
+     * 获取已发布专业的学校
+     * 刘笑天 20181011
+     * @return
+     */
+    List<Map<String,Object>> getSchools();
+
+    /**
+     * 获取学校已发布的专业
+     * 刘笑天 20181011
+     * @param schoolKey
+     * @return
+     */
+    List<Map<String,Object>> getSchoolsPublishedMajor(String schoolKey);
 }

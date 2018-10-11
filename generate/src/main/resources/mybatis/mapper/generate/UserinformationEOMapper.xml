@@ -10,7 +10,11 @@
     <result column="CreateTime" property="createtime" />
     <result column="Status" property="status" />
   </resultMap>
-
+    <!-- 用户登录 刘笑天-->
+    <select id="userLogin" resultMap="BaseResultMap" resultType="com.adc.da.generate.entity.UserinformationEO">
+        SELECT * FROM USERINFORMATION
+        WHERE "UserAccount" = #{useraccount} AND "UserPassword" = #{userpassword}
+    </select>
   <!-- USERINFORMATION table all fields -->
   <sql id="Base_Column_List" >
      "UserKey", "UserAccount", "UserPassword", "UserRole", "CreateTime","Status"
@@ -106,6 +110,9 @@
       <if test="createtime != null" >
         "CreateTime" = #{createtime},
       </if>
+        <if test="status != null" >
+            "Status" = #{status},
+        </if>
     </set>
      where "UserKey" = #{userkey}
   </update>

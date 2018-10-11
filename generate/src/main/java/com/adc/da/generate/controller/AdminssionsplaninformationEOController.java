@@ -3,6 +3,7 @@ package com.adc.da.generate.controller;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static com.adc.da.generate.util.AdminssionsplaninformationEOPrompt.*;
 import java.util.List;
+import java.util.Map;
 
 import com.adc.da.generate.VO.AdminssionsplaninformationVO;
 import com.adc.da.myutil.util.PublicPrompt;
@@ -120,6 +121,29 @@ public class AdminssionsplaninformationEOController extends BaseController<Admin
         adminssionsplaninformationEOService.deleteByPrimaryKey(adminssionskey);
         logger.info("delete from ADMINSSIONSPLANINFORMATION where adminssionskey = {}", adminssionskey);
         return Result.success();
+    }
+    /**
+     * 获取已发布专业的学校
+     * 刘笑天 20181011
+     * @return
+     */
+    @ApiOperation(value = "|AdminssionsplaninformationEO|获取已发布专业的学校")
+    @PostMapping("/getSchool")
+    public ResponseMessage getSchool(){
+        List<Map<String,Object>> schools= adminssionsplaninformationEOService.getSchools();
+        return Result.success(schools);
+    }
+
+    /**
+     * 获取学校发布的专业
+     * @param schoolKey
+     * @return
+     */
+    @ApiOperation(value = "|AdminssionsplaninformationEO|获取学校发布的专业")
+    @PostMapping("/getSchoolsPublishedMajor")
+    public ResponseMessage getSchoolsPublishedMajor(@RequestParam String schoolKey){
+        List<Map<String,Object>> schoolPublishedMajors= adminssionsplaninformationEOService.getSchoolsPublishedMajor(schoolKey);
+        return Result.success(schoolPublishedMajors);
     }
 
 }
