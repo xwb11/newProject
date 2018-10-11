@@ -41,6 +41,7 @@ public interface UserinformationEODao extends BaseDao<UserinformationEO> {
 
     /**
      * 用户登录
+     * 刘笑天 20181011
      * @param userAccount
      * @param userPassword
      * @return

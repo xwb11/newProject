@@ -81,6 +81,7 @@ public class UserinformationEOService extends BaseService<UserinformationEO, Str
 
     /**
      * 用户登录
+     * 刘笑天 20181011
      * @param userAccount
      * @param userPassword
      * @return

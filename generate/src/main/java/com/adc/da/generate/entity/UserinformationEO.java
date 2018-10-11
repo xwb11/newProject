@@ -18,6 +18,7 @@ public class UserinformationEO extends BaseEntity {
     private String userrole;
     @org.springframework.format.annotation.DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date createtime;
+    private String status;
 
     /**
      * java字段名转换为原始数据库列名。<b>如果不存在则返回null</b><br>
@@ -36,6 +37,7 @@ public class UserinformationEO extends BaseEntity {
             case "userpassword": return "userpassword";
             case "userrole": return "userrole";
             case "createtime": return "createtime";
+            case "status": return "status";
             default: return null;
         }
     }
@@ -57,10 +59,19 @@ public class UserinformationEO extends BaseEntity {
             case "userpassword": return "userpassword";
             case "userrole": return "userrole";
             case "createtime": return "createtime";
+            case "status": return "status";
             default: return null;
         }
     }
-    
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     /**  **/
     public String getUserkey() {
         return this.userkey;

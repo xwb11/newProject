@@ -32,6 +32,7 @@ public class ExamineevolunteerinformationEOPage extends BasePage {
     private String admissiontime1;
     private String admissiontime2;
     private String admissiontimeOperator = "=";
+    //刘笑天添加 20181011 schoolname schoolnameOperator provincename provincenameOperator
     private String schoolname;
     private String schoolnameOperator;
     private String provincename;

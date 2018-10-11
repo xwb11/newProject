@@ -33,8 +33,9 @@
 
     </select>
   <!-- EXAMINEEINFORMATION table all fields -->
+    <!--刘笑天修改 20181011-->
   <sql id="Base_Column_List" >
-     "ExamineeKey", "QuasiexaminationNumber", "RealName", "Sex", "RegisteredResidence", "PoliticalOutlook" ,
+     "ExamineeKey", "QuasiExaminationNumber", "RealName", "Sex", "RegisteredResidence", "PoliticalOutlook" ,
      "NativePlace", "Age", "IDCardNumber", "Chinese", "Math", "ForeignLanguages", "Sports", "OtherSynthesis",
       "SpecialBonus", "TotalScore", "GraduateSchool", "UserKey", "EMail", "PhoneNumber"
   </sql>

@@ -52,6 +52,14 @@ public class ExamineeinformationEOController extends BaseController<Examineeinfo
         return Result.success(examineeinformationEOService.queryByList(page));
     }
 
+    /**
+     * 获取考生基本信息详情
+     * 刘笑天 20181011
+     * 框架生成方法
+     * @param examineekey
+     * @return
+     * @throws Exception
+     */
     @ApiOperation(value = "|ExamineeinformationEO|获取考生基本信息详情")
     @GetMapping("/{examineekey}")
     public ResponseMessage<ExamineeinformationEO> find(@PathVariable String examineekey) throws Exception {
@@ -101,6 +109,14 @@ public class ExamineeinformationEOController extends BaseController<Examineeinfo
         userinformationEOService.updateByPrimaryKey(userinformationEO);
         return Result.success(ExamineeinformationEOPrompt.ENTRY_SUCCESS);
     }
+
+    /**
+     * 考生注册
+     * 刘笑天 20181011
+     * @param examineeinformationEO
+     * @return
+     * @throws Exception
+     */
     @ApiOperation(value = "|ExamineeinformationEO|注册")
     @PostMapping("/examineeRegist")
     public ResponseMessage userRegist(@RequestBody ExamineeinformationEO examineeinformationEO) throws Exception{
@@ -108,13 +124,12 @@ public class ExamineeinformationEOController extends BaseController<Examineeinfo
         String email = examineeinformationEO.getEmail();//邮箱
         Long phoneNumber = examineeinformationEO.getPhonenumber();//手机号
         ExeclCheck execlCheck = new ExeclCheck();
-        if(execlCheck.execlCheck(quasiExaminationNumber)==1){//若excel中存在 检测数据库中是否存在
+        if(execlCheck.execlCheck(quasiExaminationNumber)==1){//若excel中存在 检测数据库中是否存在（包含准考证号 邮箱 手机号）
             if(examineeinformationEOService.checkRegistInfo(examineeinformationEO)!=null){//查重
-                System.out.println(examineeinformationEO);
-                return Result.error("该准考证号已被注册");
+                return Result.error(CHECK_FAILED);
             }else{
                 examineeinformationEOService.insertSelective(examineeinformationEO);
-                return Result.success(REGIST_SUCCESS,examineeinformationEO);
+                return Result.success("",REGIST_SUCCESS,examineeinformationEO);
             }
         }else {//若excel中不存在 直接不可以注册
             return Result.error(REGIST_FAILED);

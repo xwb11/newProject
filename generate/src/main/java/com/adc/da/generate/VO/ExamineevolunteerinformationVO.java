@@ -37,7 +37,7 @@ public class ExamineevolunteerinformationVO extends Examineevolunteerinformation
      */
     private String address;
 
-    //刘笑天
+    //刘笑天添加 20181011 list
     public List<ExamineevolunteerinformationEO> list;
 
     public List<ExamineevolunteerinformationEO> getList() {

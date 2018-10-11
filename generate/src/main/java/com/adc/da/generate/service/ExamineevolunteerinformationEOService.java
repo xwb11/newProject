@@ -50,6 +50,7 @@ public class ExamineevolunteerinformationEOService extends BaseService<Examineev
 
     /**
      * 获取考生志愿
+     * 刘笑天 20181011
      * @param examinationnumber
      * @return
      */
@@ -59,6 +60,7 @@ public class ExamineevolunteerinformationEOService extends BaseService<Examineev
 
     /**
      * 考生学校查重
+     * 刘笑天 20181011
      * @param examiationNumber
      * @param schoolKey
      * @return
@@ -69,6 +71,7 @@ public class ExamineevolunteerinformationEOService extends BaseService<Examineev
 
     /**
      * 考生申报志愿
+     * 刘笑天 20181011
      * @param examineevolunteerinformationEO
      */
     public void examineeDeclareVolunteer(ExamineevolunteerinformationEO examineevolunteerinformationEO){
@@ -76,7 +79,8 @@ public class ExamineevolunteerinformationEOService extends BaseService<Examineev
     }
 
     /**
-     * 考生修改志愿
+     * 考生修改志愿顺序（未完成）
+     * 刘笑天 20181011
      * @param examineevolunteerinformationEO
      */
     public void examineeUpdateVolunteer(ExamineevolunteerinformationEO examineevolunteerinformationEO){
@@ -85,6 +89,7 @@ public class ExamineevolunteerinformationEOService extends BaseService<Examineev
 
     /**
      * 考生志愿批量删除
+     * 刘笑天 20181011
      * @param
      */
     public void examineeBatchDeleteVolunteer(ExamineevolunteerinformationVO examineevolunteerinformationVO){

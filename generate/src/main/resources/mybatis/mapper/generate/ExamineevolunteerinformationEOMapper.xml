@@ -36,6 +36,7 @@
             <result column="createtime" property="createtime" />
         </collection>
     </resultMap>
+    <!-- 获取考生志愿 刘笑天 20181011 -->
     <select id="getExamineeVolunteerInformation" resultMap="ResultMap2">
         select distinct SI."SchoolName",MI."MajorName",EVI."DeclareTime",EVI."DeclareTime"
         from EXAMINEEVOLUNTEERINFORMATION EVI
@@ -46,30 +47,30 @@
         where "ExaminationNumber" = #{examinationnumber,jdbcType=VARCHAR}
         order by EVI."DeclareTime" desc
     </select>
-
+    <!-- 报考学校查重 刘笑天 20181011 -->
     <select id="checkExamineeSchool" resultMap="BaseResultMap">
         select *
         from EXAMINEEVOLUNTEERINFORMATION EVI
         where EVI."ExaminationNumber" = #{examinationnumber,jdbcType=VARCHAR} and EVI."SchoolKey" = #{schoolkey,jdbcType=VARCHAR}
     </select>
-
+    <!-- 考生报考志愿 刘笑天 20181011 -->
     <insert id="examineeDeclareVolunteer" parameterType="com.adc.da.generate.entity.ExamineevolunteerinformationEO">
         insert into EXAMINEEVOLUNTEERINFORMATION
         ("VolunteerKey","ExaminationNumber","VolunteerNumber","SchoolKey","MajorKey","DeclareTime")
         values
         (SEQ_EXAMINEEVOLUNTEER.nextval,#{examinationnumber},#{volunteernumber},#{schoolkey},#{majorkey},#{declaretime})
     </insert>
-
+    <!-- 考生修改志愿顺序 刘笑天 20181011 未完成-->
     <update id="examineeUpdateVolunteer" parameterType="com.adc.da.generate.entity.ExamineevolunteerinformationEO">
-        update EXAMINEEVOLUNTEERINFORMATION
-        set
-        "VolunteerNumber" =#{volunteernumber},
-        "SchoolKey" = #{schoolkey},
-        "MajorKey" = #{majorkey}
-        where
-        "VolunteerKey" = #{volunteerkey} and "ExaminationNumber" = #{volunteerkey}
+        <foreach collection="list" item="item" open="begin" close="end;">
+            update EXAMINEEVOLUNTEERINFORMATION
+            set
+            "VolunteerNumber" =#{item.volunteernumber}
+            where
+            "VolunteerKey" = #{item.volunteerkey}
+        </foreach>
     </update>
-
+    <!-- 批量删除考生志愿 刘笑天 20181011 -->
     <delete id="examineeBatchDeleteVolunteer" parameterType="java.util.List">
         DELETE FROM EXAMINEEVOLUNTEERINFORMATION
         WHERE

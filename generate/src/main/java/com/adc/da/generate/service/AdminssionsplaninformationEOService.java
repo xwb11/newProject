@@ -70,12 +70,21 @@ public class AdminssionsplaninformationEOService extends BaseService<Adminssions
         return dao.selectLastYearAdmission(page);
     }
 
-
-
+    /**
+     * 获取已发布专业的学校
+     * 刘笑天 20181011
+     * @return
+     */
     public List<Map<String,Object>> getSchools(){
         return dao.getSchools();
     }
 
+    /**
+     * 获取学校已发布的专业
+     * 刘笑天 20181011
+     * @param schoolKey
+     * @return
+     */
     public List<Map<String,Object>> getSchoolsPublishedMajor(String schoolKey){
         return dao.getSchoolsPublishedMajor(schoolKey);
     }

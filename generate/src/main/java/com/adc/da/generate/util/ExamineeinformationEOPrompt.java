@@ -10,7 +10,7 @@ public class ExamineeinformationEOPrompt extends PublicPrompt {
     public static final String PHONENUMBER_REPEAT = "手机号已存在";
     public static final String EMAIL_REPEAT = "邮箱已存在";
     public static final String ENTRY_SUCCESS = "录入成功";
-    public static final String BATCHDELETE_SUCCESS = "批量删除成功";
     public static final String REGIST_SUCCESS = "注册成功";
     public static final String REGIST_FAILED = "注册失败";
+    public static final String CHECK_FAILED = "您填写的信息已被别人使用 请核对后重新填写";
 }

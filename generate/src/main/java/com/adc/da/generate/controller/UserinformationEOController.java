@@ -64,7 +64,7 @@ public class UserinformationEOController extends BaseController<UserinformationE
     @PutMapping(consumes = APPLICATION_JSON_UTF8_VALUE)
     public ResponseMessage<UserinformationEO> update(@RequestBody UserinformationEO userinformationEO) throws Exception {
         userinformationEOService.updateByPrimaryKeySelective(userinformationEO);
-        return Result.success(userinformationEO);
+        return Result.success("",UPDATE_SUCCESS,userinformationEO);
     }
 
     @ApiOperation(value = "|UserinformationEO|删除")
@@ -165,6 +165,14 @@ public class UserinformationEOController extends BaseController<UserinformationE
         return Result.success(getPageInfo(page.getPager(), rows));
     }
 
+    /**
+     * 用户登录
+     * 刘笑天 20181010
+     * @param userAccount
+     * @param userPassword
+     * @return
+     * @throws Exception
+     */
     @ApiOperation(value = "|UserinformationEO|登录")
     @PostMapping("/userLogin")
     public ResponseMessage userLogin(@RequestParam String userAccount,@RequestParam String userPassword) throws Exception{
@@ -184,13 +192,13 @@ public class UserinformationEOController extends BaseController<UserinformationE
 //            }
             switch(userRole){
                 case "0": //考生
-                    return Result.success(EXAMINEE_LOGIN_SUCCESS,userinformationEO);
+                    return Result.success("",EXAMINEE_LOGIN_SUCCESS,userinformationEO);
                 case "1": //管理员
-                    return Result.success(ADMIN_LOGIN_SUCCESS,userinformationEO);
+                    return Result.success("",ADMIN_LOGIN_SUCCESS,userinformationEO);
                 case "2": //招生者
-                    return Result.success(ADMISSIONS_LOGIN_SUCCESS,userinformationEO);
+                    return Result.success("",ADMISSIONS_LOGIN_SUCCESS,userinformationEO);
                 case "3": //逻辑删除
-                    return Result.success(USER_IS_FAKEDELETED,userinformationEO);
+                    return Result.success("",USER_IS_FAKEDELETED,userinformationEO);
                 default: //角色类型不存在
                     return Result.error(USERROLE_NOTEXIST);
             }

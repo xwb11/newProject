@@ -1,6 +1,6 @@
 package com.adc.da.generate.controller;
 
-import static com.adc.da.generate.util.ExamineeinformationEOPrompt.BATCHDELETE_SUCCESS;
+import static com.adc.da.generate.util.ExamineeinvolunteerinformationEOPrompt.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 import java.util.Date;
@@ -35,7 +35,14 @@ public class ExamineevolunteerinformationEOController extends BaseController<Exa
     @Autowired
     private ExamineevolunteerinformationEOService examineevolunteerinformationEOService;
 
-	@ApiOperation(value = "|ExamineevolunteerinformationEO|分页查询")
+    /**
+     * 获取所有考生报考的学校及志愿信息(含分页 模糊查询)
+     * 刘笑天 20181011
+     * @param page
+     * @return
+     * @throws Exception
+     */
+	@ApiOperation(value = "|ExamineevolunteerinformationEO|获取所有考生报考的学校及志愿信息(含分页 模糊查询)")
     @GetMapping("/page")
     @RequiresPermissions("generate:examineevolunteerinformation:page")
     public ResponseMessage<PageInfo<ExamineevolunteerinformationEO>> page(ExamineevolunteerinformationEOPage page) throws Exception {
@@ -73,12 +80,19 @@ public class ExamineevolunteerinformationEOController extends BaseController<Exa
         return Result.success(examineevolunteerinformationEO);
     }
 
-    @ApiOperation(value = "|ExamineevolunteerinformationEO|修改考生志愿")
+    /**
+     * 修改考生志愿
+     * 刘笑天 20181011
+     * @param examineevolunteerinformationEO
+     * @return
+     * @throws Exception
+     */
+    @ApiOperation(value = "|ExamineevolunteerinformationEO|修改考生志愿（学校和专业）")
     @PutMapping(consumes = APPLICATION_JSON_UTF8_VALUE)
     @RequiresPermissions("generate:examineevolunteerinformation:update")
     public ResponseMessage<ExamineevolunteerinformationEO> update(@RequestBody ExamineevolunteerinformationEO examineevolunteerinformationEO) throws Exception {
         examineevolunteerinformationEOService.updateByPrimaryKeySelective(examineevolunteerinformationEO);
-        return Result.success(examineevolunteerinformationEO);
+        return Result.success("",UPDATE_SUCCESS,examineevolunteerinformationEO);
     }
 
     @ApiOperation(value = "|ExamineevolunteerinformationEO|删除")
@@ -89,6 +103,13 @@ public class ExamineevolunteerinformationEOController extends BaseController<Exa
         logger.info("delete from EXAMINEEVOLUNTEERINFORMATION where volunteerkey = {}", volunteerkey);
         return Result.success();
     }
+
+    /**
+     * 获取考生志愿
+     * 刘笑天 20181011
+     * @param examinationnumber
+     * @return
+     */
     @ApiOperation(value = "|ExamineevolunteerinformationEO|获取考生志愿")
     @GetMapping("/getExamineeVolunteerInformation")
     public ResponseMessage getExamineeVolunteerInformation(@RequestParam String examinationnumber){
@@ -96,21 +117,31 @@ public class ExamineevolunteerinformationEOController extends BaseController<Exa
         return Result.success(examineeVolunteers);
     }
 
+    /**
+     * 考生报考学校查重
+     * 每所学校仅能报考1次
+     * 刘笑天 20181011
+     * @param examinationNumber
+     * @param schoolKey
+     * @return
+     */
     @ApiOperation(value = "|ExamineevolunteerinformationEO|考生学校查重")
     @PostMapping("/checkExamineeSchool")
     public ResponseMessage checkExamineeSchool(@RequestParam String examinationNumber,@RequestParam String schoolKey){
         ExamineevolunteerinformationEO examineevolunteerinformationEO = examineevolunteerinformationEOService.checkExamineeSchool(examinationNumber, schoolKey);
         if (examineevolunteerinformationEO != null){
-            return Result.error("","您已报考该学校。",examineevolunteerinformationEO);
+            return Result.error("",SCHOOL_SIGNED,examineevolunteerinformationEO);
         }else{
-            return Result.success("","您还未报考当前学校，可以报考。",examineevolunteerinformationEO);
+            return Result.success("",SCHOOL_NOTSIGNED,examineevolunteerinformationEO);
         }
 
     }
 
     /**
+     * 考生申报志愿
      * 报考志愿包括：准考证号（随着登录人可直接带出）、志愿编号、学校名称、专业名称、申报时间。
      * 其中申报时间由系统获得 不用填写
+     * 刘笑天
      * @param examinationnumber
      * @param volunteernumber
      * @param schoolkey
@@ -131,7 +162,7 @@ public class ExamineevolunteerinformationEOController extends BaseController<Exa
         List<Map<String,Object>> examineeVolunteers= examineevolunteerinformationEOService.getExamineeVolunteerInformation(examinationnumber);
         System.out.println(examineeVolunteers.size());
         if(examineeVolunteers.size()>=7){
-            return Result.error("已申报7条志愿");
+            return Result.error(APPLY_SEVEN);
         }
         ExamineevolunteerinformationEO examineevolunteerinformationEO = new ExamineevolunteerinformationEO();
         examineevolunteerinformationEO.setExaminationnumber(examinationnumber);
@@ -141,16 +172,22 @@ public class ExamineevolunteerinformationEOController extends BaseController<Exa
 //        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//String类型
         examineevolunteerinformationEO.setDeclaretime(new Date());
         examineevolunteerinformationEOService.examineeDeclareVolunteer(examineevolunteerinformationEO);
-        return Result.success("申报成功");
+        return Result.success(APPLY_SUCCESS);
     }
 
-//    @ApiOperation(value = "|ExamineevolunteerinformationEO|考生修改志愿")
+//    @ApiOperation(value = "|ExamineevolunteerinformationEO|考生修改志愿顺序（未完成）")
 //    @PostMapping("/ExamineeUpdateVolunteer")
 //    public ResponseMessage examineeUpdateVolunteer(@RequestBody ExamineevolunteerinformationEO examineevolunteerinformationEO){
 //        examineevolunteerinformationEOService.examineeUpdateVolunteer(examineevolunteerinformationEO);
 //	    return Result.success();
 //    }
 
+    /**
+     * 考生批量删除志愿
+     * 刘笑天 20181011
+     * @param volunteerKeys
+     * @return
+     */
     @ApiOperation(value = "|ExamineevolunteerinformationEO|考生批量删除志愿")
     @PostMapping("/ExamineeBatchDeleteVolunteer")
     public ResponseMessage examineeBatchDeleteVolunteer(@RequestBody List<ExamineevolunteerinformationEO> volunteerKeys){

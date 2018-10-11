@@ -24,6 +24,7 @@ public interface ExamineevolunteerinformationEODao extends BaseDao<Examineevolun
 
     /**
      * 获取考生志愿
+     * 刘笑天 20181011
      * @param examinationnumber
      * @return
      */
@@ -31,6 +32,7 @@ public interface ExamineevolunteerinformationEODao extends BaseDao<Examineevolun
 
     /**
      * 考生报考学校查重
+     * 刘笑天 20181011
      * @return
      */
     ExamineevolunteerinformationEO checkExamineeSchool(@Param("examinationnumber") String examinationNumber
@@ -38,18 +40,21 @@ public interface ExamineevolunteerinformationEODao extends BaseDao<Examineevolun
 
     /**
      * 考生申报志愿
+     * 刘笑天 20181011
      * @param examineevolunteerinformationEO
      */
     void examineeDeclareVolunteer(ExamineevolunteerinformationEO examineevolunteerinformationEO);
 
     /**
-     * 考生修改志愿
+     * 考生修改志愿顺序（未完成）
+     * 刘笑天 20181011
      * @param examineevolunteerinformationEO
      */
     void examineeUpdateVolunteer(ExamineevolunteerinformationEO examineevolunteerinformationEO);
 
     /**
      * 考生志愿批量删除
+     * 刘笑天 20181011
      * @param
      */
     void examineeBatchDeleteVolunteer(ExamineevolunteerinformationVO examineevolunteerinformationVO);

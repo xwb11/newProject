@@ -31,12 +31,14 @@ public interface AdminssionsplaninformationEODao extends BaseDao<Adminssionsplan
     List<AdminssionsplaninformationVO> selectLastYearAdmission(AdminssionsplaninformationVOPage page);
     /**
      * 获取已发布专业的学校
+     * 刘笑天 20181011
      * @return
      */
     List<Map<String,Object>> getSchools();
 
     /**
      * 获取学校已发布的专业
+     * 刘笑天 20181011
      * @param schoolKey
      * @return
      */

@@ -125,6 +125,12 @@ public class AdminssionsplaninformationEOController extends BaseController<Admin
         logger.info("delete from ADMINSSIONSPLANINFORMATION where adminssionskey = {}", adminssionskey);
         return Result.success();
     }
+
+    /**
+     * 获取已发布专业的学校
+     * 刘笑天 20181011
+     * @return
+     */
     @ApiOperation(value = "|AdminssionsplaninformationEO|获取已发布专业的学校")
     @PostMapping("/getSchool")
     public ResponseMessage getSchool(){
@@ -132,6 +138,11 @@ public class AdminssionsplaninformationEOController extends BaseController<Admin
         return Result.success(schools);
     }
 
+    /**
+     * 获取学校发布的专业
+     * @param schoolKey
+     * @return
+     */
     @ApiOperation(value = "|AdminssionsplaninformationEO|获取学校发布的专业")
     @PostMapping("/getSchoolsPublishedMajor")
     public ResponseMessage getSchoolsPublishedMajor(@RequestParam String schoolKey){
