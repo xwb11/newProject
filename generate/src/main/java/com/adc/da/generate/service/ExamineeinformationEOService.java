@@ -3,7 +3,6 @@ package com.adc.da.generate.service;
 import com.adc.da.generate.dao.UserinformationEODao;
 import com.adc.da.generate.entity.UserinformationEO;
 import com.adc.da.generate.util.ExamineeinformationEOPrompt;
-import com.adc.da.generate.util.ExamineeinformationPrompt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

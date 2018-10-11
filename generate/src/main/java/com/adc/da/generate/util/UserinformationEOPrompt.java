@@ -14,6 +14,7 @@ public class UserinformationEOPrompt extends PublicPrompt {
      */
     public static final String USE_PERMIT = "你没有使用权限！";
     public static final String DELETE_ERRO = "删除失败！";
+    public static final String INSERT_ERRO = "新增失败！";
 
     /**
      * 用户登录
