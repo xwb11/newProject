@@ -1,7 +1,7 @@
 package com.adc.da.generate.controller;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
-
+import static com.adc.da.generate.util.AdminssionsplaninformationEOPrompt.*;
 import java.util.List;
 
 import com.adc.da.generate.VO.AdminssionsplaninformationVO;

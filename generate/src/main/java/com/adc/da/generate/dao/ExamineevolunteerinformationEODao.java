@@ -3,8 +3,10 @@ package com.adc.da.generate.dao;
 import com.adc.da.base.dao.BaseDao;
 import com.adc.da.generate.VO.ExamineevolunteerinformationVO;
 import com.adc.da.generate.entity.ExamineevolunteerinformationEO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -22,4 +24,43 @@ public interface ExamineevolunteerinformationEODao extends BaseDao<Examineevolun
     * @Version:        1.0
     */
     List<ExamineevolunteerinformationVO> selectAdminssionBySchool(String examinationnumber);
+
+
+    /**
+     * 获取考生志愿
+     * 刘笑天 20181011
+     * @param examinationnumber
+     * @return
+     */
+    List<Map<String,Object>> getExamineeVolunteerInformation(String examinationnumber);
+
+    /**
+     * 考生报考学校查重
+     * 刘笑天 20181011
+     * @return
+     */
+    ExamineevolunteerinformationEO checkExamineeSchool(@Param("examinationnumber") String examinationNumber
+            ,@Param("schoolkey") String schoolKey);
+
+    /**
+     * 考生申报志愿
+     * 刘笑天 20181011
+     * @param examineevolunteerinformationEO
+     */
+    void examineeDeclareVolunteer(ExamineevolunteerinformationEO examineevolunteerinformationEO);
+
+    /**
+     * 考生修改志愿顺序
+     * 刘笑天 20181011
+     * @param examineevolunteerinformationVO
+     */
+    void examineeUpdateVolunteer(@Param("list") ExamineevolunteerinformationVO examineevolunteerinformationVO);
+
+    /**
+     * 考生志愿批量删除
+     * 刘笑天 20181011
+     * @param
+     */
+    void examineeBatchDeleteVolunteer(@Param("list") ExamineevolunteerinformationVO examineevolunteerinformationVO);
+//    void examineeBatchDeleteVolunteer(List volunteerKeys);
 }

@@ -3,6 +3,7 @@ package com.adc.da.generate.VO;
 import com.adc.da.generate.entity.ExamineevolunteerinformationEO;
 
 import java.util.Date;
+import java.util.List;
 
 public class ExamineevolunteerinformationVO extends ExamineevolunteerinformationEO {
     private String volunteerkey;
@@ -35,6 +36,25 @@ public class ExamineevolunteerinformationVO extends Examineevolunteerinformation
      * 学校地址
      */
     private String address;
+
+    //刘笑天添加 20181011 list volunteers
+    public List<ExamineevolunteerinformationEO> list;
+    public List<ExamineevolunteerinformationEO> volunteers;
+    public List<ExamineevolunteerinformationEO> getList() {
+        return list;
+    }
+
+    public void setList(List<ExamineevolunteerinformationEO> list) {
+        this.list = list;
+    }
+
+    public List<ExamineevolunteerinformationEO> getVolunteers() {
+        return volunteers;
+    }
+
+    public void setVolunteers(List<ExamineevolunteerinformationEO> volunteers) {
+        this.volunteers = volunteers;
+    }
 
     @Override
     public String getVolunteerkey() {
