@@ -19,12 +19,12 @@ import java.util.List;
  */
 public interface UserinformationEODao extends BaseDao<UserinformationEO> {
 
-    /**
-    * @Description:    新增用户信息
-    * @Author:         xwb
-    * @CreateDate:     2018/10/10 20:09
-    */
-    int insertUserInfo(UserinformationEO userinformationEO);
+//    /**
+//    * @Description:    新增用户信息
+//    * @Author:         xwb
+//    * @CreateDate:     2018/10/10 20:09
+//    */
+//    int insertSelective(UserinformationEO userinformationEO);
     /**
      * 查询用户信息（不分页）
      * 刘志杰 2018-10-08

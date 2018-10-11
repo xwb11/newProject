@@ -8,6 +8,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import java.util.List;
 import java.util.Map;
 
+import com.adc.da.generate.VO.UserinformationVO;
 import com.adc.da.generate.util.UserinformationEOPrompt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,7 +70,7 @@ public class UserinformationEOController extends BaseController<UserinformationE
     }
 
     @ApiOperation(value = "|UserinformationEO|删除")
-    @DeleteMapping("/{userkey}")
+    @DeleteMapping(consumes = APPLICATION_JSON_UTF8_VALUE,value = "/{userkey}")
     public ResponseMessage delete(@PathVariable String userkey) throws Exception {
         userinformationEOService.deleteByPrimaryKey(userkey);
         logger.info("delete from USERINFORMATION where userkey = {}", userkey);
@@ -79,65 +80,65 @@ public class UserinformationEOController extends BaseController<UserinformationE
     /**
      * 用户信息删除
      * 刘志杰 2018-10-08
-     * @param userinformationEO 用户信息
+     * @param userinformationVO 封装用户信息与权限
      * @return
      * @throws Exception
      */
     @ApiOperation(value = "|UserinformationEO|用户信息删除")
-    @PostMapping("/deleteUserInfo")
-    public ResponseMessage deleteUserInfo(@RequestBody UserinformationEO userinformationEO,@RequestParam String userRole) throws Exception {
-        if(!"1".equals(userRole)){ //用户如果不是 管理员身份
+    @PostMapping(consumes = APPLICATION_JSON_UTF8_VALUE,value = "/deleteUserInfo")
+    public ResponseMessage deleteUserInfo(@RequestBody UserinformationVO userinformationVO) throws Exception {
+        if(!"1".equals(userinformationVO.getUserLoginRole())){ //用户如果不是 管理员身份
             return Result.error(UserinformationEOPrompt.USE_PERMIT);
         }
-        if(userinformationEO.getUserkey()==null){
+        if(userinformationVO.getUserkey()==null){
             return Result.error(UserinformationEOPrompt.DELETE_ERRO);
         }
-        userinformationEOService.deleteUserInfo(userinformationEO);
+        userinformationEOService.deleteUserInfo(userinformationVO);
         return Result.success();
     }
 
     /**
      * 用户信息新增
      * 刘志杰 2018-10-08
-     * @param userinformationEO
+     * @param userinformationVO 封装用户信息与权限
      * @return
      * @throws Exception
      */
     @ApiOperation(value = "|UserinformationEO|用户信息新增")
     @PostMapping("/createUserInfo")
-    public ResponseMessage<UserinformationEO> createUserInfo(@RequestBody UserinformationEO userinformationEO,@RequestParam String userRole) throws Exception {
+    public ResponseMessage<UserinformationVO> createUserInfo(@RequestBody UserinformationVO userinformationVO) throws Exception {
         //身份验证
-        if(!"1".equals(userRole)){ //用户 如果不是 管理员身份
+        if(!"1".equals(userinformationVO.getUserLoginRole())){ //用户 如果不是 管理员身份
             return Result.error(UserinformationEOPrompt.USE_PERMIT);
         }
         //用户名验重
-        if(userinformationEOService.AccountRepeat(userinformationEO.getUseraccount())){
+        if(userinformationEOService.AccountRepeat(userinformationVO.getUseraccount())){
             return Result.error(UserinformationEOPrompt.USE_PERMIT);
         }
-        userinformationEOService.insertUserInfo(userinformationEO);
-        return Result.success(userinformationEO);
+        userinformationEOService.insertUserInfo(userinformationVO);
+        return Result.success(userinformationVO);
     }
 
     /**
      * 用户信息修改
      * 刘志杰 2018-10-08
-     * @param userinformationEO
+     * @param userinformationVO 封装用户信息与权限
      * @return
      * @throws Exception
      */
     @ApiOperation(value = "|UserinformationEO|用户信息修改")
     @PostMapping(value="/updateUserInfo")
-    public ResponseMessage<UserinformationEO> updateUserInfo(@RequestBody UserinformationEO userinformationEO,@RequestParam String userRole) throws Exception {
+    public ResponseMessage<UserinformationVO> updateUserInfo(@RequestBody UserinformationVO userinformationVO) throws Exception {
         //身份验证
-        if(!"1".equals(userRole)){ //用户 如果不是 管理员身份
+        if(!"1".equals(userinformationVO.getUserLoginRole())){ //用户 如果不是 管理员身份
             return Result.error(UserinformationEOPrompt.USE_PERMIT);
         }
         //用户名验重
-        if(userinformationEOService.AccountRepeat(userinformationEO.getUseraccount())){
+        if(userinformationEOService.AccountRepeat(userinformationVO.getUseraccount())){
             return Result.error(UserinformationEOPrompt.USE_PERMIT);
         }
-        userinformationEOService.updateByPrimaryKeySelective(userinformationEO);
-        return Result.success(userinformationEO);
+        userinformationEOService.updateByPrimaryKeySelective(userinformationVO);
+        return Result.success(userinformationVO);
     }
 
     /**
@@ -153,7 +154,7 @@ public class UserinformationEOController extends BaseController<UserinformationE
     }
 
     /**
-     * 查询用户信息（分页）
+     * 查询用户信息（分页+模糊查询）
      * 刘志杰 2018-10-08
      * @param page
      * @return

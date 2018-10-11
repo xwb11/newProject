@@ -57,18 +57,18 @@
     values (#{userkey, jdbcType=VARCHAR}, #{useraccount, jdbcType=VARCHAR}, #{userpassword, jdbcType=VARCHAR}, #{userrole, jdbcType=VARCHAR}, #{createtime, jdbcType=TIMESTAMP})
   </insert>
 
-  <!-- 动态插入记录 主键是序列 -->
+  <!-- 动态插入记录 主键是序列 宣文彬 2019/10/10-->
   <insert id="insertSelective" parameterType="com.adc.da.generate.entity.UserinformationEO" >
         <!-- <selectKey resultType="java.lang.String" order="BEFORE" keyProperty="userkey">
         SELECT SEQ_USERINFORMATION.NEXTVAL FROM DUAL
     </selectKey> -->
         insert into USERINFORMATION
     <trim prefix="(" suffix=")" suffixOverrides="," >
-                <if test="userkey != null" >userkey,</if>
-                <if test="useraccount != null" >useraccount,</if>
-                <if test="userpassword != null" >userpassword,</if>
-                <if test="userrole != null" >userrole,</if>
-                <if test="createtime != null" >createtime,</if>
+                <if test="userkey != null" >"UserKey",</if>
+                <if test="useraccount != null" >"UserAccount",</if>
+                <if test="userpassword != null" >"UserPassword",</if>
+                <if test="userrole != null" >"UserRole",</if>
+                <if test="createtime != null" >"CreateTime",</if>
             </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
                 <if test="userkey != null" >#{userkey, jdbcType=VARCHAR},</if>
@@ -87,11 +87,12 @@
   <!-- 根据pk，修改记录 用户信息删除时修改用户的更改状态,并不会真正物理删除用户 宣文彬 2019/10/10-->
   <update id="updateByPrimaryKey" parameterType="com.adc.da.generate.entity.UserinformationEO" >
     update USERINFORMATION
-       set  "UserAccount" = #{useraccount},
-            "UserPassword" = #{userpassword},
-            "UserRole" = #{userrole},
-            "CreateTime" = #{createtime}
-     where  "UserKey" = #{userkey}
+       set  "UserAccount" = #{useraccount,jdbcType=VARCHAR},
+            "UserPassword" = #{userpassword,jdbcType=VARCHAR},
+            "UserRole" = #{userrole,jdbcType=VARCHAR},
+            "CreateTime" = #{createtime,jdbcType=VARCHAR},
+            "Status" = #{status,jdbcType=VARCHAR}
+     where  "UserKey" = #{userkey,jdbcType=VARCHAR}
   </update>
 
   <!-- 修改记录，只修改只不为空的字段 宣文彬 2019/10/10 -->
@@ -167,7 +168,8 @@
     <select id="queryUserInfoByPage" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">
         select <include refid="Base_Column_List" /> from
         (select tmp_tb.* , rownum rn from
-        (select <include refid="Base_Column_List" /> from USERINFORMATION userinfo
+        (select <include refid="Base_Column_List" /> from USERINFORMATION
+        WHERE  USERINFORMATION."UserRole" != '3' AND  "UserAccount" LIKE '%${useraccount}%'
         <include refid="Base_Where_Clause"/>
         <if test="pager.orderCondition != null and pager.orderCondition != ''" >
             ${pager.orderCondition}

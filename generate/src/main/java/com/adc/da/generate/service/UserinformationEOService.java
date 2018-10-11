@@ -54,7 +54,7 @@ public class UserinformationEOService extends BaseService<UserinformationEO, Str
             userinformationEO.setCreatetime(new Date());
         }
         try{
-            int num = dao.insertUserInfo(userinformationEO);
+            int num = dao.insertSelective(userinformationEO);
             if (num > 0) {
                 return true;
             } else {

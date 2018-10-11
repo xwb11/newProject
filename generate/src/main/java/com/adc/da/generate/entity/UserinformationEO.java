@@ -113,7 +113,7 @@ public class UserinformationEO extends BaseEntity {
     }
 
     public String getStatus() {
-        return status;
+        return this.status;
     }
 
     public void setStatus(String status) {

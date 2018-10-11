@@ -339,8 +339,7 @@
         AND ADMINSSIONSPLANINFORMATION."MajorKey"=MAJORINFORMATION."MajorKey"
         AND ADMINSSIONSPLANINFORMATION."SchoolKey"=SCHOOLINFORMATION."SchoolKey"
         AND ADMINSSIONSPLANINFORMATION."IsPublish"=1
-        AND ADMINSSIONSPLANINFORMATION."CreateYear" >=trunc(sysdate,'YYYY')
-        AND ADMINSSIONSPLANINFORMATION."CreateYear" &lt;=add_months(trunc(sysdate,'YYYY'),12)-1
+        AND a."CreateYear"=(Select Extract(year from sysdate) from dual)
         ORDER BY "CreateTime" ASC
         <if test="pager.orderCondition != null and pager.orderCondition != ''" >
             ${pager.orderCondition}
@@ -384,7 +383,7 @@
         WHERE s."SchoolName"=#{schoolname,jdbcType=VARCHAR} AND m."MajorName"= #{majorname,jdbcType=VARCHAR} and s."ProvinceName"=#{provincename,jdbcType=VARCHAR}
         AND
         a."MajorKey"=m."MajorKey" and a."SchoolKey"=s."SchoolKey" and a."IsPublish"=1
-        AND to_char(a."CreateYear",'YYYY')=(Select Extract(year from sysdate)-1 from dual)
+        AND a."CreateYear"=(Select Extract(year from sysdate)-1 from dual)
         ORDER BY "CreateTime" DESC)tmp_tb where rownum &lt;= ${pager.endIndex})
         where rn>= ${pager.startIndex}
     </select>
