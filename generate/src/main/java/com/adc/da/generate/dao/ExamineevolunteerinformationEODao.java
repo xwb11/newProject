@@ -15,7 +15,11 @@ import java.util.List;
  * <b>版权所有：<b>版权归北京卡达克数据技术中心所有。<br>
  */
 public interface ExamineevolunteerinformationEODao extends BaseDao<ExamineevolunteerinformationEO> {
-
-    //<查询已经被学校录取的信息
+    /**
+    * @Description:    查询已经被学校录取的信息
+    * @Author:         xwb
+    * @CreateDate:     2018/10/10 16:44
+    * @Version:        1.0
+    */
     List<ExamineevolunteerinformationVO> selectAdminssionBySchool(String examinationnumber);
 }

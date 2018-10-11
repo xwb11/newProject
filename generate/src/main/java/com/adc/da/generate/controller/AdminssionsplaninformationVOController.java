@@ -1,8 +1,7 @@
 package com.adc.da.generate.controller;
 
 import com.adc.da.base.web.BaseController;
-import com.adc.da.generate.entity.AdminssionsplaninformationEO;
-import com.adc.da.generate.entity.AdminssionsplaninformationVO;
+import com.adc.da.generate.VO.AdminssionsplaninformationVO;
 import com.adc.da.generate.page.AdminssionsplaninformationVOPage;
 import com.adc.da.generate.service.AdminssionsplaninformationEOService;
 import com.adc.da.util.http.PageInfo;
@@ -13,7 +12,6 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,7 +37,7 @@ public class AdminssionsplaninformationVOController extends BaseController<Admin
      * @UpdateRemark:   修改内容
      * @Version:        1.0
      */
-    @ApiOperation(value = "|AdminssionsplaninformationVO|查询招生信息（分页）")
+    @ApiOperation(value = "|AdminssionsplaninformationVO|查询招生信息（分页加模糊查询）")
     @PostMapping("/queryAdminssionInfoByPage")
     public ResponseMessage<PageInfo<AdminssionsplaninformationVO>> queryAdminssionInfoByPage(AdminssionsplaninformationVOPage page) throws Exception {
         List<AdminssionsplaninformationVO> rows = adminssionsplaninformationEOService.queryAdminssionInfoByPage(page);

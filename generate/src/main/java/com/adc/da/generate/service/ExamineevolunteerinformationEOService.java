@@ -34,12 +34,12 @@ public class ExamineevolunteerinformationEOService extends BaseService<Examineev
     public ExamineevolunteerinformationEODao getDao() {
         return dao;
     }
-
     /**
-     * 查询已被录取的学校信息
-     * @param examinationnumber
-     * @return
-     */
+    * @Description:    查询已被录取的学校信息
+    * @Author:         xwb
+    * @CreateDate:     2018/10/10 17:00
+    * @Version:        1.0
+    */
     public List<ExamineevolunteerinformationVO> selectAdminssionBySchool(String examinationnumber){
         return dao.selectAdminssionBySchool(examinationnumber);
     }

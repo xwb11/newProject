@@ -90,6 +90,7 @@
      where "MajorKey" = #{majorkey}
   </update>
 
+    <!--查询专业信息 宣文彬 2019/10/10-->
   <!-- 查询 MAJORINFORMATION (模糊查询)-->
   <select id="selectMajorInfo" resultMap="BaseResultMap" parameterType="java.lang.String">
       SELECT <include refid="Base_Column_List" /> FROM MAJORINFORMATION
@@ -97,21 +98,22 @@
       ORDER BY "CreateTime" DESC
   </select>
 
-    <!--查询专业信息（分页）-->
+    <!--查询专业信息（分页）宣文彬 2019/10/10-->
     <select id="queryByMajorInfoPage"  resultMap="BaseResultMap" parameterType="java.lang.String">
         select <include refid="Base_Column_List" /> from
         (select tmp_tb.* , rownum rn from
         (SELECT <include refid="Base_Column_List" /> from MAJORINFORMATION
-        <include refid="Base_Where_Clause"/>
-        <if test="pager.orderCondition != null and pager.orderCondition != ''" >
-            ${pager.orderCondition}
-        </if>
+        <where>
+            <if test="majorname!=''">
+                "MajorName" LIKE '%${majorname}%'
+            </if>
+        </where>
         ) tmp_tb where rownum &lt;= ${pager.endIndex})
         where rn &gt;= ${pager.startIndex}
         ORDER BY "CreateTime" DESC
     </select>
 
-    <!-- 根据专业名称模糊查询 MAJORINFORMATION -->
+    <!-- 根据专业名称模糊查询 MAJORINFORMATION 宣文彬 2019/10/10 -->
    <select id="selectMajorByName" resultMap="BaseResultMap" parameterType="java.lang.String">
        select <include refid="Base_Column_List" /> from
        (select tmp_tb.* , rownum rn from
@@ -158,12 +160,12 @@
        ${pager.orderCondition}
     </if>
   </select>
-
-    <select id="majorNameTesting" resultMap="BaseResultMap" parameterType="java.lang.String">
-        select * from MAJORINFORMATION where "MajorName"=#{majorname}
+    <!--学校名称查重(新增时) 2019/10/10-->
+    <select id="majorNameTesting" resultType="java.lang.String" parameterType="java.lang.String">
+        select * from MAJORINFORMATION where "MajorName"=#{majorname,jdbcType=VARCHAR}
     </select>
-
-    <select id="majorNameTestingWhenUpdate" resultMap="BaseResultMap" parameterType="java.lang.String">
-        select * from MAJORINFORMATION where "MajorName"=#{majorname} and "MajorKey"!=#{majorkey}
+    <!--学校名称查重（更新时） 2019/10/10-->
+    <select id="majorNameTestingWhenUpdate" resultType="java.lang.String" parameterType="java.lang.String">
+        select * from MAJORINFORMATION where "MajorName"=#{majorname,jdbcType=VARCHAR} and "MajorKey"=#{majorkey,jdbcType=VARCHAR}
     </select>
 </mapper>

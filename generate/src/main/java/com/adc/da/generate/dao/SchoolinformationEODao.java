@@ -20,44 +20,63 @@ import java.util.List;
  * <b>版权所有：<b>版权归北京卡达克数据技术中心所有。<br>
  */
 public interface SchoolinformationEODao extends BaseDao<SchoolinformationEO> {
-
+    /**
+    * @Description:    新增学校信息
+    * @Author:         xwb
+    * @CreateDate:     2018/10/10 16:49
+    * @Version:        1.0
+    */
     int schoolInfoAdd(SchoolinformationEO schoolinformationEO);
-
+    /**
+    * @Description:    删除学校信息
+    * @Author:         xwb
+    * @CreateDate:     2018/10/10 16:49
+    * @Version:        1.0
+    */
     int schoolInfoDelete(String schoolkey);
-
+    /**
+    * @Description:    更新学校信息
+    * @Author:         xwb
+    * @CreateDate:     2018/10/10 16:49
+    * @Version:        1.0
+    */
     int updateByPrimaryKey(SchoolinformationEO schoolinformationEO);
-
+    /**
+    * @Description:    更新学校信息（非空修改）
+    * @Author:         xwb
+    * @CreateDate:     2018/10/10 16:50
+    * @Version:        1.0
+    */
     int updateByPrimaryKeySelective(SchoolinformationEO schoolinformationEO);
-
     /**
-     * 查询学校所有信息(模糊查询)
-     * @return
-     */
+    * @Description:    查询学校所有信息(模糊查询)
+    * @Author:         xwb
+    * @CreateDate:     2018/10/10 16:50
+    * @Version:        1.0
+    */
     List<SchoolinformationEO> selectSchoolInfo(SchoolinformationEO schoolinformationEO);
-
     /**
-     * 获取学校信息（分页）
-     * @param page
-     * @return
-     */
+    * @Description:    获取学校信息（分页）
+    * @Author:         xwb
+    * @CreateDate:     2018/10/10 16:51
+    * @Version:        1.0
+    */
     List<SchoolinformationEO> querySchoolInfoByPage(SchoolinformationEOPage page);
-
     /**
-     * 根据学校名称进行查询
-     * @param schoolname
-     * @return
-     */
+    * @Description:    根据学校名称进行查询
+    * @Author:         xwb
+    * @CreateDate:     2018/10/10 16:51
+    * @Version:        1.0
+    */
     List<SchoolinformationEO> selectSchoolByName(String schoolname);
-
     /**
-     *  查询用户账户是否重复
-     * @param
-     * @return
-     */
+    * @Description:    j查询用户账户是否重复
+    * @Author:         xwb
+    * @CreateDate:     2018/10/10 16:51
+    * @Version:        1.0
+    */
     //新增时
-//    @Select("select * from SCHOOLINFORMATION where 'SchoolName'=#{schoolname}")
     public String schoolNameTesting(SchoolinformationEO schoolinformationEO);
     //修改时
-//    @Select("select * from SCHOOLINFORMATION where 'SchoolName'=#{schoolname} and 'SchoolKey'!=#{schoolkey}")
     public String schoolNameTestingWhenUpdate(SchoolinformationEO schoolinformationEO);
 }

@@ -5,6 +5,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import java.util.List;
 import java.util.Map;
 
+import com.adc.da.generate.VO.ExamineeinformationVO;
 import com.adc.da.generate.entity.UserinformationEO;
 import com.adc.da.generate.service.UserinformationEOService;
 import com.adc.da.generate.util.ExamineeinformationPrompt;
@@ -82,17 +83,18 @@ public class ExamineeinformationEOController extends BaseController<Examineeinfo
     /**
      * 考生信息录入
      * 刘志杰 2018-10-08
-     * @param examineeinformationEO 考生基本信息 和 考试成绩
-     * @param userinformationEO 考生登录信息
+     * @param examineeinformationVO 封装了所有 userinformationEO，examineeinformationEO的信息
      * @return
      * @throws Exception
      */
     @ApiOperation(value = "|ExamineeinformationEO|考生信息录入")
-    @PostMapping(consumes = APPLICATION_JSON_UTF8_VALUE,value = "/informationEntry")
-    public ResponseMessage<String> informationEntry(@RequestBody ExamineeinformationEO examineeinformationEO,@RequestBody UserinformationEO userinformationEO) throws Exception {
+    @PostMapping("/informationEntry")
+    public ResponseMessage informationEntry(@RequestBody ExamineeinformationVO examineeinformationVO) throws Exception {
         //校验，如果成功 返回字符串"true",否则返回提示语
+        UserinformationEO userinformationEO = examineeinformationVO.getUserinformationEO();
+        ExamineeinformationEO examineeinformationEO = examineeinformationVO.getExamineeinformationEO();
         String result=examineeinformationEOService.informationCheck(examineeinformationEO,userinformationEO);
-        if (result!="true") {
+        if (result != "true") {
             return Result.error(result);
         }
         examineeinformationEO.setExamineekey(UUID.randomUUID());
@@ -100,5 +102,7 @@ public class ExamineeinformationEOController extends BaseController<Examineeinfo
         userinformationEOService.updateByPrimaryKey(userinformationEO);
         return Result.success(ExamineeinformationPrompt.ENTRY_SUCCESS);
     }
+
+
 
 }

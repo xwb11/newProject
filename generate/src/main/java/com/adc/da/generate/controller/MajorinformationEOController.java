@@ -1,8 +1,6 @@
 package com.adc.da.generate.controller;
 
-import static com.adc.da.generate.util.MajorinformationEOPrompt.INSERTMAJORNAME_SUCCESS;
-import static com.adc.da.generate.util.MajorinformationEOPrompt.SELECTMAJORNAME_SUCCESS;
-import static com.adc.da.generate.util.MajorinformationEOPrompt.UPDATEMAJORNAME_SUCCESS;
+import static com.adc.da.generate.util.MajorinformationEOPrompt.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 import java.util.List;
@@ -10,6 +8,7 @@ import java.util.Map;
 
 import com.adc.da.generate.entity.SchoolinformationEO;
 import com.adc.da.generate.page.SchoolinformationEOPage;
+import com.adc.da.generate.util.UserinformationEOPrompt;
 import com.adc.da.myutil.util.PublicPrompt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +46,7 @@ public class MajorinformationEOController extends BaseController<Majorinformatio
     }
 
     /**
-    * @Description:    查询专业信息()
+    * @Description:    查询专业信息(分页)
     * @Author:         xwb
     * @CreateDate:     2018/10/10 10:16
     * @UpdateUser:     xwb
@@ -55,9 +54,9 @@ public class MajorinformationEOController extends BaseController<Majorinformatio
     * @UpdateRemark:   修改内容
     * @Version:        1.0
     */
-    @ApiOperation(value = "|UserinformationEO|查询用户信息（分页）")
+    @ApiOperation(value = "|UserinformationEO|查询用户信息（分页加模糊查询）")
     @GetMapping("/queryMajorInfoByPage")
-    public ResponseMessage<PageInfo<MajorinformationEO>> queryUserInfoByPage(MajorinformationEOPage page) throws Exception {
+    public ResponseMessage<PageInfo<MajorinformationEO>> queryMajorInfoByPage(MajorinformationEOPage page) throws Exception {
         List<MajorinformationEO> rows = majorinformationEOService.queryMajorInfoByPage(page);
         return Result.success(getPageInfo(page.getPager(), rows));
     }
@@ -98,10 +97,18 @@ public class MajorinformationEOController extends BaseController<Majorinformatio
     @ApiOperation(value = "|MajorinformationEO|新增")
     @PostMapping("/majorInfoAdd")
     @RequiresPermissions("majorInfoAdd")
-    public ResponseMessage majorInfoAdd(@RequestBody MajorinformationEO majorinformationEO) throws Exception {
+    public ResponseMessage majorInfoAdd(@RequestBody MajorinformationEO majorinformationEO,@RequestParam String userRole) throws Exception {
 //        majorinformationEOService.insertSelective(majorinformationEO);
-
-        return Result.success(INSERTMAJORNAME_SUCCESS, majorinformationEOService.majorInfoAdd(majorinformationEO));
+        //身份校验
+        if(!"1".equals(userRole)){//若不是管理员
+            return Result.error(UserinformationEOPrompt.USE_PERMIT);
+        }
+        if(majorinformationEOService.majorNameTesting(majorinformationEO).equals("1")){
+            majorinformationEOService.majorInfoAdd(majorinformationEO);
+           return Result.success(PublicPrompt.INSERT_SUCCESS) ;
+        }else {
+           return Result.error(MAJORNAME_REPEAT);
+        }
     }
 
     /**
@@ -116,9 +123,17 @@ public class MajorinformationEOController extends BaseController<Majorinformatio
     @ApiOperation(value = "|MajorinformationEO|修改")
     @PutMapping("/updateMajorInfo")
     @RequiresPermissions("generate:majorinformation:update")
-    public ResponseMessage updateMajorInfo(@RequestBody MajorinformationEO majorinformationEO) throws Exception {
-
-        return Result.success(UPDATEMAJORNAME_SUCCESS,majorinformationEOService.updateMajorInfo(majorinformationEO));
+    public ResponseMessage updateMajorInfo(@RequestBody MajorinformationEO majorinformationEO,@RequestParam String userRole) throws Exception {
+        //身份校验
+        if(!"1".equals(userRole)){//若不是管理员
+            return Result.error(UserinformationEOPrompt.USE_PERMIT);
+        }
+        if(majorinformationEOService.majorNameTestingWhenUpdate(majorinformationEO).equals("1")){
+            majorinformationEOService.updateMajorInfo(majorinformationEO);
+            return Result.success(PublicPrompt.UPDATE_SUCCESS) ;
+        }else {
+            return Result.error(MAJORNAME_REPEAT);
+        }
     }
     /**
     * @Description:    删除专业信息
@@ -132,7 +147,11 @@ public class MajorinformationEOController extends BaseController<Majorinformatio
     @ApiOperation(value = "|MajorinformationEO|删除")
     @DeleteMapping("/deleteMajorInfo")
     @RequiresPermissions("generate:majorinformation:delete")
-    public ResponseMessage delete(@RequestParam String majorkey) throws Exception {
+    public ResponseMessage delete(@RequestParam String majorkey,@RequestParam String userRole) throws Exception {
+        //身份校验
+        if(!"1".equals(userRole)){//若不是管理员
+            return Result.error(UserinformationEOPrompt.USE_PERMIT);
+        }
         logger.info("delete from MAJORINFORMATION where majorkey = {}", majorkey);
         return Result.success(PublicPrompt.DELETE_SUCCESS,majorinformationEOService.dleteMajorInfo(majorkey));
     }

@@ -3,12 +3,8 @@ package com.adc.da.generate.controller;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 import java.util.List;
-import java.util.Map;
 
-import com.adc.da.generate.entity.AdminssionsplaninformationVO;
-import com.adc.da.generate.entity.SchoolinformationEO;
-import com.adc.da.generate.page.AdminssionsplaninformationVOPage;
-import com.adc.da.generate.page.SchoolinformationEOPage;
+import com.adc.da.generate.VO.AdminssionsplaninformationVO;
 import com.adc.da.myutil.util.PublicPrompt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

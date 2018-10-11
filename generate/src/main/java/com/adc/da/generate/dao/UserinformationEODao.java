@@ -3,6 +3,8 @@ package com.adc.da.generate.dao;
 import com.adc.da.base.dao.BaseDao;
 import com.adc.da.generate.entity.UserinformationEO;
 import com.adc.da.generate.page.UserinformationEOPage;
+import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -15,6 +17,13 @@ import java.util.List;
  * <b>版权所有：<b>版权归北京卡达克数据技术中心所有。<br>
  */
 public interface UserinformationEODao extends BaseDao<UserinformationEO> {
+
+    /**
+    * @Description:    新增用户信息
+    * @Author:         xwb
+    * @CreateDate:     2018/10/10 20:09
+    */
+    int insertUserInfo(UserinformationEO userinformationEO);
     /**
      * 查询用户信息（不分页）
      * 刘志杰 2018-10-08
@@ -35,5 +44,5 @@ public interface UserinformationEODao extends BaseDao<UserinformationEO> {
      * @param useraccount
      * @return
      */
-    int queryAccount(String useraccount);
+    int queryAccount( String useraccount);
 }

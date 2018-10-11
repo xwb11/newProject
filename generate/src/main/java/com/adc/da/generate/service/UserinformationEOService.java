@@ -1,6 +1,8 @@
 package com.adc.da.generate.service;
 
 import com.adc.da.generate.page.UserinformationEOPage;
+import com.adc.da.myutil.util.PublicPrompt;
+import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +14,12 @@ import com.adc.da.base.service.BaseService;
 import com.adc.da.generate.dao.UserinformationEODao;
 import com.adc.da.generate.entity.UserinformationEO;
 
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
+import static com.adc.da.generate.util.SchoolinformationEOPrompt.INSERTSCHOOLNAME_ERROR;
+import static com.adc.da.generate.util.UserinformationEOPrompt.INSERT_ERRO;
 
 /**
  *
@@ -35,6 +41,30 @@ public class UserinformationEOService extends BaseService<UserinformationEO, Str
     public UserinformationEODao getDao() {
         return dao;
     }
+
+    /**
+    * @Description:    用户信息新增
+    * @Author:         xwb
+    * @CreateDate:     2018/10/10 20:35
+    * @Version:        1.0
+    */
+    public boolean insertUserInfo(UserinformationEO userinformationEO){
+        if(userinformationEO.getUseraccount()!=null&&!"".equals(userinformationEO.getUseraccount())){
+            userinformationEO.setUserkey(UUID.randomUUID().toString());
+            userinformationEO.setCreatetime(new Date());
+        }
+        try{
+            int num = dao.insertUserInfo(userinformationEO);
+            if (num > 0) {
+                return true;
+            } else {
+                throw new RuntimeException(INSERT_ERRO);
+            }
+        }catch (Exception e){
+            throw new RuntimeException(INSERT_ERRO);
+        }
+    }
+
 
     /**
      * 用户信息删除
@@ -72,9 +102,9 @@ public class UserinformationEOService extends BaseService<UserinformationEO, Str
      * @return
      */
     public boolean AccountRepeat(String useraccount){
-        boolean result=false;
+        boolean result=true;
         if(dao.queryAccount(useraccount)==0){
-            result=true;
+            result=false;
         }
         return result;
     }

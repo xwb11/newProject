@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import static com.adc.da.generate.util.MajorinformationEOPrompt.MAJORNAME_REPEAT;
 import static com.adc.da.generate.util.SchoolinformationEOPrompt.*;
 
 /**
@@ -56,6 +57,7 @@ public class SchoolinformationEOService extends BaseService<SchoolinformationEO,
      * 获取学校信息（分页）
      * @param page
      * @return
+     * 宣文彬 2018/10/8
      */
     public List<SchoolinformationEO> querySchoolInfoByPage(SchoolinformationEOPage page) {
         return schoolinformationEODao.querySchoolInfoByPage(page);
@@ -72,18 +74,12 @@ public class SchoolinformationEOService extends BaseService<SchoolinformationEO,
             schoolinformationEO.setSchoolkey(UUID.randomUUID().toString());
             schoolinformationEO.setCreatetime(new Date());
             try {
-                //判断学校名称是否重复
-                if(schoolinformationEODao.schoolNameTesting(schoolinformationEO)==null){
                     int num = schoolinformationEODao.schoolInfoAdd(schoolinformationEO);
                     if (num > 0) {
                         return true;
                     } else {
                         throw new RuntimeException(INSERTSCHOOLNAME_ERROR);
                     }
-                }else {
-                    throw new RuntimeException(SCHOOLNAME_REPEAT);
-                }
-
             } catch (Exception e) {
                 throw new RuntimeException(INSERTSCHOOLNAME_ERROR + e.getMessage());
             }
@@ -96,21 +92,18 @@ public class SchoolinformationEOService extends BaseService<SchoolinformationEO,
      * 修改专业信息
      * @param schoolinformationEO
      * @return
+     * 宣文彬 2018/10/8
      */
     public boolean updateSchoolInfo(SchoolinformationEO schoolinformationEO){
         if(schoolinformationEO.getSchoolkey()!=null&&!"".equals(schoolinformationEO.getSchoolkey())){
             schoolinformationEO.setCreatetime(new Date());
             try {
-                if(schoolinformationEODao.schoolNameTestingWhenUpdate(schoolinformationEO)==null){
                     int num = schoolinformationEODao.updateByPrimaryKeySelective(schoolinformationEO);
                     if (num>0) {
                         return true;
                     } else {
                         throw new RuntimeException(UPDATESCHOOLNAME_ERROR);
                     }
-                }else {
-                    throw new RuntimeException(SCHOOLNAME_REPEAT);
-                }
             } catch (Exception e) {
                 throw new RuntimeException(UPDATESCHOOLNAME_ERROR + e.getMessage());
             }
@@ -123,6 +116,7 @@ public class SchoolinformationEOService extends BaseService<SchoolinformationEO,
      * 根据主键删除专业信息
      * @param schoolkey
      * @return
+     * 宣文彬 2018/10/8
      */
     public boolean deleteSchoolInfo(String schoolkey){
         if(schoolkey!=null){
@@ -139,6 +133,34 @@ public class SchoolinformationEOService extends BaseService<SchoolinformationEO,
             }
         }else {
             throw new RuntimeException(SCHOOLNAME_NOTNULL);
+        }
+    }
+
+    /**
+     * 学校名称判重
+     * @param schoolinformationEO
+     * @return
+     * 宣文彬 2018/10/8
+     */
+
+    //新增时
+    public String schoolNameTesting(SchoolinformationEO schoolinformationEO){
+        //判断数据库中是否已存在相同的名称
+        if(schoolinformationEODao.schoolNameTesting(schoolinformationEO)==null){
+            //设定返回1代表名称没有重复
+            return "1";
+        }else {
+            return MAJORNAME_REPEAT;
+        }
+    }
+    //更新时
+    public String schoolNameTestingWhenUpdate(SchoolinformationEO schoolinformationEO){
+        //判断数据库中是否已存在相同的名称
+        if(schoolinformationEODao.schoolNameTestingWhenUpdate(schoolinformationEO)==null){
+            //设定返回1代表名称没有重复
+            return "1";
+        }else {
+            return MAJORNAME_REPEAT;
         }
     }
 }

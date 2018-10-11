@@ -55,6 +55,7 @@ public class MajorinformationEOService extends BaseService<MajorinformationEO, S
      * 查询专业信息（分页）
      * @param page
      * @return
+     * 宣文彬 2018/10/8
      */
     public List<MajorinformationEO> queryMajorInfoByPage(MajorinformationEOPage page) {
         return majorinformationEODao.queryByMajorInfoPage(page);
@@ -68,21 +69,14 @@ public class MajorinformationEOService extends BaseService<MajorinformationEO, S
      */
     public boolean majorInfoAdd(MajorinformationEO majorinformationEO) {
         if (majorinformationEO.getMajorname() != null && !"".equals(majorinformationEO.getMajorname())) {
-            majorinformationEO.setMajorkey(UUID.randomUUID().toString());
             majorinformationEO.setCreatetime(new Date());
             try {
-                //判断专业名称是否重复
-                if(majorinformationEODao.majorNameTesting(majorinformationEO)==null){
                     int num = majorinformationEODao.majorInfoAdd(majorinformationEO);
                     if (num > 0) {
                         return true;
                     } else {
                         throw new RuntimeException(INSERTMAJORNAME_ERROR);
                     }
-                }else {
-                    throw new RuntimeException(MAJORNAME_REPEAT);
-                }
-
             } catch (Exception e) {
                 throw new RuntimeException(INSERTMAJORNAME_ERROR + e.getMessage());
             }
@@ -95,21 +89,18 @@ public class MajorinformationEOService extends BaseService<MajorinformationEO, S
      * 修改专业信息
      * @param majorinformationEO
      * @return
+     * 宣文彬 2018/10/8
      */
     public boolean updateMajorInfo(@RequestBody MajorinformationEO majorinformationEO){
         if(majorinformationEO.getMajorkey()!=null&&!"".equals(majorinformationEO.getMajorkey())){
             majorinformationEO.setCreatetime(new Date());
             try {
-                if(majorinformationEODao.majorNameTestingWhenUpdate(majorinformationEO)==null){
                     int num = majorinformationEODao.updateByPrimaryKeySelective(majorinformationEO);
                     if (num>0) {
                         return true;
                     } else {
                         throw new RuntimeException(UPDATEMAJORNAME_ERROR);
                     }
-                }else {
-                    throw new RuntimeException(MAJORNAME_REPEAT);
-                }
             } catch (Exception e) {
                 throw new RuntimeException( UPDATEMAJORNAME_ERROR+ e.getMessage());
             }
@@ -122,6 +113,7 @@ public class MajorinformationEOService extends BaseService<MajorinformationEO, S
      * 根据主键删除专业信息
      * @param majorkey
      * @return
+     * 宣文彬 2018/10/8
      */
     public boolean dleteMajorInfo(String majorkey){
         if(majorkey!=null){
@@ -145,6 +137,7 @@ public class MajorinformationEOService extends BaseService<MajorinformationEO, S
      * 专业名称判重
      * @param majorinformationEO
      * @return
+     * 宣文彬 2018/10/8
      */
 
     //新增时

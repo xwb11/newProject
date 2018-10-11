@@ -1,9 +1,7 @@
 package com.adc.da.generate.service;
 
-import com.adc.da.generate.entity.AdminssionsplaninformationVO;
-import com.adc.da.generate.entity.SchoolinformationEO;
+import com.adc.da.generate.VO.AdminssionsplaninformationVO;
 import com.adc.da.generate.page.AdminssionsplaninformationVOPage;
-import com.adc.da.generate.page.SchoolinformationEOPage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,34 +35,37 @@ public class AdminssionsplaninformationEOService extends BaseService<Adminssions
     public AdminssionsplaninformationEODao getDao() {
         return dao;
     }
-
     /**
-     *  查询本年招生信息（分页查询）
-     * @param page
-     * @return
-     */
+    * @Description:    查询本年招生信息（分页查询）
+    * @Author:         xwb
+    * @CreateDate:     2018/10/10 16:58
+    * @Version:        1.0
+    */
     public List<AdminssionsplaninformationVO> queryAdminssionInfoByPage(AdminssionsplaninformationVOPage page) {
         return dao.queryAdmissionInfoByPage(page);
     }
-
     /**
-     * 查询本年招生信息（模糊查询）
-     * @return
-     */
+    * @Description:    查询本年招生信息（模糊查询）
+    * @Author:         xwb
+    * @CreateDate:     2018/10/10 16:58
+    * @UpdateUser:     xwb
+    * @UpdateDate:     2018/10/10 16:58
+    * @UpdateRemark:   修改内容
+    * @Version:        1.0
+    */
     public List<AdminssionsplaninformationVO> selectAdminssion (AdminssionsplaninformationVO adminssionsplaninformationVO){
         return dao.selectAdmission(adminssionsplaninformationVO);
     }
 
-
 //    public List<AdminssionsplaninformationVO> selectLastYearAdmission(AdminssionsplaninformationVO adminssionsplaninformationVO){
 //        return dao.selectLastYearAdmission(adminssionsplaninformationVO);
 //    }
-
     /**
-     * 查询去年招考信息
-     * @param page
-     * @return
-     */
+    * @Description:    查询去年招考信息
+    * @Author:         xwb
+    * @CreateDate:     2018/10/10 16:59
+    * @Version:        1.0
+    */
     public List<AdminssionsplaninformationVO> selectLastYearAdmission(AdminssionsplaninformationVOPage page){
         return dao.selectLastYearAdmission(page);
     }

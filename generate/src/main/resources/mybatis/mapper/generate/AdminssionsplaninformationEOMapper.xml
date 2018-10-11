@@ -199,7 +199,7 @@
   </select>
 
 
-    <resultMap id="AdminssionsplaninformationMap" type="com.adc.da.generate.entity.AdminssionsplaninformationVO" >
+    <resultMap id="AdminssionsplaninformationMap" type="com.adc.da.generate.VO.AdminssionsplaninformationVO" >
         <id column="AdminssionsKey" property="adminssionskey" />
         <result column="SchoolKey" property="schoolkey" />
         <result column="MajorKey" property="majorkey" />
@@ -275,7 +275,7 @@
         </trim>
     </sql>
 
-    <!--查询招生当年录取信息（分页）-->
+    <!--查询招生当年录取信息（分页）宣文彬 2019/10/10 默认发布为1（已发布）-->
     <select id="queryAdmissionInfoByPage" resultMap="AdminssionsplaninformationMap" parameterType="java.lang.String">
         select * from
         (select tmp_tb.* , rownum rn from
@@ -289,7 +289,10 @@
         from
         ADMINSSIONSPLANINFORMATION ,SCHOOLINFORMATION ,
         MAJORINFORMATION
-        WHERE  ADMINSSIONSPLANINFORMATION."MajorKey"=MAJORINFORMATION."MajorKey"
+        WHERE SCHOOLINFORMATION."SchoolName" LIKE '%${schoolname}%'
+        AND MAJORINFORMATION."MajorName" LIKE '%${majorname}%'
+        AND SCHOOLINFORMATION."ProvinceName" LIKE '%${provincename}%'
+        AND ADMINSSIONSPLANINFORMATION."MajorKey"=MAJORINFORMATION."MajorKey"
         AND ADMINSSIONSPLANINFORMATION."SchoolKey"=SCHOOLINFORMATION."SchoolKey"
         AND ADMINSSIONSPLANINFORMATION."IsPublish"=1
         AND ADMINSSIONSPLANINFORMATION."CreateYear" >=trunc(sysdate,'YYYY')
@@ -303,7 +306,7 @@
     </select>
 
 
-    <!--查询招生信息并只显示当年数据（模糊查询）-->
+    <!--查询招生信息并只显示当年数据（模糊查询）宣文彬 2019/10/10 默认发布为1（已发布）-->
     <select id="selectAdmission" resultMap="AdminssionsplaninformationMap" parameterType="java.lang.String">
         SELECT
         ADMINSSIONSPLANINFORMATION."CreateTime",
@@ -326,7 +329,7 @@
         ORDER BY "CreateTime" ASC
     </select>
 
-    <!--根据学校，专业，省份查询去年报考信息-->
+    <!--根据学校，专业，省份查询去年报考信息 宣文彬 2019/10/10 默认发布为1（已发布）-->
     <select id="selectLastYearAdmission" resultMap="AdminssionsplaninformationMap"  parameterType="java.lang.String">
         select * from
         (select tmp_tb.* , rownum rn from

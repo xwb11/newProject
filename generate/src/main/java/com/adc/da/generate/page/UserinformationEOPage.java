@@ -24,6 +24,8 @@ public class UserinformationEOPage extends BasePage {
     private String createtime1;
     private String createtime2;
     private String createtimeOperator = "=";
+    private String status;
+    private String statusOperator = "=";
 
     public String getUserkey() {
         return this.userkey;
@@ -121,4 +123,19 @@ public class UserinformationEOPage extends BasePage {
         this.createtimeOperator = createtimeOperator;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getStatusOperator() {
+        return statusOperator;
+    }
+
+    public void setStatusOperator(String statusOperator) {
+        this.statusOperator = statusOperator;
+    }
 }

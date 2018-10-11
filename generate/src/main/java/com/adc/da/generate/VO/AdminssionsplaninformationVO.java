@@ -1,4 +1,6 @@
-package com.adc.da.generate.entity;
+package com.adc.da.generate.VO;
+
+import com.adc.da.generate.entity.AdminssionsplaninformationEO;
 
 import java.util.Date;
 

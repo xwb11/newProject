@@ -53,7 +53,7 @@
     insert into SCHOOLINFORMATION(<include refid="Base_Column_List" />)
     values (#{schoolkey, jdbcType=VARCHAR}, #{provincename, jdbcType=VARCHAR}, #{schoolname, jdbcType=VARCHAR}, #{briefintroduction, jdbcType=VARCHAR}, #{phone, jdbcType=VARCHAR}, #{address, jdbcType=VARCHAR},#{createtime,jdbcType=VARCHAR})
   </insert>
-
+    <!--新增学校信息 宣文彬 2018/10/10-->
   <insert id="schoolInfoAdd" parameterType="com.adc.da.generate.entity.SchoolinformationEO">
       INSERT  into "SCHOOLINFORMATION"
       values (#{schoolkey,jdbcType=VARCHAR}, #{provincename,jdbcType=VARCHAR}, #{schoolname, jdbcType=VARCHAR}, #{briefintroduction, jdbcType=VARCHAR}, #{phone, jdbcType=VARCHAR}, #{address, jdbcType=VARCHAR},#{createtime,jdbcType=TIMESTAMP})
@@ -97,7 +97,7 @@
      where  schoolkey = #{schoolkey}
   </update>
 
-  <!-- 修改记录，只修改只不为空的字段 -->
+  <!-- 修改记录，只修改只不为空的字段 宣文彬2019/10/10 -->
   <update id="updateByPrimaryKeySelective" parameterType="com.adc.da.generate.entity.SchoolinformationEO" >
     update SCHOOLINFORMATION
     <set >
@@ -130,21 +130,22 @@
      where schoolkey = #{value}
 
   </select>
-
+    <!--根据学校名称模糊查询 宣文彬 2019/10/10-->
     <select id="selectSchoolInfo" resultMap="BaseResultMap" parameterType="java.lang.String">
         SELECT * FROM SCHOOLINFORMATION
         WHERE "SchoolName" LIKE '%${schoolname}%'
         ORDER BY "CreateTime" DESC
     </select>
-    <!--获取学校信息（分页）-->
+    <!--获取学校信息（分页加模糊查询）宣文彬2019/10/10-->
     <select id="querySchoolInfoByPage" resultMap="BaseResultMap" parameterType="java.lang.String">
         select <include refid="Base_Column_List" /> from
         (select tmp_tb.* , rownum rn from
         (SELECT <include refid="Base_Column_List" /> from SCHOOLINFORMATION
-        <include refid="Base_Where_Clause"/>
-        <if test="pager.orderCondition != null and pager.orderCondition != ''" >
-            ${pager.orderCondition}
-        </if>
+        <where>
+            <if test="schoolname!=''">
+                "SchoolName" LIKE '%${schoolname}%'
+            </if>
+        </where>
         ) tmp_tb where rownum &lt;= ${pager.endIndex})
         where rn &gt;= ${pager.startIndex}
         ORDER BY "CreateTime" DESC
@@ -164,12 +165,16 @@
         WHERE rn &gt;= ${pager.startIndex}
     </select>
 
-  <!-- 删除记录 -->
+  <!-- 删除学校信息  宣文彬 2019/10/10-->
   <delete id="schoolInfoDelete" parameterType="java.lang.String">
     delete from SCHOOLINFORMATION
      where "SchoolKey"= #{schoolkey}
-
   </delete>
+    <!-- 删除记录 -->
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from SCHOOLINFORMATION
+        where schoolkey = #{value}
+    </delete>
 
   <!-- SCHOOLINFORMATION 列表总数-->
   <select id="queryByCount" resultType="java.lang.Integer" parameterType="com.adc.da.base.page.BasePage">
@@ -198,12 +203,13 @@
     </if>
   </select>
 
-    <select id="schoolNameTesting" resultMap="BaseResultMap" parameterType="java.lang.String">
-        select * from SCHOOLINFORMATION where "SchoolName"=#{schoolname}
+    <!--学校名称查重(新增时) 2019/10/10-->
+    <select id="schoolNameTesting" resultType="java.lang.String" parameterType="java.lang.String">
+        select * from SCHOOLINFORMATION where "SchoolName"=#{schoolname,jdbcType=VARCHAR}
     </select>
-
-    <select id="schoolNameTestingWhenUpdate" resultMap="BaseResultMap" parameterType="java.lang.String">
-        select * from SCHOOLINFORMATION where "SchoolName"=#{schoolname} and "SchoolKey"!=#{schoolkey}
+    <!--学校名称查重（更新时） 2019/10/10-->
+    <select id="schoolNameTestingWhenUpdate" resultType="java.lang.String" parameterType="java.lang.String">
+        select * from SCHOOLINFORMATION where "SchoolName"=#{schoolname,jdbcType=VARCHAR} and "SchoolKey"=#{schoolkey,jdbcType=VARCHAR}
     </select>
 
 </mapper>

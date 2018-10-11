@@ -115,26 +115,26 @@
     </selectKey> -->
         insert into EXAMINEEINFORMATION
     <trim prefix="(" suffix=")" suffixOverrides="," >
-                <if test="examineekey != null" >examineekey,</if>
-                <if test="quasiexaminationnumber != null" >quasiexaminationnumber,</if>
-                <if test="realname != null" >realname,</if>
-                <if test="sex != null" >sex,</if>
-                <if test="registeredresidence != null" >registeredresidence,</if>
-                <if test="politicaloutlook  != null" >politicaloutlook ,</if>
-                <if test="nativeplace != null" >nativeplace,</if>
-                <if test="age != null" >age,</if>
-                <if test="idcardnumber != null" >idcardnumber,</if>
-                <if test="chinese != null" >chinese,</if>
-                <if test="math != null" >math,</if>
-                <if test="foreignlanguages != null" >foreignlanguages,</if>
-                <if test="sports != null" >sports,</if>
-                <if test="othersynthesis != null" >othersynthesis,</if>
-                <if test="specialbonus != null" >specialbonus,</if>
-                <if test="totalscore != null" >totalscore,</if>
-                <if test="graduateschool != null" >graduateschool,</if>
-                <if test="userkey != null" >userkey,</if>
-                <if test="email != null" >email,</if>
-                <if test="phonenumber != null" >phonenumber,</if>
+                <if test="examineekey != null" >"ExamineeKey",</if>
+                <if test="quasiexaminationnumber != null" >"QuasiExaminationNumber",</if>
+                <if test="realname != null" >"RealName",</if>
+                <if test="sex != null" >"Sex",</if>
+                <if test="registeredresidence != null" >"RegisteredResidence",</if>
+                <if test="politicaloutlook  != null" >"PoliticalOutlook ",</if>
+                <if test="nativeplace != null" >"NativePlace",</if>
+                <if test="age != null" >"Age",</if>
+                <if test="idcardnumber != null" >"IDCardNumber",</if>
+                <if test="chinese != null" >"Chinese",</if>
+                <if test="math != null" >"Math",</if>
+                <if test="foreignlanguages != null" >"ForeignLanguages",</if>
+                <if test="sports != null" >"Sports",</if>
+                <if test="othersynthesis != null" >"OtherSynthesis",</if>
+                <if test="specialbonus != null" >"SpecialBonus",</if>
+                <if test="totalscore != null" >"TotalScore",</if>
+                <if test="graduateschool != null" >"GraduateSchool",</if>
+                <if test="userkey != null" >"UserKey",</if>
+                <if test="email != null" >"EMail",</if>
+                <if test="phonenumber != null" >"PhoneNumber",</if>
             </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
                 <if test="examineekey != null" >#{examineekey, jdbcType=VARCHAR},</if>
@@ -292,16 +292,16 @@
     </if>
   </select>
     <!---获取有相同身份证号的考生信息的数量  刘志杰 2018-10-08 -->
-    <select id="queryIdCard" >
-        SELECT count("ExamineeKey") FROM EXAMINEEINFORMATION WHERE "PhoneNumber"=#{idcardnumber,jdbcType=VARCHAR}
+    <select id="queryIdCard" resultType="java.lang.Integer" parameterType="java.lang.String">
+        SELECT count("ExamineeKey") FROM EXAMINEEINFORMATION WHERE "IDCardNumber"=#{idcardnumber,jdbcType=VARCHAR}
     </select>
     <!---获取有相同手机号的考生信息的数量  刘志杰 2018-10-08 -->
-    <select id="queryPhoneNumber" >
+    <select id="queryPhoneNumber" resultType="java.lang.Integer" parameterType="java.lang.Long" >
         SELECT count("ExamineeKey") FROM EXAMINEEINFORMATION WHERE "PhoneNumber"=#{phonenumber,jdbcType=NUMERIC}
     </select>
     <!--获取有相同邮箱的考生信息的数量  刘志杰 2018-10-08 -->
-    <select id="queryEMail" >
-        SELECT count("ExamineeKey") FROM EXAMINEEINFORMATION WHERE "PhoneNumber"=#{email,jdbcType=VARCHAR}
+    <select id="queryEMail" resultType="java.lang.Integer" parameterType="java.lang.String">
+        SELECT count("ExamineeKey") FROM EXAMINEEINFORMATION WHERE "EMail"=#{email,jdbcType=VARCHAR}
     </select>
 
 </mapper>

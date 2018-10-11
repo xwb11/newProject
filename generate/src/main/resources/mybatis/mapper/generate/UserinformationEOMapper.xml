@@ -8,11 +8,12 @@
     <result column="UserPassword" property="userpassword" />
     <result column="UserRole" property="userrole" />
     <result column="CreateTime" property="createtime" />
+    <result column="Status" property="status" />
   </resultMap>
 
   <!-- USERINFORMATION table all fields -->
   <sql id="Base_Column_List" >
-     "UserKey", "UserAccount", "UserPassword", "UserRole", "CreateTime"
+     "UserKey", "UserAccount", "UserPassword", "UserRole", "CreateTime","Status"
   </sql>
 
   <!-- 查询条件 -->
@@ -73,35 +74,40 @@
                 <if test="createtime != null" >#{createtime, jdbcType=TIMESTAMP},</if>
             </trim>
   </insert>
+    <!--用户信息新增 宣文彬 2019/10/10-->
+    <insert id="insertUserInfo" parameterType="com.adc.da.generate.entity.UserinformationEO" >
+         INSERT  into "USERINFORMATION" (<include refid="Base_Column_List" />)
+      values (#{userkey,jdbcType=VARCHAR}, #{useraccount,jdbcType=VARCHAR}, #{userpassword, jdbcType=VARCHAR}, #{userrole, jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP})
+    </insert>
 
-  <!-- 根据pk，修改记录-->
+  <!-- 根据pk，修改记录 用户信息删除时修改用户的更改状态,并不会真正物理删除用户 宣文彬 2019/10/10-->
   <update id="updateByPrimaryKey" parameterType="com.adc.da.generate.entity.UserinformationEO" >
     update USERINFORMATION
-       set  useraccount = #{useraccount},
-            userpassword = #{userpassword},
-            userrole = #{userrole},
-            createtime = #{createtime}
-     where  userkey = #{userkey}
+       set  "UserAccount" = #{useraccount},
+            "UserPassword" = #{userpassword},
+            "UserRole" = #{userrole},
+            "CreateTime" = #{createtime}
+     where  "UserKey" = #{userkey}
   </update>
 
-  <!-- 修改记录，只修改只不为空的字段 -->
+  <!-- 修改记录，只修改只不为空的字段 宣文彬 2019/10/10 -->
   <update id="updateByPrimaryKeySelective" parameterType="com.adc.da.generate.entity.UserinformationEO" >
     update USERINFORMATION
     <set >
       <if test="useraccount != null" >
-        useraccount = #{useraccount},
+        "UserAccount" = #{useraccount},
       </if>
       <if test="userpassword != null" >
-        userpassword = #{userpassword},
+        "UserPassword" = #{userpassword},
       </if>
       <if test="userrole != null" >
-        userrole = #{userrole},
+        "UserRole" = #{userrole},
       </if>
       <if test="createtime != null" >
-        createtime = #{createtime},
+        "CreateTime" = #{createtime},
       </if>
     </set>
-     where userkey = #{userkey}
+     where "UserKey" = #{userkey}
   </update>
 
   <!-- 根据id查询 USERINFORMATION -->
@@ -163,7 +169,8 @@
         where rn &gt;= ${pager.startIndex}
         ORDER BY "CreateTime" desc
     </select>
-    <select id="queryAccount" >
+
+    <select id="queryAccount" resultType="java.lang.Integer" parameterType="java.lang.String">
         select count("UserKey") from USERINFORMATION WHERE "UserAccount"=#{useraccount,jdbcType=VARCHAR}
     </select>
 </mapper>

@@ -183,7 +183,7 @@
   </select>
 
 
-    <resultMap id="ExamineevolunteerinformationMap" type="com.adc.da.generate.entity.ExamineevolunteerinformationVO" >
+    <resultMap id="ExamineevolunteerinformationMap" type="com.adc.da.generate.VO.ExamineevolunteerinformationVO" >
         <id column="VolunteerKey" property="volunteerkey" />
         <result column="ExaminationNumber" property="examinationnumber" />
         <result column="VolunteerNumber" property="volunteernumber" />
@@ -204,7 +204,7 @@
         ,SchoolName,briefIntroduction,Phone,Address
     </sql>
 
-    <!--查询已经被学校录取的信息-->
+    <!--查询已经被学校录取的信息 宣文彬 2019/10/10-->
     <select id="selectAdminssionBySchool" resultMap="ExamineevolunteerinformationMap" parameterType="java.lang.String">
         SELECT s."SchoolName",e."AdmissionTime",m."MajorName",s."BriefIntroduction",s."Phone",s."Address"
         from

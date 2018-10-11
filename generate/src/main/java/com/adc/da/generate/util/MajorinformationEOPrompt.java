@@ -2,6 +2,12 @@ package com.adc.da.generate.util;
 
 import com.adc.da.myutil.util.PublicPrompt;
 
+/**
+* @Description:    专业管理提示语
+* @Author:         xwb
+* @CreateDate:     2018/10/11 12:51
+* @Version:        1.0
+*/
 public class MajorinformationEOPrompt extends PublicPrompt{
     public static final String MAJORNAME_REPEAT = "专业名称已存在";
     public static final String MAJORNAME_NOTNULL = "专业名称不能为空";

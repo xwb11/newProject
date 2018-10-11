@@ -1,5 +1,6 @@
 package com.adc.da.generate.controller;
 
+import static com.adc.da.generate.util.SchoolinformationEOPrompt.SCHOOLNAME_REPEAT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 import java.util.List;
@@ -39,7 +40,7 @@ public class SchoolinformationEOController extends BaseController<Schoolinformat
 	@ApiOperation(value = "|SchoolinformationEO|分页查询")
     @GetMapping("/page")
     @RequiresPermissions("generate:schoolinformation:page")
-    public ResponseMessage<PageInfo<SchoolinformationEO>> page(SchoolinformationEOPage page) throws Exception {
+    public ResponseMessage<PageInfo<SchoolinformationEO>> page(@RequestBody SchoolinformationEOPage page) throws Exception {
         List<SchoolinformationEO> rows = schoolinformationEOService.queryByPage(page);
         return Result.success(getPageInfo(page.getPager(), rows));
     }
@@ -53,15 +54,15 @@ public class SchoolinformationEOController extends BaseController<Schoolinformat
     * @UpdateRemark:   修改内容
     * @Version:        1.0
     */
-    @ApiOperation(value = "|UserinformationEO|查询用户信息（分页）")
-    @GetMapping("/querySchoolInfoByPage")
-    public ResponseMessage<PageInfo<SchoolinformationEO>> queryUserInfoByPage(SchoolinformationEOPage page) throws Exception {
+    @ApiOperation(value = "|SchoolinformationEO|查询用户信息（分页）")
+    @PostMapping("/querySchoolInfoByPage")
+    public ResponseMessage<PageInfo<SchoolinformationEO>> querySchoolInfoByPage(@RequestBody SchoolinformationEOPage page) throws Exception {
         List<SchoolinformationEO> rows = schoolinformationEOService.querySchoolInfoByPage(page);
         return Result.success(getPageInfo(page.getPager(), rows));
     }
 
     /**
-    * @Description:    查询学校信息（）
+    * @Description:    查询学校信息（模糊查询）
     * @Author:         xwb
     * @CreateDate:     2018/10/9 22:31
     * @UpdateUser:     xwb
@@ -97,12 +98,16 @@ public class SchoolinformationEOController extends BaseController<Schoolinformat
     @PostMapping("/addSchoolInfo")
     @RequiresPermissions("generate:schoolinformation:save")
     public ResponseMessage addSchoolInfo(@RequestBody SchoolinformationEO schoolinformationEO,@RequestParam String userRole) throws Exception {
-        if(userRole != "admin"){
+        //身份校验
+        if(!"1".equals(userRole)){//若不是管理员
             return Result.error(UserinformationEOPrompt.USE_PERMIT);
         }
-
-        schoolinformationEOService.schoolInfoAdd(schoolinformationEO);
-        return Result.success(PublicPrompt.INSERT_SUCCESS);
+        if(schoolinformationEOService.schoolNameTesting(schoolinformationEO).equals("1")){
+            schoolinformationEOService.schoolInfoAdd(schoolinformationEO);
+            return Result.success(PublicPrompt.INSERT_SUCCESS);
+        }else {
+            return Result.error(SCHOOLNAME_REPEAT);
+        }
     }
 
     /**
@@ -117,9 +122,17 @@ public class SchoolinformationEOController extends BaseController<Schoolinformat
     @ApiOperation(value = "|SchoolinformationEO|修改")
     @PutMapping("/updateSchoolInfo")
     @RequiresPermissions("generate:schoolinformation:update")
-    public ResponseMessage updateSchoolInfo(@RequestBody SchoolinformationEO schoolinformationEO) throws Exception {
-        ;
-        return Result.success(PublicPrompt.UPDATE_SUCCESS,schoolinformationEOService.updateSchoolInfo(schoolinformationEO));
+    public ResponseMessage updateSchoolInfo(@RequestBody SchoolinformationEO schoolinformationEO,@RequestParam String userRole) throws Exception {
+        //身份校验
+        if(!"1".equals(userRole)){//若不是管理员
+            return Result.error(UserinformationEOPrompt.USE_PERMIT);
+        }
+        if(schoolinformationEOService.schoolNameTestingWhenUpdate(schoolinformationEO).equals("1")){
+            schoolinformationEOService.updateSchoolInfo(schoolinformationEO);
+            return Result.success(PublicPrompt.UPDATE_SUCCESS);
+        }else {
+            return Result.error(SCHOOLNAME_REPEAT);
+        }
     }
 
     /**
@@ -134,9 +147,13 @@ public class SchoolinformationEOController extends BaseController<Schoolinformat
     @ApiOperation(value = "|SchoolinformationEO|删除")
     @DeleteMapping("/deleteSchoolInfo")
     @RequiresPermissions("generate:schoolinformation:delete")
-    public ResponseMessage deleteSchoolInfo(@RequestParam String schoolkey) throws Exception {
+    public ResponseMessage deleteSchoolInfo(@RequestParam String schoolkey,@RequestParam String userRole) throws Exception {
+        //身份校验
+        if(!"1".equals(userRole)){//若不是管理员
+            return Result.error(UserinformationEOPrompt.USE_PERMIT);
+        }
         schoolinformationEOService.deleteSchoolInfo(schoolkey);
-        logger.info("delete from SCHOOLINFORMATION where schoolkey = {}", schoolkey);
+//        logger.info("delete from SCHOOLINFORMATION where schoolkey = {}", schoolkey);
         return Result.success(PublicPrompt.DELETE_SUCCESS);
     }
 

@@ -45,7 +45,7 @@ public class ExamineeinformationEOService extends BaseService<Examineeinformatio
      */
     public String informationCheck(ExamineeinformationEO examineeinformationEO,UserinformationEO userinformationEO) {
         //非空 校验
-        if (examineeinformationEO.getQuasiexaminationnumber() == null ||
+            if (examineeinformationEO.getQuasiexaminationnumber() == null ||
                 examineeinformationEO.getRealname() == null ||
                 examineeinformationEO.getSex() == null ||
                 examineeinformationEO.getAge() == null ||
