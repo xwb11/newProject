@@ -1,7 +1,8 @@
 package com.adc.da.generate.service;
 
+import com.adc.da.generate.dao.UserinformationEODao;
 import com.adc.da.generate.entity.UserinformationEO;
-import com.adc.da.generate.util.ExamineeinformationEOPrompt;
+import com.adc.da.generate.util.ExamineeinformationPrompt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,35 +59,24 @@ public class ExamineeinformationEOService extends BaseService<Examineeinformatio
                 userinformationEO.getUseraccount()==null||
                 userinformationEO.getUserpassword()==null
                 ) {
-            return ExamineeinformationEOPrompt.NOT_NULL;
+            return ExamineeinformationPrompt.NOT_NULL;
         }
         //身份证号 重复校验
         if (dao.queryIdCard(examineeinformationEO.getIdcardnumber())!=0) {
-            return ExamineeinformationEOPrompt.IDCARD_REPEAT;
+            return ExamineeinformationPrompt.IDCARD_REPEAT;
         }
         //身份证号 长度18位 校验
         if (examineeinformationEO.getIdcardnumber().trim().length() != 18) {
-            return ExamineeinformationEOPrompt.IDCARD_LENGTH;
+            return ExamineeinformationPrompt.IDCARD_LENGTH;
         }
         //手机号 重复校验
         if (dao.queryPhoneNumber(examineeinformationEO.getPhonenumber())!=0) {
-            return ExamineeinformationEOPrompt.PHONENUMBER_REPEAT;
+            return ExamineeinformationPrompt.PHONENUMBER_REPEAT;
         }
         //邮箱 重复校验
         if (dao.queryEMail(examineeinformationEO.getEmail())!=0) {
-            return ExamineeinformationEOPrompt.EMAIL_REPEAT;
+            return ExamineeinformationPrompt.EMAIL_REPEAT;
         }
         return "true";
     }
-
-    /**
-     * 注册查重
-     * 刘笑天 20181011
-     * @param examineeinformationEO
-     * @return
-     */
-    public ExamineeinformationEO checkRegistInfo(ExamineeinformationEO examineeinformationEO){
-        return dao.checkRegistInfo(examineeinformationEO);
-    }
-
 }

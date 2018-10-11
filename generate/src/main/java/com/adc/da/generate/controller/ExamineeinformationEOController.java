@@ -1,14 +1,13 @@
 package com.adc.da.generate.controller;
 
-import static com.adc.da.generate.util.ExamineeinformationEOPrompt.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 import java.util.List;
+import java.util.Map;
 
 import com.adc.da.generate.entity.UserinformationEO;
 import com.adc.da.generate.service.UserinformationEOService;
-import com.adc.da.generate.util.ExamineeinformationEOPrompt;
-import com.adc.da.myutil.service.ExeclCheck;
+import com.adc.da.generate.util.ExamineeinformationPrompt;
 import com.adc.da.util.utils.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,15 +51,7 @@ public class ExamineeinformationEOController extends BaseController<Examineeinfo
         return Result.success(examineeinformationEOService.queryByList(page));
     }
 
-    /**
-     * 获取考生基本信息详情
-     * 刘笑天 20181011
-     * 框架生成方法
-     * @param examineekey
-     * @return
-     * @throws Exception
-     */
-    @ApiOperation(value = "|ExamineeinformationEO|获取考生基本信息详情")
+    @ApiOperation(value = "|ExamineeinformationEO|详情")
     @GetMapping("/{examineekey}")
     public ResponseMessage<ExamineeinformationEO> find(@PathVariable String examineekey) throws Exception {
         return Result.success(examineeinformationEOService.selectByPrimaryKey(examineekey));
@@ -107,32 +98,7 @@ public class ExamineeinformationEOController extends BaseController<Examineeinfo
         examineeinformationEO.setExamineekey(UUID.randomUUID());
         examineeinformationEOService.insertSelective(examineeinformationEO);
         userinformationEOService.updateByPrimaryKey(userinformationEO);
-        return Result.success(ExamineeinformationEOPrompt.ENTRY_SUCCESS);
+        return Result.success(ExamineeinformationPrompt.ENTRY_SUCCESS);
     }
 
-    /**
-     * 考生注册
-     * 刘笑天 20181011
-     * @param examineeinformationEO
-     * @return
-     * @throws Exception
-     */
-    @ApiOperation(value = "|ExamineeinformationEO|注册")
-    @PostMapping("/examineeRegist")
-    public ResponseMessage userRegist(@RequestBody ExamineeinformationEO examineeinformationEO) throws Exception{
-        String quasiExaminationNumber = examineeinformationEO.getQuasiexaminationnumber();//准考证号
-        String email = examineeinformationEO.getEmail();//邮箱
-        Long phoneNumber = examineeinformationEO.getPhonenumber();//手机号
-        ExeclCheck execlCheck = new ExeclCheck();
-        if(execlCheck.execlCheck(quasiExaminationNumber)==1){//若excel中存在 检测数据库中是否存在（包含准考证号 邮箱 手机号）
-            if(examineeinformationEOService.checkRegistInfo(examineeinformationEO)!=null){//查重
-                return Result.error(CHECK_FAILED);
-            }else{
-                examineeinformationEOService.insertSelective(examineeinformationEO);
-                return Result.success("",REGIST_SUCCESS,examineeinformationEO);
-            }
-        }else {//若excel中不存在 直接不可以注册
-            return Result.error(REGIST_FAILED);
-        }
-    }
 }

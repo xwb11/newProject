@@ -9,11 +9,7 @@
     <result column="UserRole" property="userrole" />
     <result column="CreateTime" property="createtime" />
   </resultMap>
-    <!-- 用户登录 刘笑天-->
-    <select id="userLogin" resultMap="BaseResultMap" resultType="com.adc.da.generate.entity.UserinformationEO">
-        SELECT * FROM USERINFORMATION
-        WHERE "UserAccount" = #{useraccount} AND "UserPassword" = #{userpassword}
-    </select>
+
   <!-- USERINFORMATION table all fields -->
   <sql id="Base_Column_List" >
      "UserKey", "UserAccount", "UserPassword", "UserRole", "CreateTime"
@@ -88,28 +84,25 @@
      where  userkey = #{userkey}
   </update>
 
-    <!-- 修改记录，只修改只不为空的字段 刘笑天修改 20181011-->
-    <update id="updateByPrimaryKeySelective" parameterType="com.adc.da.generate.entity.UserinformationEO" >
-        update USERINFORMATION
-        <set >
-            <if test="useraccount != null" >
-                "UserAccount" = #{useraccount},
-            </if>
-            <if test="userpassword != null" >
-                "UserPassword" = #{userpassword},
-            </if>
-            <if test="userrole != null" >
-                "UserRole" = #{userrole},
-            </if>
-            <if test="createtime != null" >
-                "CreateTime" = #{createtime},
-            </if>
-            <if test="status != null" >
-                "Status" = #{status},
-            </if>
-        </set>
-        where "UserKey" = #{userkey}
-    </update>
+  <!-- 修改记录，只修改只不为空的字段 -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.adc.da.generate.entity.UserinformationEO" >
+    update USERINFORMATION
+    <set >
+      <if test="useraccount != null" >
+        useraccount = #{useraccount},
+      </if>
+      <if test="userpassword != null" >
+        userpassword = #{userpassword},
+      </if>
+      <if test="userrole != null" >
+        userrole = #{userrole},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime},
+      </if>
+    </set>
+     where userkey = #{userkey}
+  </update>
 
   <!-- 根据id查询 USERINFORMATION -->
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">

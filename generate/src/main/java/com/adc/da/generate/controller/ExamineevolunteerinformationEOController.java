@@ -1,13 +1,10 @@
 package com.adc.da.generate.controller;
 
-import static com.adc.da.generate.util.ExamineeinvolunteerinformationEOPrompt.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.adc.da.generate.VO.ExamineevolunteerinformationVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,14 +32,7 @@ public class ExamineevolunteerinformationEOController extends BaseController<Exa
     @Autowired
     private ExamineevolunteerinformationEOService examineevolunteerinformationEOService;
 
-    /**
-     * 获取所有考生报考的学校及志愿信息(含分页 模糊查询)
-     * 刘笑天 20181011
-     * @param page
-     * @return
-     * @throws Exception
-     */
-	@ApiOperation(value = "|ExamineevolunteerinformationEO|获取所有考生报考的学校及志愿信息(含分页 模糊查询)")
+	@ApiOperation(value = "|ExamineevolunteerinformationEO|分页查询")
     @GetMapping("/page")
     @RequiresPermissions("generate:examineevolunteerinformation:page")
     public ResponseMessage<PageInfo<ExamineevolunteerinformationEO>> page(ExamineevolunteerinformationEOPage page) throws Exception {
@@ -80,19 +70,12 @@ public class ExamineevolunteerinformationEOController extends BaseController<Exa
         return Result.success(examineevolunteerinformationEO);
     }
 
-    /**
-     * 修改考生志愿
-     * 刘笑天 20181011
-     * @param examineevolunteerinformationEO
-     * @return
-     * @throws Exception
-     */
-    @ApiOperation(value = "|ExamineevolunteerinformationEO|修改考生志愿（学校和专业）")
+    @ApiOperation(value = "|ExamineevolunteerinformationEO|修改")
     @PutMapping(consumes = APPLICATION_JSON_UTF8_VALUE)
     @RequiresPermissions("generate:examineevolunteerinformation:update")
     public ResponseMessage<ExamineevolunteerinformationEO> update(@RequestBody ExamineevolunteerinformationEO examineevolunteerinformationEO) throws Exception {
         examineevolunteerinformationEOService.updateByPrimaryKeySelective(examineevolunteerinformationEO);
-        return Result.success("",UPDATE_SUCCESS,examineevolunteerinformationEO);
+        return Result.success(examineevolunteerinformationEO);
     }
 
     @ApiOperation(value = "|ExamineevolunteerinformationEO|删除")
@@ -104,106 +87,4 @@ public class ExamineevolunteerinformationEOController extends BaseController<Exa
         return Result.success();
     }
 
-    /**
-     * 获取考生志愿
-     * 刘笑天 20181011
-     * @param examinationnumber
-     * @return
-     */
-    @ApiOperation(value = "|ExamineevolunteerinformationEO|获取考生志愿")
-    @GetMapping("/getExamineeVolunteerInformation")
-    public ResponseMessage getExamineeVolunteerInformation(@RequestParam String examinationnumber){
-        List<Map<String,Object>> examineeVolunteers= examineevolunteerinformationEOService.getExamineeVolunteerInformation(examinationnumber);
-        return Result.success(examineeVolunteers);
-    }
-
-    /**
-     * 考生报考学校查重
-     * 每所学校仅能报考1次
-     * 刘笑天 20181011
-     * @param examinationNumber
-     * @param schoolKey
-     * @return
-     */
-    @ApiOperation(value = "|ExamineevolunteerinformationEO|考生学校查重")
-    @PostMapping("/checkExamineeSchool")
-    public ResponseMessage checkExamineeSchool(@RequestParam String examinationNumber,@RequestParam String schoolKey){
-        ExamineevolunteerinformationEO examineevolunteerinformationEO = examineevolunteerinformationEOService.checkExamineeSchool(examinationNumber, schoolKey);
-        if (examineevolunteerinformationEO != null){
-            return Result.error("",SCHOOL_SIGNED,examineevolunteerinformationEO);
-        }else{
-            return Result.success("",SCHOOL_NOTSIGNED,examineevolunteerinformationEO);
-        }
-
-    }
-
-    /**
-     * 考生申报志愿
-     * 报考志愿包括：准考证号（随着登录人可直接带出）、志愿编号、学校名称、专业名称、申报时间。
-     * 其中申报时间由系统获得 不用填写
-     * 刘笑天
-     * @param examinationnumber
-     * @param volunteernumber
-     * @param schoolkey
-     * @param majorkey
-     * @return
-     */
-    @ApiOperation(value = "|ExamineevolunteerinformationEO|考生申报志愿")
-    @PostMapping("/ExamineeDeclareVolunteer")
-    public ResponseMessage examineeDeclareVolunteer(@RequestParam String examinationnumber,
-                                                    @RequestParam Integer volunteernumber,
-                                                    @RequestParam String schoolkey,
-                                                    @RequestParam String majorkey)
-    {
-        /**
-         * 志愿数量验证可以由前端做 通过调用“获取考生志愿”接口 得到志愿list 判断list大小来判断志愿数量
-         * 此处验证只是暂时的
-         */
-        List<Map<String,Object>> examineeVolunteers= examineevolunteerinformationEOService.getExamineeVolunteerInformation(examinationnumber);
-        System.out.println(examineeVolunteers.size());
-        if(examineeVolunteers.size()>=7){
-            return Result.error(APPLY_SEVEN);
-        }
-        ExamineevolunteerinformationEO examineevolunteerinformationEO = new ExamineevolunteerinformationEO();
-        examineevolunteerinformationEO.setExaminationnumber(examinationnumber);
-        examineevolunteerinformationEO.setVolunteernumber(volunteernumber);
-        examineevolunteerinformationEO.setSchoolkey(schoolkey);
-        examineevolunteerinformationEO.setMajorkey(majorkey);
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//String类型
-        examineevolunteerinformationEO.setDeclaretime(new Date());
-        examineevolunteerinformationEOService.examineeDeclareVolunteer(examineevolunteerinformationEO);
-        return Result.success(APPLY_SUCCESS);
-    }
-
-//    @ApiOperation(value = "|ExamineevolunteerinformationEO|考生修改志愿顺序（未完成）")
-//    @PostMapping("/ExamineeUpdateVolunteer")
-//    public ResponseMessage examineeUpdateVolunteer(@RequestBody ExamineevolunteerinformationEO examineevolunteerinformationEO){
-//        examineevolunteerinformationEOService.examineeUpdateVolunteer(examineevolunteerinformationEO);
-//	    return Result.success();
-//    }
-
-    /**
-     * 考生批量删除志愿
-     * 刘笑天 20181011
-     * @param volunteerKeys
-     * @return
-     */
-    @ApiOperation(value = "|ExamineevolunteerinformationEO|考生批量删除志愿")
-    @PostMapping("/ExamineeBatchDeleteVolunteer")
-    public ResponseMessage examineeBatchDeleteVolunteer(@RequestBody List<ExamineevolunteerinformationEO> volunteerKeys){
-//        ExamineevolunteerinformationEO EO = new ExamineevolunteerinformationEO();
-//        EO.setVolunteerkey("1");
-
-
-//        List<ExamineevolunteerinformationEO> volunteerKeys = new ArrayList();
-
-//        ExamineevolunteerinformationVO examineevolunteerinformationVO = new ExamineevolunteerinformationVO();
-//        examineevolunteerinformationVO.setList(volunteerKeys);
-        ExamineevolunteerinformationVO examineevolunteerinformationVO = new ExamineevolunteerinformationVO();
-        if(volunteerKeys.size() != 0 ||volunteerKeys != null){
-            examineevolunteerinformationVO.setList(volunteerKeys);
-        }
-        examineevolunteerinformationEOService.examineeBatchDeleteVolunteer(examineevolunteerinformationVO);
-        return Result.success(BATCHDELETE_SUCCESS);
-    }
 }

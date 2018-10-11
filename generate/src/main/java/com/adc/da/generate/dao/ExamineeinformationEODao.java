@@ -33,13 +33,4 @@ public interface ExamineeinformationEODao extends BaseDao<ExamineeinformationEO>
      * @return
      */
     int queryEMail(String email);
-
-    /**
-     * 注册查重
-     * 刘笑天 20181011
-     * @param examineeinformationEO
-     * @return
-     */
-    ExamineeinformationEO checkRegistInfo(ExamineeinformationEO examineeinformationEO);
-
 }

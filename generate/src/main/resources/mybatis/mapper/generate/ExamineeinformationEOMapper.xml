@@ -24,18 +24,10 @@
     <result column="EMail" property="email" />
     <result column="PhoneNumber" property="phonenumber" />
   </resultMap>
-    <select id="checkRegistInfo" resultMap="BaseResultMap">
-        SELECT * FROM (select <include refid="Base_Column_List" />
-        FROM EXAMINEEINFORMATION
-        WHERE "QuasiExaminationNumber" = #{quasiexaminationnumber}
-        OR "PhoneNumber" = #{phonenumber}
-        OR "EMail" = #{email})WHERE rownum = 1
 
-    </select>
   <!-- EXAMINEEINFORMATION table all fields -->
-    <!--刘笑天修改 20181011-->
   <sql id="Base_Column_List" >
-     "ExamineeKey", "QuasiExaminationNumber", "RealName", "Sex", "RegisteredResidence", "PoliticalOutlook" ,
+     "ExamineeKey", "QuasiexaminationNumber", "RealName", "Sex", "RegisteredResidence", "PoliticalOutlook" ,
      "NativePlace", "Age", "IDCardNumber", "Chinese", "Math", "ForeignLanguages", "Sports", "OtherSynthesis",
       "SpecialBonus", "TotalScore", "GraduateSchool", "UserKey", "EMail", "PhoneNumber"
   </sql>
@@ -116,57 +108,57 @@
     values (#{examineekey, jdbcType=VARCHAR}, #{quasiexaminationnumber, jdbcType=VARCHAR}, #{realname, jdbcType=VARCHAR}, #{sex, jdbcType=VARCHAR}, #{registeredresidence, jdbcType=VARCHAR}, #{politicaloutlook , jdbcType=VARCHAR}, #{nativeplace, jdbcType=VARCHAR}, #{age, jdbcType=INTEGER}, #{idcardnumber, jdbcType=VARCHAR}, #{chinese, jdbcType=INTEGER}, #{math, jdbcType=INTEGER}, #{foreignlanguages, jdbcType=INTEGER}, #{sports, jdbcType=INTEGER}, #{othersynthesis, jdbcType=INTEGER}, #{specialbonus, jdbcType=INTEGER}, #{totalscore, jdbcType=INTEGER}, #{graduateschool, jdbcType=VARCHAR}, #{userkey, jdbcType=VARCHAR}, #{email, jdbcType=VARCHAR}, #{phonenumber, jdbcType=VARCHAR})
   </insert>
 
-    <!-- 动态插入记录 主键是序列 -->
-    <insert id="insertSelective" parameterType="com.adc.da.generate.entity.ExamineeinformationEO" >
+  <!-- 动态插入记录 主键是序列 -->
+  <insert id="insertSelective" parameterType="com.adc.da.generate.entity.ExamineeinformationEO" >
         <!-- <selectKey resultType="java.lang.String" order="BEFORE" keyProperty="examineekey">
         SELECT SEQ_EXAMINEEINFORMATION.NEXTVAL FROM DUAL
     </selectKey> -->
         insert into EXAMINEEINFORMATION
-        <trim prefix="(" suffix=")" suffixOverrides="," >
-            <if test="examineekey != null" >"ExamineeKey",</if>
-            <if test="quasiexaminationnumber != null" >"QuasiExaminationNumber",</if>
-            <if test="realname != null" >"RealName",</if>
-            <if test="sex != null" >"Sex",</if>
-            <if test="registeredresidence != null" >"RegisteredResidence",</if>
-            <if test="politicaloutlook  != null" >"PoliticalOutlook" ,</if>
-            <if test="nativeplace != null" >"NativePlace",</if>
-            <if test="age != null" >"Age",</if>
-            <if test="idcardnumber != null" >"IDCardNumber",</if>
-            <if test="chinese != null" >"Chinese",</if>
-            <if test="math != null" >"Math",</if>
-            <if test="foreignlanguages != null" >"ForeignLanguages",</if>
-            <if test="sports != null" >"Sports",</if>
-            <if test="othersynthesis != null" >"OtherSynthesis",</if>
-            <if test="specialbonus != null" >"SpecialBonus",</if>
-            <if test="totalscore != null" >"TotalScore",</if>
-            <if test="graduateschool != null" >"GraduateSchool",</if>
-            <if test="userkey != null" >"UserKey",</if>
-            <if test="email != null" >"EMail",</if>
-            <if test="phonenumber != null" >"PhoneNumber",</if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides="," >
-            <if test="examineekey != null" >#{examineekey, jdbcType=VARCHAR},</if>
-            <if test="quasiexaminationnumber != null" >#{quasiexaminationnumber, jdbcType=VARCHAR},</if>
-            <if test="realname != null" >#{realname, jdbcType=VARCHAR},</if>
-            <if test="sex != null" >#{sex, jdbcType=VARCHAR},</if>
-            <if test="registeredresidence != null" >#{registeredresidence, jdbcType=VARCHAR},</if>
-            <if test="politicaloutlook  != null" >#{politicaloutlook , jdbcType=VARCHAR},</if>
-            <if test="nativeplace != null" >#{nativeplace, jdbcType=VARCHAR},</if>
-            <if test="age != null" >#{age, jdbcType=INTEGER},</if>
-            <if test="idcardnumber != null" >#{idcardnumber, jdbcType=VARCHAR},</if>
-            <if test="chinese != null" >#{chinese, jdbcType=INTEGER},</if>
-            <if test="math != null" >#{math, jdbcType=INTEGER},</if>
-            <if test="foreignlanguages != null" >#{foreignlanguages, jdbcType=INTEGER},</if>
-            <if test="sports != null" >#{sports, jdbcType=INTEGER},</if>
-            <if test="othersynthesis != null" >#{othersynthesis, jdbcType=INTEGER},</if>
-            <if test="specialbonus != null" >#{specialbonus, jdbcType=INTEGER},</if>
-            <if test="totalscore != null" >#{totalscore, jdbcType=INTEGER},</if>
-            <if test="graduateschool != null" >#{graduateschool, jdbcType=VARCHAR},</if>
-            <if test="userkey != null" >#{userkey, jdbcType=VARCHAR},</if>
-            <if test="email != null" >#{email, jdbcType=VARCHAR},</if>
-            <if test="phonenumber != null" >#{phonenumber, jdbcType=VARCHAR},</if>
-        </trim>
-    </insert>
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+                <if test="examineekey != null" >examineekey,</if>
+                <if test="quasiexaminationnumber != null" >quasiexaminationnumber,</if>
+                <if test="realname != null" >realname,</if>
+                <if test="sex != null" >sex,</if>
+                <if test="registeredresidence != null" >registeredresidence,</if>
+                <if test="politicaloutlook  != null" >politicaloutlook ,</if>
+                <if test="nativeplace != null" >nativeplace,</if>
+                <if test="age != null" >age,</if>
+                <if test="idcardnumber != null" >idcardnumber,</if>
+                <if test="chinese != null" >chinese,</if>
+                <if test="math != null" >math,</if>
+                <if test="foreignlanguages != null" >foreignlanguages,</if>
+                <if test="sports != null" >sports,</if>
+                <if test="othersynthesis != null" >othersynthesis,</if>
+                <if test="specialbonus != null" >specialbonus,</if>
+                <if test="totalscore != null" >totalscore,</if>
+                <if test="graduateschool != null" >graduateschool,</if>
+                <if test="userkey != null" >userkey,</if>
+                <if test="email != null" >email,</if>
+                <if test="phonenumber != null" >phonenumber,</if>
+            </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+                <if test="examineekey != null" >#{examineekey, jdbcType=VARCHAR},</if>
+                <if test="quasiexaminationnumber != null" >#{quasiexaminationnumber, jdbcType=VARCHAR},</if>
+                <if test="realname != null" >#{realname, jdbcType=VARCHAR},</if>
+                <if test="sex != null" >#{sex, jdbcType=VARCHAR},</if>
+                <if test="registeredresidence != null" >#{registeredresidence, jdbcType=VARCHAR},</if>
+                <if test="politicaloutlook  != null" >#{politicaloutlook , jdbcType=VARCHAR},</if>
+                <if test="nativeplace != null" >#{nativeplace, jdbcType=VARCHAR},</if>
+                <if test="age != null" >#{age, jdbcType=INTEGER},</if>
+                <if test="idcardnumber != null" >#{idcardnumber, jdbcType=VARCHAR},</if>
+                <if test="chinese != null" >#{chinese, jdbcType=INTEGER},</if>
+                <if test="math != null" >#{math, jdbcType=INTEGER},</if>
+                <if test="foreignlanguages != null" >#{foreignlanguages, jdbcType=INTEGER},</if>
+                <if test="sports != null" >#{sports, jdbcType=INTEGER},</if>
+                <if test="othersynthesis != null" >#{othersynthesis, jdbcType=INTEGER},</if>
+                <if test="specialbonus != null" >#{specialbonus, jdbcType=INTEGER},</if>
+                <if test="totalscore != null" >#{totalscore, jdbcType=INTEGER},</if>
+                <if test="graduateschool != null" >#{graduateschool, jdbcType=VARCHAR},</if>
+                <if test="userkey != null" >#{userkey, jdbcType=VARCHAR},</if>
+                <if test="email != null" >#{email, jdbcType=VARCHAR},</if>
+                <if test="phonenumber != null" >#{phonenumber, jdbcType=VARCHAR},</if>
+            </trim>
+  </insert>
 
   <!-- 根据pk，修改记录-->
   <update id="updateByPrimaryKey" parameterType="com.adc.da.generate.entity.ExamineeinformationEO" >
@@ -262,7 +254,7 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
     select <include refid="Base_Column_List" /> 
       from EXAMINEEINFORMATION
-     where "ExamineeKey" = #{value}
+     where examineekey = #{value}
 
   </select>
 
