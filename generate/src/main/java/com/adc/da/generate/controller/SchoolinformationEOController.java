@@ -6,6 +6,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import java.util.List;
 import java.util.Map;
 
+import com.adc.da.generate.VO.SchoolinformationVO;
 import com.adc.da.generate.entity.UserinformationEO;
 import com.adc.da.generate.page.UserinformationEOPage;
 import com.adc.da.generate.util.UserinformationEOPrompt;
@@ -81,14 +82,14 @@ public class SchoolinformationEOController extends BaseController<Schoolinformat
     @ApiOperation(value = "|SchoolinformationEO|新增")
     @PostMapping("/addSchoolInfo")
     @RequiresPermissions("generate:schoolinformation:save")
-    public ResponseMessage addSchoolInfo(@RequestBody SchoolinformationEO schoolinformationEO,@RequestParam String userRole) throws Exception {
+    public ResponseMessage addSchoolInfo(@RequestBody SchoolinformationVO schoolinformationVO) throws Exception {
         //身份校验
-        if(!"1".equals(userRole)){//若不是管理员
+        if(!"1".equals(schoolinformationVO.getUserLoginRole())){//若不是管理员
             return Result.error(UserinformationEOPrompt.USE_PERMIT);
         }
         //学习名称重复校验
-        if(schoolinformationEOService.schoolNameTesting(schoolinformationEO).equals("1")){
-            schoolinformationEOService.schoolInfoAdd(schoolinformationEO);
+        if(schoolinformationEOService.schoolNameTesting(schoolinformationVO).equals("1")){
+            schoolinformationEOService.schoolInfoAdd(schoolinformationVO);
             return Result.success(PublicPrompt.INSERT_SUCCESS);
         }else {
             return Result.error(SCHOOLNAME_REPEAT);
@@ -105,15 +106,15 @@ public class SchoolinformationEOController extends BaseController<Schoolinformat
     * @Version:        1.0
     */
     @ApiOperation(value = "|SchoolinformationEO|修改")
-    @PutMapping("/updateSchoolInfo")
+    @PostMapping("/updateSchoolInfo")
     @RequiresPermissions("generate:schoolinformation:update")
-    public ResponseMessage updateSchoolInfo(@RequestBody SchoolinformationEO schoolinformationEO,@RequestParam String userRole) throws Exception {
+    public ResponseMessage updateSchoolInfo(@RequestBody SchoolinformationVO schoolinformationVO) throws Exception {
         //身份校验
-        if(!"1".equals(userRole)){//若不是管理员
+        if(!"1".equals(schoolinformationVO.getUserLoginRole())){//若不是管理员
             return Result.error(UserinformationEOPrompt.USE_PERMIT);
         }
-        if(schoolinformationEOService.schoolNameTestingWhenUpdate(schoolinformationEO).equals("1")){
-            schoolinformationEOService.updateSchoolInfo(schoolinformationEO);
+        if(schoolinformationEOService.schoolNameTestingWhenUpdate(schoolinformationVO).equals("1")){
+            schoolinformationEOService.updateSchoolInfo(schoolinformationVO);
             return Result.success(PublicPrompt.UPDATE_SUCCESS);
         }else {
             return Result.error(SCHOOLNAME_REPEAT);
@@ -130,7 +131,7 @@ public class SchoolinformationEOController extends BaseController<Schoolinformat
     * @Version:        1.0
     */
     @ApiOperation(value = "|SchoolinformationEO|删除")
-    @DeleteMapping("/deleteSchoolInfo")
+    @PostMapping("/deleteSchoolInfo")
     @RequiresPermissions("generate:schoolinformation:delete")
     public ResponseMessage deleteSchoolInfo(@RequestParam String schoolkey,@RequestParam String userRole) throws Exception {
         //身份校验

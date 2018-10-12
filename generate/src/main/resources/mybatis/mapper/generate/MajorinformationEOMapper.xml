@@ -46,9 +46,18 @@
 
     <!-- 添加专业信息 -->
     <insert id="majorInfoAdd" parameterType="com.adc.da.generate.entity.MajorinformationEO">
-        insert into "MAJORINFORMATION"
-        VALUES (#{majorkey, jdbcType=VARCHAR}, #{majorname, jdbcType=VARCHAR}, #{createtime, jdbcType=TIMESTAMP})
-    </insert>
+        insert into MAJORINFORMATION
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="majorkey != null" >"MajorKey",</if>
+            <if test="majorname != null" >"MajorName",</if>
+            <if test="createtime != null" >"CreateTime",</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="majorkey != null" >#{majorkey, jdbcType=VARCHAR},</if>
+            <if test="majorname != null" >#{majorname, jdbcType=VARCHAR},</if>
+            <if test="createtime != null" >#{createtime, jdbcType=TIMESTAMP},</if>
+        </trim>
+  </insert>
 
   <!-- 动态插入记录 主键是序列 -->
   <insert id="insertSelective" parameterType="com.adc.da.generate.entity.MajorinformationEO" >
@@ -117,7 +126,7 @@
 
   <!-- MAJORINFORMATION 列表总数-->
   <select id="queryByCount" resultType="java.lang.Integer" parameterType="com.adc.da.base.page.BasePage">
-    select count(1) from MAJORINFORMATION
+    select count(1) from MAJORINFORMATION WHERE "MajorName" LIKE '%${majorname}%'
 
   </select>
 

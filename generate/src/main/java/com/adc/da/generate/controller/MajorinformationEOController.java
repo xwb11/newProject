@@ -6,6 +6,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import java.util.List;
 import java.util.Map;
 
+import com.adc.da.generate.VO.MajorinformationVO;
 import com.adc.da.generate.entity.SchoolinformationEO;
 import com.adc.da.generate.page.SchoolinformationEOPage;
 import com.adc.da.generate.util.UserinformationEOPrompt;
@@ -97,14 +98,14 @@ public class MajorinformationEOController extends BaseController<Majorinformatio
     @ApiOperation(value = "|MajorinformationEO|新增")
     @PostMapping("/majorInfoAdd")
     @RequiresPermissions("majorInfoAdd")
-    public ResponseMessage majorInfoAdd(@RequestBody MajorinformationEO majorinformationEO,@RequestParam String userRole) throws Exception {
+    public ResponseMessage majorInfoAdd(@RequestBody MajorinformationVO majorinformationVO) throws Exception {
 //        majorinformationEOService.insertSelective(majorinformationEO);
         //身份校验
-        if(!"1".equals(userRole)){//若不是管理员
+        if(!"1".equals(majorinformationVO.getUserLoginRole())){//若不是管理员
             return Result.error(UserinformationEOPrompt.USE_PERMIT);
         }
-        if(majorinformationEOService.majorNameTesting(majorinformationEO).equals("1")){
-            majorinformationEOService.majorInfoAdd(majorinformationEO);
+        if(majorinformationEOService.majorNameTesting(majorinformationVO).equals("1")){
+            majorinformationEOService.majorInfoAdd(majorinformationVO);
            return Result.success(PublicPrompt.INSERT_SUCCESS) ;
         }else {
            return Result.error(MAJORNAME_REPEAT);
@@ -123,13 +124,13 @@ public class MajorinformationEOController extends BaseController<Majorinformatio
     @ApiOperation(value = "|MajorinformationEO|修改")
     @PutMapping("/updateMajorInfo")
     @RequiresPermissions("generate:majorinformation:update")
-    public ResponseMessage updateMajorInfo(@RequestBody MajorinformationEO majorinformationEO,@RequestParam String userRole) throws Exception {
+    public ResponseMessage updateMajorInfo(@RequestBody MajorinformationVO majorinformationVO) throws Exception {
         //身份校验
-        if(!"1".equals(userRole)){//若不是管理员
+        if(!"1".equals(majorinformationVO.getUserLoginRole())){//若不是管理员
             return Result.error(UserinformationEOPrompt.USE_PERMIT);
         }
-        if(majorinformationEOService.majorNameTestingWhenUpdate(majorinformationEO).equals("1")){
-            majorinformationEOService.updateMajorInfo(majorinformationEO);
+        if(majorinformationEOService.majorNameTestingWhenUpdate(majorinformationVO).equals("1")){
+            majorinformationEOService.updateMajorInfo(majorinformationVO);
             return Result.success(PublicPrompt.UPDATE_SUCCESS) ;
         }else {
             return Result.error(MAJORNAME_REPEAT);

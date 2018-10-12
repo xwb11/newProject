@@ -127,7 +127,7 @@
                 <if test="realname != null" >"RealName",</if>
                 <if test="sex != null" >"Sex",</if>
                 <if test="registeredresidence != null" >"RegisteredResidence",</if>
-                <if test="politicaloutlook  != null" >"PoliticalOutlook ",</if>
+                <if test="politicaloutlook  != null" >"PoliticalOutlook",</if>
                 <if test="nativeplace != null" >"NativePlace",</if>
                 <if test="age != null" >"Age",</if>
                 <if test="idcardnumber != null" >"IDCardNumber",</if>

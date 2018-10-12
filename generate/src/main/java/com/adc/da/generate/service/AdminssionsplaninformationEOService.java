@@ -1,5 +1,6 @@
 package com.adc.da.generate.service;
 
+import com.adc.da.base.page.BasePage;
 import com.adc.da.generate.VO.AdminssionsplaninformationVO;
 import com.adc.da.generate.page.AdminssionsplaninformationVOPage;
 import org.slf4j.Logger;
@@ -42,8 +43,20 @@ public class AdminssionsplaninformationEOService extends BaseService<Adminssions
     * @CreateDate:     2018/10/10 16:58
     * @Version:        1.0
     */
-    public List<AdminssionsplaninformationVO> queryAdminssionInfoByPage(AdminssionsplaninformationVOPage page) {
-        return dao.queryAdmissionInfoByPage(page);
+    public List<AdminssionsplaninformationVO> queryAdminssionInfoByPage(BasePage page) throws Exception {
+        Integer rowCount = this.queryByCount(page);
+        page.getPager().setRowCount(rowCount);
+        return this.dao.queryAdmissionInfoByPage(page);
+    }
+
+    /**
+    * @Description:    获取招生信息符合条件的信息数
+    * @Author:         xwb
+    * @CreateDate:     2018/10/12 13:25
+    * @Version:        1.0
+    */
+    public int queryByCount(BasePage page) throws Exception {
+        return this.getDao().queryAdminssionByCount(page);
     }
     /**
     * @Description:    查询本年招生信息（模糊查询）
@@ -58,6 +71,16 @@ public class AdminssionsplaninformationEOService extends BaseService<Adminssions
         return dao.selectAdmission(adminssionsplaninformationVO);
     }
 
+    /**
+     * @Description:    获取去年招考信息符合条件的信息数
+     * @Author:         xwb
+     * @CreateDate:     2018/10/12 13:25
+     * @Version:        1.0
+     */
+    public int queryLastByCount(BasePage page) throws Exception {
+        return this.getDao().queryLastAdminssionByCount(page);
+    }
+
 //    public List<AdminssionsplaninformationVO> selectLastYearAdmission(AdminssionsplaninformationVO adminssionsplaninformationVO){
 //        return dao.selectLastYearAdmission(adminssionsplaninformationVO);
 //    }
@@ -67,8 +90,10 @@ public class AdminssionsplaninformationEOService extends BaseService<Adminssions
     * @CreateDate:     2018/10/10 16:59
     * @Version:        1.0
     */
-    public List<AdminssionsplaninformationVO> selectLastYearAdmission(AdminssionsplaninformationVOPage page){
-        return dao.selectLastYearAdmission(page);
+    public List<AdminssionsplaninformationVO> selectLastYearAdmission(BasePage page) throws Exception {
+        Integer rowCount = this.queryLastByCount(page);
+        page.getPager().setRowCount(rowCount);
+        return this.dao.selectLastYearAdmission(page);
     }
     /**
      * 获取已发布专业的学校
