@@ -90,13 +90,16 @@ public class ExamineeinformationEOController extends BaseController<Examineeinfo
         return Result.success();
     }
 
+     //2018/10/12 13:39:43
     /**
-     * 考生信息录入
-     * 刘志杰 2018-10-08
-     * @param examineeinformationVO 封装了所有 userinformationEO，examineeinformationEO的信息
-     * @return
-     * @throws Exception
-     */
+    * @Description:    考生信息录入
+    * @Author:         lzj
+    * @CreateDate:     2018/10/10
+    * @UpdateUser:     xwb修改
+    * @UpdateDate:     2018/10/12 13:40
+    * @UpdateRemark:   修改内容
+    * @Version:        1.0
+    */
     @ApiOperation(value = "|ExamineeinformationEO|考生信息录入")
     @PostMapping("/informationEntry")
     public ResponseMessage informationEntry(@RequestBody ExamineeinformationVO examineeinformationVO) throws Exception {
@@ -107,9 +110,12 @@ public class ExamineeinformationEOController extends BaseController<Examineeinfo
         if (result != "true") {
             return Result.error(result);
         }
+        userinformationEO.setUserkey(UUID.randomUUID());
         examineeinformationEO.setExamineekey(UUID.randomUUID());
+        examineeinformationEO.setQuasiexaminationnumber(UUID.randomUserId());
+        examineeinformationEO.setUserkey(userinformationEO.getUserkey());
+        userinformationEOService.insertSelective(userinformationEO);
         examineeinformationEOService.insertSelective(examineeinformationEO);
-        userinformationEOService.updateByPrimaryKey(userinformationEO);
         return Result.success(ExamineeinformationEOPrompt.ENTRY_SUCCESS);
     }
 

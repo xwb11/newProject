@@ -258,6 +258,29 @@
         <result column="MajorName" property="majorname" />
     </resultMap>
 
+    <select id="queryAdminssionByCount" resultType="java.lang.Integer" parameterType="com.adc.da.base.page.BasePage">
+        select count(1) from
+        ADMINSSIONSPLANINFORMATION ,SCHOOLINFORMATION ,
+        MAJORINFORMATION
+        WHERE SCHOOLINFORMATION."SchoolName" LIKE '%${schoolname}%'
+        AND MAJORINFORMATION."MajorName" LIKE '%${majorname}%'
+        AND SCHOOLINFORMATION."ProvinceName" LIKE '%${provincename}%'
+        AND ADMINSSIONSPLANINFORMATION."MajorKey"=MAJORINFORMATION."MajorKey"
+        AND ADMINSSIONSPLANINFORMATION."SchoolKey"=SCHOOLINFORMATION."SchoolKey"
+        AND ADMINSSIONSPLANINFORMATION."IsPublish"=1
+        AND ADMINSSIONSPLANINFORMATION."CreateYear"=(Select Extract(year from sysdate) from dual)
+
+    </select>
+    <select id="queryLastAdminssionByCount" resultType="java.lang.Integer" parameterType="com.adc.da.base.page.BasePage">
+        select count(1) from
+        ADMINSSIONSPLANINFORMATION a,SCHOOLINFORMATION s,
+        MAJORINFORMATION m
+        WHERE s."SchoolName"=#{schoolname,jdbcType=VARCHAR} AND m."MajorName"= #{majorname,jdbcType=VARCHAR} and s."ProvinceName"=#{provincename,jdbcType=VARCHAR}
+        AND
+        a."MajorKey"=m."MajorKey" and a."SchoolKey"=s."SchoolKey" and a."IsPublish"=1
+        AND a."CreateYear"=(Select Extract(year from sysdate)-1 from dual)
+    </select>
+
     <!-- 查询条件 -->
     <sql id="AdminssionBase_Where_Clause">
         where 1=1

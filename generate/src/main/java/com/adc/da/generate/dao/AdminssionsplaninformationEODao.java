@@ -1,6 +1,7 @@
 package com.adc.da.generate.dao;
 
 import com.adc.da.base.dao.BaseDao;
+import com.adc.da.base.page.BasePage;
 import com.adc.da.generate.entity.AdminssionsplaninformationEO;
 import com.adc.da.generate.VO.AdminssionsplaninformationVO;
 import com.adc.da.generate.page.AdminssionsplaninformationVOPage;
@@ -23,7 +24,9 @@ public interface AdminssionsplaninformationEODao extends BaseDao<Adminssionsplan
     * @CreateDate:     2018/10/10 16:43
     * @Version:        1.0
     */
-    List<AdminssionsplaninformationVO> queryAdmissionInfoByPage(AdminssionsplaninformationVOPage page);
+    List<AdminssionsplaninformationVO> queryAdmissionInfoByPage(BasePage page);
+
+
     /**
     * @Description:    查询本年招生信息（模糊查询）
     * @Author:         xwb
@@ -37,7 +40,31 @@ public interface AdminssionsplaninformationEODao extends BaseDao<Adminssionsplan
     * @CreateDate:     2018/10/10 16:44
     */
 //    List<AdminssionsplaninformationVO> selectLastYearAdmission(AdminssionsplaninformationVO adminssionsplaninformationVO);
-    List<AdminssionsplaninformationVO> selectLastYearAdmission(AdminssionsplaninformationVOPage page);
+    List<AdminssionsplaninformationVO> selectLastYearAdmission(BasePage page);
+
+    /**
+    * @Description:    获取招生信息符合条件的信息数
+    * @Author:         xwb
+    * @CreateDate:     2018/10/12 13:27
+    * @UpdateUser:     xwb
+    * @UpdateDate:     2018/10/12 13:27
+    * @UpdateRemark:   修改内容
+    * @Version:        1.0
+    */
+    int queryAdminssionByCount(BasePage page);
+    /**
+     * @Description:    获取去年招考信息符合条件的信息数
+     * @Author:         xwb
+     * @CreateDate:     2018/10/12 13:27
+     * @UpdateUser:     xwb
+     * @UpdateDate:     2018/10/12 13:27
+     * @UpdateRemark:   修改内容
+     * @Version:        1.0
+     */
+    int queryLastAdminssionByCount(BasePage page);
+
+
+
     /**
      * 获取已发布专业的学校
      * 刘笑天 20181011
