@@ -74,7 +74,7 @@ public class AdminssionsplaninformationEOController extends BaseController<Admin
         return Result.success(PublicPrompt.SEARCH_SUCCESS,adminssionsplaninformationEOService.selectAdminssion(adminssionsplaninformationVO));
 	}
 
-//	/**
+//
 //	* @Description:    查询去年招考信息
 //	* @Author:         xwb
 //	* @CreateDate:     2018/10/9 22:22
