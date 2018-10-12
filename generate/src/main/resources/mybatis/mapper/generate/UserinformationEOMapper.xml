@@ -69,6 +69,7 @@
                 <if test="userpassword != null" >"UserPassword",</if>
                 <if test="userrole != null" >"UserRole",</if>
                 <if test="createtime != null" >"CreateTime",</if>
+                <if test="status != null" >"Status",</if>
             </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
                 <if test="userkey != null" >#{userkey, jdbcType=VARCHAR},</if>
@@ -76,6 +77,7 @@
                 <if test="userpassword != null" >#{userpassword, jdbcType=VARCHAR},</if>
                 <if test="userrole != null" >#{userrole, jdbcType=VARCHAR},</if>
                 <if test="createtime != null" >#{createtime, jdbcType=TIMESTAMP},</if>
+                <if test="status != null" >#{status, jdbcType=VARCHAR},</if>
             </trim>
   </insert>
     <!--用户信息新增 宣文彬 2019/10/10-->
@@ -133,23 +135,22 @@
 
   </delete>
 
-  <!-- USERINFORMATION 列表总数-->
+  <!-- USERINFORMATION 列表总数 使用原框架查询总数据  宣文彬2019/10/11-->
   <select id="queryByCount" resultType="java.lang.Integer" parameterType="com.adc.da.base.page.BasePage">
-    select count(1) from USERINFORMATION
-    <include refid="Base_Where_Clause"/>
+    select count(1) from USERINFORMATION WHERE USERINFORMATION."UserRole" != '3'
+
   </select>
 
-  <!-- 查询USERINFORMATION列表 -->
+  <!-- 查询USERINFORMATION列表 使用原框架查询数据+模糊查询  -->
   <select id="queryByPage" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">
 	select <include refid="Base_Column_List" /> from
 		(select tmp_tb.* , rownum rn from
 			(select <include refid="Base_Column_List" /> from USERINFORMATION
-			 <include refid="Base_Where_Clause"/>
-			 <if test="pager.orderCondition != null and pager.orderCondition != ''" >
-			 	${pager.orderCondition}
-			 </if>
+              WHERE
+              USERINFORMATION."UserRole" != '3' AND  "UserAccount" LIKE '%${useraccount}%'
 			) tmp_tb where rownum &lt;= ${pager.endIndex})
 			where rn &gt;= ${pager.startIndex}
+      ORDER BY "CreateTime" desc
   </select>
 
   <select id="queryByList" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">
@@ -169,17 +170,17 @@
         select <include refid="Base_Column_List" /> from
         (select tmp_tb.* , rownum rn from
         (select <include refid="Base_Column_List" /> from USERINFORMATION
-        WHERE  USERINFORMATION."UserRole" != '3' AND  "UserAccount" LIKE '%${useraccount}%'
-        <include refid="Base_Where_Clause"/>
-        <if test="pager.orderCondition != null and pager.orderCondition != ''" >
-            ${pager.orderCondition}
-        </if>
+        WHERE
+        USERINFORMATION."UserRole" != '3' AND  "UserAccount" LIKE '%${useraccount}%'
+
         ) tmp_tb where rownum &lt;= ${pager.endIndex})
         where rn &gt;= ${pager.startIndex}
         ORDER BY "CreateTime" desc
     </select>
 
+    <!--检查账户是否重复-->
     <select id="queryAccount" resultType="java.lang.Integer" parameterType="java.lang.String">
         select count("UserKey") from USERINFORMATION WHERE "UserAccount"=#{useraccount,jdbcType=VARCHAR}
     </select>
+
 </mapper>

@@ -163,7 +163,7 @@ public class UserinformationEOController extends BaseController<UserinformationE
     @ApiOperation(value = "|UserinformationEO|查询用户信息（分页）")
     @PostMapping("/queryUserInfoByPage")
     public ResponseMessage<PageInfo<UserinformationEO>> queryUserInfoByPage(UserinformationEOPage page) throws Exception {
-        List<UserinformationEO> rows = userinformationEOService.queryUserInfoByPage(page);
+        List<UserinformationEO> rows = userinformationEOService.queryByPage(page);
         return Result.success(getPageInfo(page.getPager(), rows));
     }
     /**

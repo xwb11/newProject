@@ -90,13 +90,6 @@
      where "MajorKey" = #{majorkey}
   </update>
 
-    <!--查询专业信息 宣文彬 2019/10/10-->
-  <!-- 查询 MAJORINFORMATION (模糊查询)-->
-  <select id="selectMajorInfo" resultMap="BaseResultMap" parameterType="java.lang.String">
-      SELECT <include refid="Base_Column_List" /> FROM MAJORINFORMATION
-      WHERE "MajorName" LIKE '%${majorname}%'
-      ORDER BY "CreateTime" DESC
-  </select>
 
     <!--查询专业信息（分页）宣文彬 2019/10/10-->
     <select id="queryByMajorInfoPage"  resultMap="BaseResultMap" parameterType="java.lang.String">
@@ -113,19 +106,7 @@
         ORDER BY "CreateTime" DESC
     </select>
 
-    <!-- 根据专业名称模糊查询 MAJORINFORMATION 宣文彬 2019/10/10 -->
-   <select id="selectMajorByName" resultMap="BaseResultMap" parameterType="java.lang.String">
-       select <include refid="Base_Column_List" /> from
-       (select tmp_tb.* , rownum rn from
-       (SELECT * FROM MAJORINFORMATION
-       <where>
-           <if test="majorname!=''">
-               MajorName LIKE '%${majorname}%')
-           </if>
-       </where>
-       ORDER BY CreateTime DESC)tmp_tb where rownum &lt;= ${pager.endIndex})
-       WHERE rn &gt;= ${pager.startIndex}
-   </select>
+
 
   <!-- 删除记录 -->
   <delete id="majorInfoDelete" parameterType="java.lang.String">
@@ -137,20 +118,22 @@
   <!-- MAJORINFORMATION 列表总数-->
   <select id="queryByCount" resultType="java.lang.Integer" parameterType="com.adc.da.base.page.BasePage">
     select count(1) from MAJORINFORMATION
-    <include refid="Base_Where_Clause"/>
+
   </select>
 
-  <!-- 查询MAJORINFORMATION列表 -->
+  <!-- 查询MAJORINFORMATION列表 使用原框架分页查询加模糊查询-->
   <select id="queryByPage" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">
 	select <include refid="Base_Column_List" /> from
 		(select tmp_tb.* , rownum rn from
 			(select <include refid="Base_Column_List" /> from MAJORINFORMATION
-			 <include refid="Base_Where_Clause"/>
-			 <if test="pager.orderCondition != null and pager.orderCondition != ''" >
-			 	${pager.orderCondition}
-			 </if>
+              <where>
+                  <if test="majorname!=''">
+                      "MajorName" LIKE '%${majorname}%'
+                  </if>
+              </where>
 			) tmp_tb where rownum &lt;= ${pager.endIndex})
 			where rn &gt;= ${pager.startIndex}
+      ORDER BY "CreateTime" DESC
   </select>
 
   <select id="queryByList" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">

@@ -8,7 +8,7 @@
     <result column="RealName" property="realname" />
     <result column="Sex" property="sex" />
     <result column="RegisteredResidence" property="registeredresidence" />
-    <result column="PoliticalOutlook " property="politicaloutlook " />
+    <result column="PoliticalOutlook" property="politicaloutlook" />
     <result column="NativePlace" property="nativeplace" />
     <result column="Age" property="age" />
     <result column="IDCardNumber" property="idcardnumber" />
@@ -34,7 +34,7 @@
     </select>
   <!-- EXAMINEEINFORMATION table all fields -->
   <sql id="Base_Column_List" >
-     "ExamineeKey", "QuasiexaminationNumber", "RealName", "Sex", "RegisteredResidence", "PoliticalOutlook" ,
+     "ExamineeKey", "QuasiExaminationNumber", "RealName", "Sex", "RegisteredResidence", "PoliticalOutlook" ,
      "NativePlace", "Age", "IDCardNumber", "Chinese", "Math", "ForeignLanguages", "Sports", "OtherSynthesis",
       "SpecialBonus", "TotalScore", "GraduateSchool", "UserKey", "EMail", "PhoneNumber"
   </sql>

@@ -57,7 +57,7 @@ public class MajorinformationEOController extends BaseController<Majorinformatio
     @ApiOperation(value = "|UserinformationEO|查询用户信息（分页加模糊查询）")
     @GetMapping("/queryMajorInfoByPage")
     public ResponseMessage<PageInfo<MajorinformationEO>> queryMajorInfoByPage(MajorinformationEOPage page) throws Exception {
-        List<MajorinformationEO> rows = majorinformationEOService.queryMajorInfoByPage(page);
+        List<MajorinformationEO> rows = majorinformationEOService.queryByPage(page);
         return Result.success(getPageInfo(page.getPager(), rows));
     }
 

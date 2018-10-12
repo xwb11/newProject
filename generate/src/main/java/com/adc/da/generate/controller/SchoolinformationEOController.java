@@ -46,7 +46,7 @@ public class SchoolinformationEOController extends BaseController<Schoolinformat
     }
 
     /**
-    * @Description:    查询学校信息（分页）
+    * @Description:    查询学校信息（分页+模糊查询）
     * @Author:         xwb
     * @CreateDate:     2018/10/10 9:59
     * @UpdateUser:     xwb
@@ -57,26 +57,10 @@ public class SchoolinformationEOController extends BaseController<Schoolinformat
     @ApiOperation(value = "|SchoolinformationEO|查询用户信息（分页）")
     @PostMapping("/querySchoolInfoByPage")
     public ResponseMessage<PageInfo<SchoolinformationEO>> querySchoolInfoByPage(@RequestBody SchoolinformationEOPage page) throws Exception {
-        List<SchoolinformationEO> rows = schoolinformationEOService.querySchoolInfoByPage(page);
+        List<SchoolinformationEO> rows = schoolinformationEOService.queryByPage(page);
         return Result.success(getPageInfo(page.getPager(), rows));
     }
 
-    /**
-    * @Description:    查询学校信息（模糊查询）
-    * @Author:         xwb
-    * @CreateDate:     2018/10/9 22:31
-    * @UpdateUser:     xwb
-    * @UpdateDate:     2018/10/9 22:31
-    * @UpdateRemark:   修改内容
-    * @Version:        1.0
-    */
-	@ApiOperation(value = "|SchoolinformationEO|查询")
-    @PostMapping("/selectSchoolInfo")
-    @RequiresPermissions("generate:schoolinformation:list")
-    public ResponseMessage  selectSchoolInfo(@RequestBody SchoolinformationEO schoolinformationEO) throws Exception {
-
-        return Result.success(PublicPrompt.SEARCH_SUCCESS,schoolinformationEOService.selectSchoolInfo(schoolinformationEO));
-	}
 
     @ApiOperation(value = "|SchoolinformationEO|详情")
     @GetMapping("/{schoolkey}")
@@ -102,6 +86,7 @@ public class SchoolinformationEOController extends BaseController<Schoolinformat
         if(!"1".equals(userRole)){//若不是管理员
             return Result.error(UserinformationEOPrompt.USE_PERMIT);
         }
+        //学习名称重复校验
         if(schoolinformationEOService.schoolNameTesting(schoolinformationEO).equals("1")){
             schoolinformationEOService.schoolInfoAdd(schoolinformationEO);
             return Result.success(PublicPrompt.INSERT_SUCCESS);

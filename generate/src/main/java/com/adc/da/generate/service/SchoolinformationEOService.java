@@ -96,7 +96,7 @@ public class SchoolinformationEOService extends BaseService<SchoolinformationEO,
      */
     public boolean updateSchoolInfo(SchoolinformationEO schoolinformationEO){
         if(schoolinformationEO.getSchoolkey()!=null&&!"".equals(schoolinformationEO.getSchoolkey())){
-            schoolinformationEO.setCreatetime(new Date());
+//            schoolinformationEO.setCreatetime(new Date());
             try {
                     int num = schoolinformationEODao.updateByPrimaryKeySelective(schoolinformationEO);
                     if (num>0) {

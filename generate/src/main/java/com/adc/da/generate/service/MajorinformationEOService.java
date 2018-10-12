@@ -93,7 +93,7 @@ public class MajorinformationEOService extends BaseService<MajorinformationEO, S
      */
     public boolean updateMajorInfo(@RequestBody MajorinformationEO majorinformationEO){
         if(majorinformationEO.getMajorkey()!=null&&!"".equals(majorinformationEO.getMajorkey())){
-            majorinformationEO.setCreatetime(new Date());
+//            majorinformationEO.setCreatetime(new Date());
             try {
                     int num = majorinformationEODao.updateByPrimaryKeySelective(majorinformationEO);
                     if (num>0) {
