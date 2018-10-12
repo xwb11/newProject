@@ -228,7 +228,7 @@
     <include refid="Base_Where_Clause"/>
   </select>
 
-    <!-- 获取所有考生报考的学校及志愿信息(含分页 模糊查询) 刘笑天 20181011-->
+    <!-- 获取所有考生报考的学校及志愿信息(含分页 模糊查询) 刘笑天 20181012 13:31 修改-->
     <select id="queryByPage" resultMap="ResultMap2" parameterType="java.util.HashMap">
         <!--select <include refid="Base_Column_List" /> from-->
         select "VolunteerKey","ExaminationNumber","SchoolName","MajorName","DeclareTime","VolunteerNumber" from
@@ -239,8 +239,10 @@
         on EVI."SchoolKey" = SI."SchoolKey"
         left join MAJORINFORMATION MI
         on EVI."MajorKey" = MI."MajorKey"
-        where EVI."AdmissionStatue" = 0
-        <trim suffixOverrides="," >
+        left join EXAMINEEINFORMATION EI
+        ON EI."QuasiExaminationNumber" = EVI."ExaminationNumber"
+        where
+        <trim suffixOverrides="," prefixOverrides="and">
             <if test="schoolname != null">
                 and SI."SchoolName" like '%'||#{schoolname}||'%'
             </if>
@@ -249,6 +251,9 @@
             </if>
             <if test="admissionstatue != null">
                 and EVI."AdmissionStatue" = #{admissionstatue}
+            </if>
+            <if test="starttotalscore != null and endtotalscore">
+                and EI."TotalScore" BETWEEN #{starttotalscore} AND #{endtotalscore}
             </if>
         </trim>
         order by EVI."DeclareTime" asc

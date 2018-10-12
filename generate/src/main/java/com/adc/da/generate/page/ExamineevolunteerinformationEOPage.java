@@ -37,6 +37,43 @@ public class ExamineevolunteerinformationEOPage extends BasePage {
     private String schoolnameOperator;
     private String provincename;
     private String provincenameOperator;
+    //刘笑天添加 20181012 13:33 starttotalscore starttotalscoreOperator endtotalscore endtotalscoreOperator
+    private Integer starttotalscore;
+    private Integer starttotalscoreOperator;
+    private Integer endtotalscore;
+    private Integer endtotalscoreOperator;
+
+    public Integer getStarttotalscore() {
+        return starttotalscore;
+    }
+
+    public void setStarttotalscore(Integer starttotalscore) {
+        this.starttotalscore = starttotalscore;
+    }
+
+    public Integer getStarttotalscoreOperator() {
+        return starttotalscoreOperator;
+    }
+
+    public void setStarttotalscoreOperator(Integer starttotalscoreOperator) {
+        this.starttotalscoreOperator = starttotalscoreOperator;
+    }
+
+    public Integer getEndtotalscore() {
+        return endtotalscore;
+    }
+
+    public void setEndtotalscore(Integer endtotalscore) {
+        this.endtotalscore = endtotalscore;
+    }
+
+    public Integer getEndtotalscoreOperator() {
+        return endtotalscoreOperator;
+    }
+
+    public void setEndtotalscoreOperator(Integer endtotalscoreOperator) {
+        this.endtotalscoreOperator = endtotalscoreOperator;
+    }
 
     public String getSchoolname() {
         return schoolname;
