@@ -43,9 +43,9 @@ public class ExamineevolunteerinformationEOController extends BaseController<Exa
      * @throws Exception
      */
 	@ApiOperation(value = "|ExamineevolunteerinformationEO|获取所有考生报考的学校及志愿信息(含分页 模糊查询)")
-    @GetMapping("/page")
+    @PostMapping("/page")
     @RequiresPermissions("generate:examineevolunteerinformation:page")
-    public ResponseMessage<PageInfo<ExamineevolunteerinformationEO>> page(ExamineevolunteerinformationEOPage page) throws Exception {
+    public ResponseMessage<PageInfo<ExamineevolunteerinformationEO>> page(@RequestBody ExamineevolunteerinformationEOPage page) throws Exception {
         List<ExamineevolunteerinformationEO> rows = examineevolunteerinformationEOService.queryByPage(page);
         return Result.success(getPageInfo(page.getPager(), rows));
     }

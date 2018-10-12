@@ -257,11 +257,11 @@
      where examineekey = #{examineekey}
   </update>
 
-  <!-- 根据id查询 EXAMINEEINFORMATION -->
+  <!-- 根据id查询 EXAMINEEINFORMATION 刘笑天 修改 20181012 16:12-->
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
     select <include refid="Base_Column_List" /> 
       from EXAMINEEINFORMATION
-     where examineekey = #{value}
+     where "ExamineeKey" = #{value}
 
   </select>
 
