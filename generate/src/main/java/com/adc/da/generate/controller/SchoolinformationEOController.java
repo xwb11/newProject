@@ -133,12 +133,12 @@ public class SchoolinformationEOController extends BaseController<Schoolinformat
     @ApiOperation(value = "|SchoolinformationEO|删除")
     @PostMapping("/deleteSchoolInfo")
     @RequiresPermissions("generate:schoolinformation:delete")
-    public ResponseMessage deleteSchoolInfo(@RequestParam String schoolkey,@RequestParam String userRole) throws Exception {
+    public ResponseMessage deleteSchoolInfo(@RequestBody SchoolinformationVO schoolinformationVO) throws Exception {
         //身份校验
-        if(!"1".equals(userRole)){//若不是管理员
+        if(!"1".equals(schoolinformationVO.getUserLoginRole())){//若不是管理员
             return Result.error(UserinformationEOPrompt.USE_PERMIT);
         }
-        schoolinformationEOService.deleteSchoolInfo(schoolkey);
+        schoolinformationEOService.deleteSchoolInfo(schoolinformationVO.getSchoolkey());
 //        logger.info("delete from SCHOOLINFORMATION where schoolkey = {}", schoolkey);
         return Result.success(PublicPrompt.DELETE_SUCCESS);
     }

@@ -56,7 +56,7 @@ public class MajorinformationEOController extends BaseController<Majorinformatio
     * @Version:        1.0
     */
     @ApiOperation(value = "|UserinformationEO|查询用户信息（分页加模糊查询）")
-    @GetMapping("/queryMajorInfoByPage")
+    @PostMapping("/queryMajorInfoByPage")
     public ResponseMessage<PageInfo<MajorinformationEO>> queryMajorInfoByPage(MajorinformationEOPage page) throws Exception {
         List<MajorinformationEO> rows = majorinformationEOService.queryByPage(page);
         return Result.success(getPageInfo(page.getPager(), rows));
@@ -122,7 +122,7 @@ public class MajorinformationEOController extends BaseController<Majorinformatio
     * @Version:        1.0
     */
     @ApiOperation(value = "|MajorinformationEO|修改")
-    @PutMapping("/updateMajorInfo")
+    @PostMapping("/updateMajorInfo")
     @RequiresPermissions("generate:majorinformation:update")
     public ResponseMessage updateMajorInfo(@RequestBody MajorinformationVO majorinformationVO) throws Exception {
         //身份校验
@@ -146,15 +146,15 @@ public class MajorinformationEOController extends BaseController<Majorinformatio
     * @Version:        1.0
     */
     @ApiOperation(value = "|MajorinformationEO|删除")
-    @DeleteMapping("/deleteMajorInfo")
+    @PostMapping("/deleteMajorInfo")
     @RequiresPermissions("generate:majorinformation:delete")
-    public ResponseMessage delete(@RequestParam String majorkey,@RequestParam String userRole) throws Exception {
+    public ResponseMessage delete(@RequestBody MajorinformationVO majorinformationVO) throws Exception {
         //身份校验
-        if(!"1".equals(userRole)){//若不是管理员
+        if(!"1".equals(majorinformationVO.getUserLoginRole())){//若不是管理员
             return Result.error(UserinformationEOPrompt.USE_PERMIT);
         }
-        logger.info("delete from MAJORINFORMATION where majorkey = {}", majorkey);
-        return Result.success(PublicPrompt.DELETE_SUCCESS,majorinformationEOService.dleteMajorInfo(majorkey));
+//        logger.info("delete from MAJORINFORMATION where majorkey = {}", majorkey);
+        return Result.success(PublicPrompt.DELETE_SUCCESS,majorinformationEOService.dleteMajorInfo(majorinformationVO.getMajorkey()));
     }
 
 }

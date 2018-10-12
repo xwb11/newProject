@@ -93,7 +93,7 @@ public class MajorinformationEOService extends BaseService<MajorinformationEO, S
      * 宣文彬 2018/10/8
      */
     public boolean updateMajorInfo(@RequestBody MajorinformationEO majorinformationEO){
-        if(majorinformationEO.getMajorkey()!=null&&!"".equals(majorinformationEO.getMajorkey())){
+        if(majorinformationEO.getMajorname()!=null&&!"".equals(majorinformationEO.getMajorname())){
 //            majorinformationEO.setCreatetime(new Date());
             try {
                     int num = majorinformationEODao.updateByPrimaryKeySelective(majorinformationEO);
@@ -118,7 +118,6 @@ public class MajorinformationEOService extends BaseService<MajorinformationEO, S
      */
     public boolean dleteMajorInfo(String majorkey){
         if(majorkey!=null){
-
             try {
                 int num = majorinformationEODao.majorInfoDelete(majorkey);
                 if (num>0) {
