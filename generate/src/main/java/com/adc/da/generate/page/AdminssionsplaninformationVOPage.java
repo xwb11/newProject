@@ -4,7 +4,7 @@ import com.adc.da.base.page.BasePage;
 
 import java.util.Date;
 
-public class AdminssionsplaninformationVOPage extends BasePage {
+public class AdminssionsplaninformationVOPage extends AdminssionsplaninformationEOPage {
     private String adminssionskey;
     private String adminssionskeyOperator = "=";
     private String schoolkey;

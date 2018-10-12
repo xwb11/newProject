@@ -24,8 +24,8 @@ public class AdminssionsplaninformationVO extends AdminssionsplaninformationEO {
     private Date publishtime;
     @org.springframework.format.annotation.DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date offlinetime;
-    @org.springframework.format.annotation.DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    private Date createyear;
+    //宣文彬 修改参数类型 2019/10/10
+    private String createyear;
 
     /**
      * 学校省份
@@ -123,12 +123,12 @@ public class AdminssionsplaninformationVO extends AdminssionsplaninformationEO {
     }
 
     @Override
-    public Date getCreateyear() {
+    public String getCreateyear() {
         return createyear;
     }
 
     @Override
-    public void setCreateyear(Date createyear) {
+    public void setCreateyear(String createyear) {
         this.createyear = createyear;
     }
 

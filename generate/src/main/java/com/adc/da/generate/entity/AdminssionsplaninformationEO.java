@@ -23,8 +23,9 @@ public class AdminssionsplaninformationEO extends BaseEntity {
     private Date publishtime;
     @org.springframework.format.annotation.DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date offlinetime;
-    @org.springframework.format.annotation.DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    private Date createyear;
+//    @org.springframework.format.annotation.DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+   //宣文彬 2019/10/10 修改参数类型
+    private String createyear;
 
     /**
      * java字段名转换为原始数据库列名。<b>如果不存在则返回null</b><br>
@@ -165,12 +166,12 @@ public class AdminssionsplaninformationEO extends BaseEntity {
     }
 
     /**  **/
-    public Date getCreateyear() {
+    public String getCreateyear() {
         return this.createyear;
     }
 
     /**  **/
-    public void setCreateyear(Date createyear) {
+    public void setCreateyear(String createyear) {
         this.createyear = createyear;
     }
 
