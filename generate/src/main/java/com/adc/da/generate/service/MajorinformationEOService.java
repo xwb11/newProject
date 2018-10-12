@@ -69,6 +69,7 @@ public class MajorinformationEOService extends BaseService<MajorinformationEO, S
      */
     public boolean majorInfoAdd(MajorinformationEO majorinformationEO) {
         if (majorinformationEO.getMajorname() != null && !"".equals(majorinformationEO.getMajorname())) {
+           majorinformationEO.setMajorkey(UUID.randomUUID().toString());
             majorinformationEO.setCreatetime(new Date());
             try {
                     int num = majorinformationEODao.majorInfoAdd(majorinformationEO);

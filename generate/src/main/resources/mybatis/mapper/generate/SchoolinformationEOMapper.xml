@@ -176,7 +176,7 @@
 
   <!-- SCHOOLINFORMATION 列表总数-->
   <select id="queryByCount" resultType="java.lang.Integer" parameterType="com.adc.da.base.page.BasePage">
-    select count(1) from SCHOOLINFORMATION
+    select count(1) from SCHOOLINFORMATION WHERE "SchoolName" LIKE '%${schoolname}%'
 
   </select>
 
