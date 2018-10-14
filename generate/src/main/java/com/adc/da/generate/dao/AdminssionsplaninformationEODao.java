@@ -4,6 +4,7 @@ import com.adc.da.base.dao.BaseDao;
 import com.adc.da.base.page.BasePage;
 import com.adc.da.generate.entity.AdminssionsplaninformationEO;
 import com.adc.da.generate.VO.AdminssionsplaninformationVO;
+import com.adc.da.generate.page.AdminssionsplaninformationEOPage;
 import com.adc.da.generate.page.AdminssionsplaninformationVOPage;
 
 import java.util.List;
@@ -79,4 +80,27 @@ public interface AdminssionsplaninformationEODao extends BaseDao<Adminssionsplan
      * @return
      */
     List<Map<String,Object>> getSchoolsPublishedMajor(String schoolKey);
+
+
+    /**
+     * 学校，专业，省份进行模糊查询
+     * 岳奔 2018-10-12
+     * @return
+     */
+    List<AdminssionsplaninformationEO> selectBySMP(AdminssionsplaninformationEOPage page);
+
+
+    /**
+     * 验重
+     * 岳奔 2018-10-12
+     * @return
+     */
+    int isRepeat(AdminssionsplaninformationEO adminssionsplaninformationEO);
+
+    /**
+     * 删除一条计划
+     * 岳奔 2018-10-12
+     * @return
+     */
+    int deleteByKey(String adminKey);
 }

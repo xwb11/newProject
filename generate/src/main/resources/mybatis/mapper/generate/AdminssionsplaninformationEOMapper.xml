@@ -412,4 +412,44 @@
         where rn>= ${pager.startIndex}
     </select>
 
+    <!--//学校，专业，省份进行模糊查询(将学校查询字段放在SchoolKey里，专业查询字段放在MajorKey，省份查询字段放在AdminssionsKey) 岳奔2018-10-12-->
+    <select id="selectBySMP" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">
+        select <include refid="Base_Column_List"/> from
+        (select tmp_tb.* , rownum rn from
+        (SELECT DISTINCT <include refid="Base_Column_List"/> FROM ADMINSSIONSPLANINFORMATION
+        WHERE 1=1
+        <if test="schoolkey!=null and schoolkey!=''">
+            AND "SchoolKey" = ANY(SELECT "SchoolKey" FROM SCHOOLINFORMATION WHERE "SchoolName" LIKE '%'||#{schoolkey}||'%')
+        </if>
+
+        <if test="majorkey!=null and majorkey!=''">
+            AND "MajorKey" = ANY(SELECT "MajorKey" FROM MAJORINFORMATION WHERE "MajorName" LIKE '%'||#{majorkey}||'%')
+        </if>
+
+        <if test="adminssionskey!=null and adminssionskey!=''">
+            AND "SchoolKey" = ANY(SELECT "SchoolKey" FROM SCHOOLINFORMATION WHERE "ProvinceName" LIKE '%'||#{adminssionskey}||'%')
+        </if>) tmp_tb where rownum &lt;= ${pager.endIndex})
+        where rn >= ${pager.startIndex}
+
+    </select>
+
+    <!--//验重操作(将学校查询字段放在SchoolKey里，专业查询字段放在MajorKey，省份查询字段放在AdminssionsKey) 岳奔2018-10-12-->
+    <select id="isRepeat" resultType="java.lang.Integer" parameterType="com.adc.da.generate.entity.AdminssionsplaninformationEO">
+        select count(1) from ADMINSSIONSPLANINFORMATION
+        WHERE
+        "MajorKey" = #{majorkey}
+        and "SchoolKey" = #{schoolkey}
+        and "CreateYear" = #{createyear}
+        <!--<if test="majorkey!='' and majorkey!=null">"MajorKey" = #{majorkey}</if>
+        <if test="schoolkey!='' and schoolkey!=null">"SchoolKey" = #{schoolkey}</if>
+        <if test="createyear!='' and createyear!=null">"CreateYear" = #{createyear}</if>-->
+    </select>
+
+    <!--删除一条记录 岳奔2018-10-12-->
+    <delete id="deleteByKey" parameterType="java.lang.String">
+        delete from ADMINSSIONSPLANINFORMATION
+        where "AdminssionsKey" = #{adminKey}
+
+    </delete>
+
 </mapper>

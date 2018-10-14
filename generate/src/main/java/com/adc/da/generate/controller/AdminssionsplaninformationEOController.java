@@ -146,4 +146,72 @@ public class AdminssionsplaninformationEOController extends BaseController<Admin
         return Result.success(schoolPublishedMajors);
     }
 
+
+
+
+    /**
+     * 学校，省份，专业模糊查询
+     * 岳奔 2018-10-12
+     * @return
+     */
+    @GetMapping("/AdminssionsplaninformationEOPageBySMP")
+    @RequiresPermissions("generate:adminssionsplaninformation:page")
+    public ResponseMessage<PageInfo<AdminssionsplaninformationEO>> selectBySMP(AdminssionsplaninformationEOPage page) throws Exception{
+        List<AdminssionsplaninformationEO> rows = adminssionsplaninformationEOService.selectBySMP(page);
+        System.out.println("------------controllerAdminSelectBySMP-----------被访问了！！！" + page.getSchoolkey());
+        return Result.success(getPageInfo(page.getPager(), rows));
+    }
+
+
+    /**
+     * 删除一条招生计划
+     * 岳奔 2018-10-12
+     * @return
+     */
+    @DeleteMapping("/deleteAdminssionsplaninformationEO/{adminssionskey}")
+    @RequiresPermissions("generate:adminssionsplaninformation:delete")
+    public ResponseMessage deleteByKey(@PathVariable String adminssionskey) throws Exception{
+        System.out.println("adminControllerDeleteById==="+adminssionskey);
+        adminssionsplaninformationEOService.deleteByKey(adminssionskey);
+        return Result.success();
+    }
+
+
+    /**
+     * 新增一条数据
+     * 岳奔 2018-10-12
+     * @return
+     */
+    @PostMapping("/createAdminssionsplaninformationEO")
+    @RequiresPermissions("generate:adminssionsplaninformation:save")
+    public ResponseMessage insertOne(@RequestBody AdminssionsplaninformationEO adminssionsplaninformationEO) throws Exception{
+        adminssionsplaninformationEOService.insertOne(adminssionsplaninformationEO);
+        return Result.success();
+    }
+
+
+    /**
+     * 修改一条数据
+     * 岳奔 2018-10-12
+     * @return
+     */
+    @PutMapping("/updateAdminssionsplaninformationEO")
+    @RequiresPermissions("generate:adminssionsplaninformation:update")
+    public ResponseMessage updateByKey(@RequestBody AdminssionsplaninformationEO adminssionsplaninformationEO) throws  Exception{
+        adminssionsplaninformationEOService.updataByKey(adminssionsplaninformationEO);
+        return Result.success();
+    }
+
+    /**
+     * 发布招生计划
+     * 岳奔 2018-10-12
+     * @return
+     */
+    @PutMapping("/releaseAdminssionsplaninformationEO")
+    @RequiresPermissions("generate:adminssionsplaninformation:update")
+    public ResponseMessage release(@RequestBody AdminssionsplaninformationEO adminssionsplaninformationEO) throws  Exception{
+        adminssionsplaninformationEOService.release(adminssionsplaninformationEO);
+        return Result.success();
+    }
+
 }
