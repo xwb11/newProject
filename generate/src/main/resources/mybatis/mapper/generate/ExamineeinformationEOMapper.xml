@@ -311,4 +311,56 @@
         SELECT count("ExamineeKey") FROM EXAMINEEINFORMATION WHERE "EMail"=#{email,jdbcType=VARCHAR}
     </select>
 
+    <resultMap id="ExamineeinformationVOMap" type="com.adc.da.generate.VO.ExamineeinformationVO" >
+        <id column="ExamineeKey" property="examineekey" />
+        <result column="QuasiexaminationNumber" property="quasiexaminationnumber" />
+        <result column="RealName" property="realname" />
+        <result column="Sex" property="sex" />
+        <result column="RegisteredResidence" property="registeredresidence" />
+        <result column="PoliticalOutlook" property="politicaloutlook" />
+        <result column="NativePlace" property="nativeplace" />
+        <result column="Age" property="age" />
+        <result column="IDCardNumber" property="idcardnumber" />
+        <result column="Chinese" property="chinese" />
+        <result column="Math" property="math" />
+        <result column="ForeignLanguages" property="foreignlanguages" />
+        <result column="Sports" property="sports" />
+        <result column="OtherSynthesis" property="othersynthesis" />
+        <result column="SpecialBonus" property="specialbonus" />
+        <result column="TotalScore" property="totalscore" />
+        <result column="GraduateSchool" property="graduateschool" />
+        <result column="UserKey" property="userkey" />
+        <result column="EMail" property="email" />
+        <result column="PhoneNumber" property="phonenumber" />
+        <result column="UserAccount" property="useraccount" />
+        <result column="UserPassword" property="userpassword" />
+        <result column="UserRole" property="userrole" />
+        <result column="CreateTime" property="createtime" />
+        <result column="Status" property="status" />
+    </resultMap>
+
+    <sql id="ExamineeinformationVO_Column_List" >
+        "ExamineeKey", "QuasiExaminationNumber", "RealName", "Sex", "RegisteredResidence", "PoliticalOutlook" ,
+        "NativePlace", "Age", "IDCardNumber", "Chinese", "Math", "ForeignLanguages", "Sports", "OtherSynthesis",
+        "SpecialBonus", "TotalScore", "GraduateSchool", "UserKey", "EMail", "PhoneNumber",UserAccount","UserPassword",
+       "UserRole","CreateTime","Status"
+    </sql>
+
+    <!-- 招生信息查询 列表总数 宣文彬2019/10/15-->
+    <select id="queryExamineeinformationCount" resultType="java.lang.Integer" parameterType="com.adc.da.base.page.BasePage">
+        select count(1) from EXAMINEEINFORMATION,USERINFORMATION
+        WHERE EXAMINEEINFORMATION."UserKey"=USERINFORMATION."UserKey"
+    </select>
+
+    <!-- 查询考生信息录入列表 宣文彬 2019/10/15 未完成对接-->
+    <select id="examineeinformationByPage" resultMap="ExamineeinformationVOMap" parameterType="com.adc.da.base.page.BasePage">
+        select <include refid="ExamineeinformationVO_Column_List" /> from
+        (select tmp_tb.* , rownum rn from
+        (select  FROM EXAMINEEINFORMATION,USERINFORMATION
+        WHERE EXAMINEEINFORMATION."UserKey"=USERINFORMATION."UserKey"
+        ) tmp_tb where rownum &lt;= ${pager.endIndex})
+        where rn &gt;= ${pager.startIndex}
+    </select>
+
+
 </mapper>

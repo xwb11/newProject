@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.adc.da.generate.VO.ExamineeinformationVO;
 import com.adc.da.generate.entity.UserinformationEO;
+import com.adc.da.generate.page.ExamineeinformationVOPage;
 import com.adc.da.generate.service.UserinformationEOService;
 import com.adc.da.generate.util.ExamineeinformationEOPrompt;
 import com.adc.da.myutil.service.ExeclCheck;
@@ -52,6 +53,21 @@ public class ExamineeinformationEOController extends BaseController<Examineeinfo
     @GetMapping("")
     public ResponseMessage<List<ExamineeinformationEO>> list(ExamineeinformationEOPage page) throws Exception {
         return Result.success(examineeinformationEOService.queryByList(page));
+    }
+    /**
+    * @Description:    考生录入信息分页查询
+    * @Author:         xwb
+    * @CreateDate:     2018/10/15 9:03
+    * @UpdateUser:     xwb
+    * @UpdateDate:     2018/10/15 9:03
+    * @UpdateRemark:   修改内容
+    * @Version:        1.0
+    */
+    @ApiOperation(value = "|ExamineeinformationEO|考生录入信息分页查询")
+    @PostMapping("/queryByPage")
+    public ResponseMessage<PageInfo<ExamineeinformationVO>> queryByPage(@RequestBody ExamineeinformationVOPage page) throws Exception {
+        PageInfo<ExamineeinformationVO> rows = examineeinformationEOService.selectExamineeinformationByPage(page);
+        return Result.success(rows);
     }
 
     /**

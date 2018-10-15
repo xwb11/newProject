@@ -1,7 +1,12 @@
 package com.adc.da.generate.dao;
 
 import com.adc.da.base.dao.BaseDao;
+import com.adc.da.base.page.BasePage;
+import com.adc.da.generate.VO.ExamineeinformationVO;
 import com.adc.da.generate.entity.ExamineeinformationEO;
+
+import java.util.List;
+
 /**
  *
  * <br>
@@ -11,6 +16,22 @@ import com.adc.da.generate.entity.ExamineeinformationEO;
  * <b>版权所有：<b>版权归北京卡达克数据技术中心所有。<br>
  */
 public interface ExamineeinformationEODao extends BaseDao<ExamineeinformationEO> {
+
+
+    /**
+    * @Description:    查询录入信息
+    * @Author:         xwb
+    * @CreateDate:     2018/10/15 9:33
+    * @Version:        1.0
+    */
+    List<ExamineeinformationVO> examineeinformationByPage(BasePage page);
+    /**
+    * @Description:    查询录入信息总数
+    * @Author:         xwb
+    * @CreateDate:     2018/10/15 9:32
+    * @Version:        1.0
+    */
+    int queryExamineeinformationCount(BasePage page);
 
     /**
      * 身份证号 重复校验

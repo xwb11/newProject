@@ -1,8 +1,12 @@
 package com.adc.da.generate.service;
 
+import com.adc.da.base.page.BasePage;
+import com.adc.da.generate.VO.ExamineeinformationVO;
 import com.adc.da.generate.dao.UserinformationEODao;
 import com.adc.da.generate.entity.UserinformationEO;
 import com.adc.da.generate.util.ExamineeinformationEOPrompt;
+import com.adc.da.util.http.PageInfo;
+import org.apache.poi.ss.formula.functions.T;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +18,7 @@ import com.adc.da.base.service.BaseService;
 import com.adc.da.generate.dao.ExamineeinformationEODao;
 import com.adc.da.generate.entity.ExamineeinformationEO;
 
+import java.util.List;
 
 /**
  * <br>
@@ -34,6 +39,29 @@ public class ExamineeinformationEOService extends BaseService<Examineeinformatio
 
     public ExamineeinformationEODao getDao() {
         return dao;
+    }
+
+    /**
+    * @Description:    查询录入信息
+    * @Author:         xwb
+    * @CreateDate:     2018/10/15 9:36
+    * @Version:        1.0
+    */
+    public PageInfo<ExamineeinformationVO> selectExamineeinformationByPage(BasePage page) throws Exception {
+        Integer rowCount = this.queryAdminssionByCount(page);
+        page.getPager().setRowCount(rowCount);
+        PageInfo<ExamineeinformationVO> pageInfo = new PageInfo();
+        pageInfo.setList(this.dao.examineeinformationByPage(page));
+//        pageInfo.setCount((long)page.getPager().getRowCount());
+        pageInfo.setCount((long)rowCount);
+        pageInfo.setPageSize(page.getPager().getPageSize());
+        pageInfo.setPageCount((long)page.getPager().getPageCount());
+        pageInfo.setPageNo(page.getPager().getPageId());
+        return pageInfo;
+    }
+
+    public int queryAdminssionByCount(BasePage page) throws Exception {
+        return this.getDao().queryExamineeinformationCount(page);
     }
 
     /**
