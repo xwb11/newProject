@@ -25,4 +25,62 @@ public class ExamineeinformationVO extends ExamineeinformationEO {
     public void setUserinformationEO(UserinformationEO userinformationEO) {
         this.userinformationEO = userinformationEO;
     }
+
+    private String userkey;
+    private String useraccount;
+    private String userpassword;
+    private String userrole;
+    @org.springframework.format.annotation.DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    private Date createtime;
+    private String status;
+
+    @Override
+    public String getUserkey() {
+        return userkey;
+    }
+
+    @Override
+    public void setUserkey(String userkey) {
+        this.userkey = userkey;
+    }
+
+    public String getUseraccount() {
+        return useraccount;
+    }
+
+    public void setUseraccount(String useraccount) {
+        this.useraccount = useraccount;
+    }
+
+    public String getUserpassword() {
+        return userpassword;
+    }
+
+    public void setUserpassword(String userpassword) {
+        this.userpassword = userpassword;
+    }
+
+    public String getUserrole() {
+        return userrole;
+    }
+
+    public void setUserrole(String userrole) {
+        this.userrole = userrole;
+    }
+
+    public Date getCreatetime() {
+        return createtime;
+    }
+
+    public void setCreatetime(Date createtime) {
+        this.createtime = createtime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

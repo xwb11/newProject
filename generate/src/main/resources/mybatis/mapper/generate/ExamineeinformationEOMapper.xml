@@ -354,10 +354,16 @@
 
     <!-- 查询考生信息录入列表 宣文彬 2019/10/15 未完成对接-->
     <select id="examineeinformationByPage" resultMap="ExamineeinformationVOMap" parameterType="com.adc.da.base.page.BasePage">
-        select <include refid="ExamineeinformationVO_Column_List" /> from
+        select "Age","Chinese","EMail","ExamineeKey","Math","NativePlace","OtherSynthesis","PhoneNumber",
+"PoliticalOutlook","RealName","RegisteredResidence","Sex","SpecialBonus","Sports",
+"Status","TotalScore","UserKey","UserPassword","UserRole","CreateTime","UserAccount"  from
         (select tmp_tb.* , rownum rn from
-        (select  FROM EXAMINEEINFORMATION,USERINFORMATION
-        WHERE EXAMINEEINFORMATION."UserKey"=USERINFORMATION."UserKey"
+        (select e."Age",e."Chinese",e."EMail",e."ExamineeKey",
+        e."ForeignLanguages",e."GraduateSchool",e."IDCardNumber",
+        e."Math",e."NativePlace",e."OtherSynthesis",e."PhoneNumber",e."PoliticalOutlook",
+        e."RealName",e."RegisteredResidence",e."Sex",e."SpecialBonus",e."Sports",u."Status",e."TotalScore",
+        u."UserKey",u."UserPassword",u."UserRole",u."CreateTime",u."UserAccount"  FROM EXAMINEEINFORMATION e,USERINFORMATION u
+        WHERE e."UserKey"=u."UserKey"
         ) tmp_tb where rownum &lt;= ${pager.endIndex})
         where rn &gt;= ${pager.startIndex}
     </select>
