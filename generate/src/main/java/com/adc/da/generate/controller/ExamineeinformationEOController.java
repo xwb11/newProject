@@ -160,4 +160,20 @@ public class ExamineeinformationEOController extends BaseController<Examineeinfo
             return Result.error(REGIST_FAILED);
         }
     }
+
+    @ApiOperation(value = "|ExamineeinformationEO|注册_检测准考证号")
+    @PostMapping("/checkExaminationNumber")
+    public ResponseMessage checkExaminationNumber(@RequestParam String quasiExaminationNumber) throws Exception{
+        ExeclCheck execlCheck = new ExeclCheck();
+        if(execlCheck.execlCheck(quasiExaminationNumber)==1){//若excel中存在 检测数据库中是否存在
+            ExamineeinformationEO examineeinformationEO = examineeinformationEOService.checkQuasiExaminationNumber(quasiExaminationNumber);
+            if(examineeinformationEO != null){
+                return Result.error(QUASIEXAMINATIONNUMBER_EXIST);//数据库中存在
+            }else{
+                return Result.success("",QUASIEXAMINATIONNUMBER_NOTEXIST,"");//数据库中不存在
+            }
+        }else {//若excel中不存在 直接不可以注册
+            return Result.error(QUASIEXAMINATIONNUMBER_NOTRIGHT);
+        }
+    }
 }

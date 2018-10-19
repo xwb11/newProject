@@ -61,4 +61,11 @@ public interface ExamineeinformationEODao extends BaseDao<ExamineeinformationEO>
      * @return
      */
     ExamineeinformationEO checkRegistInfo(ExamineeinformationEO examineeinformationEO);
+
+    /**
+     * 准考证验证
+     * 刘笑天 20181019
+     * @param quasiExaminationNumber
+     */
+    ExamineeinformationEO checkQuasiExaminationNumber(String quasiExaminationNumber);
 }

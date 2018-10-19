@@ -99,4 +99,5 @@ public class ExamineevolunteerinformationEOService extends BaseService<Examineev
 //    public void examineeBatchDeleteVolunteer(List volunteerKeys){
 //        dao.examineeBatchDeleteVolunteer(volunteerKeys);
 //    }
+
 }

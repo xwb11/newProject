@@ -21,6 +21,10 @@ public class ExamineeinformationEOPrompt extends PublicPrompt {
     public static final String CHECK_FAILED = "您填写的信息已被别人使用 请核对后重新填写";
     public static final String REGIST_SUCCESS = "注册成功";
     public static final String REGIST_FAILED = "注册失败";
+    public static final String QUASIEXAMINATIONNUMBER_NOTRIGHT = "准考证号不存在";
+    public static final String QUASIEXAMINATIONNUMBER_EXIST = "准考证号已被注册";
+    public static final String QUASIEXAMINATIONNUMBER_NOTEXIST = "准考证号可以使用";
+
 
     /**
      * 需要作者分类

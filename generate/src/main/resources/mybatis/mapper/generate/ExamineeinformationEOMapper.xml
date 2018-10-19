@@ -24,6 +24,12 @@
     <result column="EMail" property="email" />
     <result column="PhoneNumber" property="phonenumber" />
   </resultMap>
+    <!-- 准考证号验证 刘笑天 20181019 -->
+    <select id="checkQuasiExaminationNumber" resultMap="BaseResultMap">
+      SELECT *
+      FROM EXAMINEEINFORMATION
+      WHERE "QuasiExaminationNumber" = #{quasiexaminationnumber}
+    </select>
     <!--lxt 1011-->
     <select id="checkRegistInfo" resultMap="BaseResultMap">
     SELECT * FROM (select <include refid="Base_Column_List" />

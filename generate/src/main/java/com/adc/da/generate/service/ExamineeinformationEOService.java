@@ -116,4 +116,13 @@ public class ExamineeinformationEOService extends BaseService<Examineeinformatio
     public ExamineeinformationEO checkRegistInfo(ExamineeinformationEO examineeinformationEO){
         return dao.checkRegistInfo(examineeinformationEO);
     }
+
+    /**
+     * 准考证验证
+     * 刘笑天 20181019
+     * @param quasiExaminationNumber
+     */
+    public ExamineeinformationEO checkQuasiExaminationNumber(String quasiExaminationNumber){
+        return dao.checkQuasiExaminationNumber(quasiExaminationNumber);
+    }
 }

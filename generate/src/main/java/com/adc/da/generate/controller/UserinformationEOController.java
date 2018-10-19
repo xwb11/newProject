@@ -193,13 +193,13 @@ public class UserinformationEOController extends BaseController<UserinformationE
 //            }
             switch(userRole){
                 case "0": //考生
-                    return Result.success("",EXAMINEE_LOGIN_SUCCESS,userinformationEO);
+                    return Result.success("00",EXAMINEE_LOGIN_SUCCESS,userinformationEO);
                 case "1": //管理员
-                    return Result.success("",ADMIN_LOGIN_SUCCESS,userinformationEO);
+                    return Result.success("01",ADMIN_LOGIN_SUCCESS,userinformationEO);
                 case "2": //招生者
-                    return Result.success("",ADMISSIONS_LOGIN_SUCCESS,userinformationEO);
+                    return Result.success("02",ADMISSIONS_LOGIN_SUCCESS,userinformationEO);
                 case "3": //逻辑删除
-                    return Result.success("",USER_IS_FAKEDELETED,userinformationEO);
+                    return Result.success("03",USER_IS_FAKEDELETED,userinformationEO);
                 default: //角色类型不存在
                     return Result.error(USERROLE_NOTEXIST);
             }
