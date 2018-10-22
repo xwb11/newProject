@@ -4,6 +4,7 @@ import com.adc.da.base.dao.BaseDao;
 import com.adc.da.base.page.BasePage;
 import com.adc.da.generate.VO.ExamineeinformationVO;
 import com.adc.da.generate.entity.ExamineeinformationEO;
+import com.adc.da.generate.entity.UserinformationEO;
 
 import java.util.List;
 
@@ -68,4 +69,18 @@ public interface ExamineeinformationEODao extends BaseDao<ExamineeinformationEO>
      * @param quasiExaminationNumber
      */
     ExamineeinformationEO checkQuasiExaminationNumber(String quasiExaminationNumber);
+
+    /**
+     * 注册_考生账号注册
+     * 刘笑天 20181022
+     * @param userinformationEO
+     */
+    void addUserInformation(UserinformationEO userinformationEO);
+
+    /**
+     * 注册_考生信息关联账号
+     * 刘笑天 20181022
+     * @param examineeinformationEO
+     */
+    void addExamineeInformation(ExamineeinformationEO examineeinformationEO);
 }

@@ -3,6 +3,7 @@ package com.adc.da.generate.controller;
 import static com.adc.da.generate.util.ExamineeinformationEOPrompt.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -138,27 +139,24 @@ public class ExamineeinformationEOController extends BaseController<Examineeinfo
     /**
      * 考生注册
      * 刘笑天 20181011
-     * @param examineeinformationEO
+     * 最后修改 刘笑天 20181022
+     * @param examineeinformationVO
      * @return
      * @throws Exception
      */
     @ApiOperation(value = "|ExamineeinformationEO|注册")
     @PostMapping("/examineeRegist")
-    public ResponseMessage userRegist(@RequestBody ExamineeinformationEO examineeinformationEO) throws Exception{
-        String quasiExaminationNumber = examineeinformationEO.getQuasiexaminationnumber();//准考证号
-        String email = examineeinformationEO.getEmail();//邮箱
-        Long phoneNumber = examineeinformationEO.getPhonenumber();//手机号
-        ExeclCheck execlCheck = new ExeclCheck();
-        if(execlCheck.execlCheck(quasiExaminationNumber)==1){//若excel中存在 检测数据库中是否存在（）
-            if(examineeinformationEOService.checkRegistInfo(examineeinformationEO)!=null){//查重
-                return Result.error(CHECK_FAILED);
-            }else{
-                examineeinformationEOService.insertSelective(examineeinformationEO);
-                return Result.success("",REGIST_SUCCESS,examineeinformationEO);
-            }
-        }else {//若excel中不存在 直接不可以注册
-            return Result.error(REGIST_FAILED);
-        }
+    public ResponseMessage userRegist(@RequestBody ExamineeinformationVO examineeinformationVO) throws Exception{
+        UserinformationEO userinformationEO = examineeinformationVO.getUserinformationEO();
+        //获取当前时间作为账号注册时间
+        userinformationEO.setCreatetime(new Date());
+        //先注册账号密码
+        examineeinformationEOService.addUserInformation(userinformationEO);
+
+        ExamineeinformationEO examineeinformationEO = examineeinformationVO.getExamineeinformationEO();
+        //将准考证号邮箱手机号和用户账号密码关联
+        examineeinformationEOService.addExamineeInformation(examineeinformationEO);
+        return Result.success("",REGIST_SUCCESS,"");
     }
 
     @ApiOperation(value = "|ExamineeinformationEO|注册_检测准考证号")

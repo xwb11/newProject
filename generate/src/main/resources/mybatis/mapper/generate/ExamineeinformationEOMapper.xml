@@ -24,12 +24,30 @@
     <result column="EMail" property="email" />
     <result column="PhoneNumber" property="phonenumber" />
   </resultMap>
+    <resultMap id="UserInformationResultMap" type="com.adc.da.generate.entity.UserinformationEO">
+        <id column="UserKey" property="userkey" />
+        <result column="UserAccount" property="useraccount" />
+        <result column="UserPassword" property="userpassword" />
+        <result column="UserRole" property="userrole" />
+        <result column="CreateTime" property="createtime" />
+        <result column="Status" property="status" />
+    </resultMap>
     <!-- 准考证号验证 刘笑天 20181019 -->
     <select id="checkQuasiExaminationNumber" resultMap="BaseResultMap">
       SELECT *
       FROM EXAMINEEINFORMATION
       WHERE "QuasiExaminationNumber" = #{quasiexaminationnumber}
     </select>
+    <!-- 考生账号注册 刘笑天 20181022 -->
+    <insert id="addUserInformation">
+        insert into USERINFORMATION 
+        values(SEQ_USERINFORMATION.nextval,#{useraccount},#{userpassword},'0',#{createtime},'0')
+    </insert>
+    <!-- 考生信息注册（关联账号） 刘笑天 20181022 -->
+    <insert id="addExamineeInformation">
+      insert into EXAMINEEINFORMATION("ExamineeKey","QuasiExaminationNumber","UserKey","EMail","PhoneNumber")
+      values(SEQ_EXAMINEEINFORMATION.nextval,#{quasiexaminationnumber},SEQ_USERINFORMATION.currval,#{email},#{phonenumber})
+    </insert>
     <!--lxt 1011-->
     <select id="checkRegistInfo" resultMap="BaseResultMap">
     SELECT * FROM (select <include refid="Base_Column_List" />
