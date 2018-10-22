@@ -1,6 +1,7 @@
 package com.adc.da.generate.controller;
 
 import static com.adc.da.generate.util.SchoolinformationEOPrompt.SCHOOLNAME_REPEAT;
+import static com.adc.da.myutil.util.PublicPrompt.UPDATE_SUCCESS;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 import java.util.List;
@@ -57,7 +58,7 @@ public class SchoolinformationEOController extends BaseController<Schoolinformat
     */
     @ApiOperation(value = "|SchoolinformationEO|查询用户信息（分页）")
     @PostMapping("/querySchoolInfoByPage")
-    public ResponseMessage<PageInfo<SchoolinformationEO>> querySchoolInfoByPage(@RequestBody SchoolinformationEOPage page) throws Exception {
+    public ResponseMessage<PageInfo<SchoolinformationEO>> querySchoolInfoByPage( SchoolinformationEOPage page) throws Exception {
         List<SchoolinformationEO> rows = schoolinformationEOService.queryByPage(page);
         return Result.success(getPageInfo(page.getPager(), rows));
     }
@@ -115,7 +116,7 @@ public class SchoolinformationEOController extends BaseController<Schoolinformat
         }
         if(schoolinformationEOService.schoolNameTestingWhenUpdate(schoolinformationVO).equals("1")){
             schoolinformationEOService.updateSchoolInfo(schoolinformationVO);
-            return Result.success(PublicPrompt.UPDATE_SUCCESS);
+            return Result.success(UPDATE_SUCCESS);
         }else {
             return Result.error(SCHOOLNAME_REPEAT);
         }
