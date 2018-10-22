@@ -125,4 +125,21 @@ public class ExamineeinformationEOService extends BaseService<Examineeinformatio
     public ExamineeinformationEO checkQuasiExaminationNumber(String quasiExaminationNumber){
         return dao.checkQuasiExaminationNumber(quasiExaminationNumber);
     }
+
+    /**
+     * 注册_考生账号注册
+     * 刘笑天 20181022
+     * @param userinformationEO
+     */
+    public void  addUserInformation(UserinformationEO userinformationEO){
+        dao.addUserInformation(userinformationEO);
+    }
+    /**
+     * 注册_考生信息关联账号
+     * 刘笑天 20181022
+     * @param examineeinformationEO
+     */
+    public void addExamineeInformation(ExamineeinformationEO examineeinformationEO){
+        dao.addExamineeInformation(examineeinformationEO);
+    }
 }
