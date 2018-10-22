@@ -126,13 +126,13 @@ public class ExamineeinformationEOController extends BaseController<Examineeinfo
         if (result != "true") {
             return Result.error(result);
         }
-        userinformationEO.setUserkey(UUID.randomUUID());
-        examineeinformationEO.setExamineekey(UUID.randomUUID());
-        examineeinformationEO.setQuasiexaminationnumber(UUID.randomUserId());
-        examineeinformationEO.setUserkey(userinformationEO.getUserkey());
-        userinformationEOService.insertSelective(userinformationEO);
-        examineeinformationEOService.insertSelective(examineeinformationEO);
-        return Result.success(ExamineeinformationEOPrompt.ENTRY_SUCCESS);
+//        userinformationEO.setUserkey(UUID.randomUUID());
+//        examineeinformationEO.setExamineekey(UUID.randomUUID());
+//        examineeinformationEO.setQuasiexaminationnumber(UUID.randomUserId());
+//        examineeinformationEO.setUserkey(userinformationEO.getUserkey());
+        userinformationEOService.updateByPrimaryKeySelective(userinformationEO);
+        examineeinformationEOService.updateByPrimaryKeySelective(examineeinformationEO);
+        return Result.success(ENTRY_SUCCESS);
     }
 
     /**

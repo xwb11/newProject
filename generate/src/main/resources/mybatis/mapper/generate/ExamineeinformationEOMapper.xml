@@ -203,64 +203,64 @@
     update EXAMINEEINFORMATION
     <set >
       <if test="quasiexaminationnumber != null" >
-        quasiexaminationnumber = #{quasiexaminationnumber},
+          "QuasiExaminationNumber" = #{quasiexaminationnumber},
       </if>
       <if test="realname != null" >
-        realname = #{realname},
+          "RealName" = #{realname},
       </if>
       <if test="sex != null" >
-        sex = #{sex},
+          "Sex" = #{sex},
       </if>
       <if test="registeredresidence != null" >
-        registeredresidence = #{registeredresidence},
+          "RegisteredResidence" = #{registeredresidence},
       </if>
       <if test="politicaloutlook  != null" >
-        politicaloutlook  = #{politicaloutlook },
+          "PoliticalOutlook"  = #{politicaloutlook },
       </if>
       <if test="nativeplace != null" >
-        nativeplace = #{nativeplace},
+          "NativePlace" = #{nativeplace},
       </if>
       <if test="age != null" >
-        age = #{age},
+          "Age" = #{age},
       </if>
       <if test="idcardnumber != null" >
-        idcardnumber = #{idcardnumber},
+          "IDCardNumber" = #{idcardnumber},
       </if>
       <if test="chinese != null" >
-        chinese = #{chinese},
+          "Chinese" = #{chinese},
       </if>
       <if test="math != null" >
-        math = #{math},
+        "Math" = #{math},
       </if>
       <if test="foreignlanguages != null" >
-        foreignlanguages = #{foreignlanguages},
+          "ForeignLanguages" = #{foreignlanguages},
       </if>
       <if test="sports != null" >
-        sports = #{sports},
+        "Sports" = #{sports},
       </if>
       <if test="othersynthesis != null" >
-        othersynthesis = #{othersynthesis},
+          "OtherSynthesis" = #{othersynthesis},
       </if>
       <if test="specialbonus != null" >
-        specialbonus = #{specialbonus},
+          "SpecialBonus" = #{specialbonus},
       </if>
       <if test="totalscore != null" >
-        totalscore = #{totalscore},
+          "TotalScore" = #{totalscore},
       </if>
       <if test="graduateschool != null" >
-        graduateschool = #{graduateschool},
+          "GraduateSchool" = #{graduateschool},
       </if>
       <if test="userkey != null" >
-        userkey = #{userkey},
+        "UserKey" = #{userkey},
       </if>
       <if test="email != null" >
-        email = #{email},
+        "EMail" = #{email},
       </if>
       <if test="phonenumber != null" >
-        phonenumber = #{phonenumber},
+        "PhoneNumber" = #{phonenumber},
       </if>
     </set>
-     where examineekey = #{examineekey}
+     where "ExamineeKey" = #{examineekey}
   </update>
 
   <!-- 根据id查询 EXAMINEEINFORMATION 刘笑天 修改 20181012 16:12-->
@@ -317,6 +317,13 @@
         SELECT count("ExamineeKey") FROM EXAMINEEINFORMATION WHERE "EMail"=#{email,jdbcType=VARCHAR}
     </select>
 
+    <select id="checkRepeat" resultType="java.lang.Integer" parameterType="com.adc.da.generate.entity.ExamineeinformationEO">
+        SELECT count("ExamineeKey") FROM EXAMINEEINFORMATION WHERE "IDCardNumber"=#{idcardnumber,jdbcType=VARCHAR} AND
+        "PhoneNumber"=#{phonenumber,jdbcType=NUMERIC} AND
+        "EMail"=#{email,jdbcType=VARCHAR}
+    </select>
+
+
     <resultMap id="ExamineeinformationVOMap" type="com.adc.da.generate.VO.ExamineeinformationVO" >
         <id column="ExamineeKey" property="examineekey" />
         <result column="QuasiexaminationNumber" property="quasiexaminationnumber" />
@@ -360,11 +367,11 @@
 
     <!-- 查询考生信息录入列表 宣文彬 2019/10/15 未完成对接-->
     <select id="examineeinformationByPage" resultMap="ExamineeinformationVOMap" parameterType="com.adc.da.base.page.BasePage">
-        select "Age","Chinese","EMail","ExamineeKey","Math","NativePlace","OtherSynthesis","PhoneNumber",
+        select "QuasiExaminationNumber","GraduateSchool","IDCardNumber","Age","Chinese","EMail","ExamineeKey","Math","NativePlace","OtherSynthesis","PhoneNumber",
 "PoliticalOutlook","RealName","RegisteredResidence","Sex","SpecialBonus","Sports",
 "Status","TotalScore","UserKey","UserPassword","UserRole","CreateTime","UserAccount"  from
         (select tmp_tb.* , rownum rn from
-        (select e."Age",e."Chinese",e."EMail",e."ExamineeKey",
+        (select e."QuasiExaminationNumber",e."Age",e."Chinese",e."EMail",e."ExamineeKey",
         e."ForeignLanguages",e."GraduateSchool",e."IDCardNumber",
         e."Math",e."NativePlace",e."OtherSynthesis",e."PhoneNumber",e."PoliticalOutlook",
         e."RealName",e."RegisteredResidence",e."Sex",e."SpecialBonus",e."Sports",u."Status",e."TotalScore",

@@ -34,6 +34,14 @@ public interface ExamineeinformationEODao extends BaseDao<ExamineeinformationEO>
     int queryExamineeinformationCount(BasePage page);
 
     /**
+    * @Description:    同一账号下的手机，邮箱，身份证号验重
+    * @Author:         xwb
+    * @CreateDate:     2018/10/22 9:23
+    * @Version:        1.0
+    */
+    int checkRepeat(ExamineeinformationEO examineeinformationEO);
+
+    /**
      * 身份证号 重复校验
      * 刘志杰 2018-10-08
      * @param idcardnumber
