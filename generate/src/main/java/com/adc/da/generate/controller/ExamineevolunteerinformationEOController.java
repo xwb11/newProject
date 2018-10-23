@@ -114,7 +114,7 @@ public class ExamineevolunteerinformationEOController extends BaseController<Exa
     @GetMapping("/getExamineeVolunteerInformation")
     public ResponseMessage getExamineeVolunteerInformation(@RequestParam String examinationnumber){
         List<Map<String,Object>> examineeVolunteers= examineevolunteerinformationEOService.getExamineeVolunteerInformation(examinationnumber);
-        return Result.success(examineeVolunteers);
+        return Result.success("","查询成功",examineeVolunteers);
     }
 
     /**

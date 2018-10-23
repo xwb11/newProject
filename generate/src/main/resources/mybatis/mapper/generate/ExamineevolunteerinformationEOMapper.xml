@@ -247,12 +247,32 @@
 
   <!-- EXAMINEEVOLUNTEERINFORMATION 列表总数-->
   <select id="queryByCount" resultType="java.lang.Integer" parameterType="com.adc.da.base.page.BasePage">
-    select count(1) from EXAMINEEVOLUNTEERINFORMATION
-    <include refid="Base_Where_Clause"/>
+    select count(1)
+      from EXAMINEEVOLUNTEERINFORMATION EVI
+      left join SCHOOLINFORMATION SI
+      on EVI."SchoolKey" = SI."SchoolKey"
+      left join MAJORINFORMATION MI
+      on EVI."MajorKey" = MI."MajorKey"
+      left join EXAMINEEINFORMATION EI
+      ON EI."QuasiExaminationNumber" = EVI."ExaminationNumber"
+      <trim prefix="where" suffixOverrides="," prefixOverrides="and">
+          <if test="schoolname != null">
+              and SI."SchoolName" like '%'||#{schoolname}||'%'
+          </if>
+          <if test="provincename != null">
+              and SI."ProvinceName" like '%'||#{provincename}||'%'
+          </if>
+          <if test="admissionstatue != null">
+              and EVI."AdmissionStatue" = #{admissionstatue}
+          </if>
+          <if test="starttotalscore != null and endtotalscore">
+              and EI."TotalScore" BETWEEN #{starttotalscore} AND #{endtotalscore}
+          </if>
+      </trim>
   </select>
 
     <!-- 获取所有考生报考的学校及志愿信息(含分页 模糊查询) 刘笑天修改 20181012 16:04-->
-    <select id="queryByPage" resultMap="ResultMap2" parameterType="java.util.HashMap">
+    <select id="queryByPage" resultMap="ResultMap2" parameterType="com.adc.da.base.page.BasePage">
         <!--select <include refid="Base_Column_List" /> from-->
         select "VolunteerKey","ExaminationNumber","SchoolName","MajorName","DeclareTime","VolunteerNumber","ExamineeKey" from
         (select tmp_tb.* , rownum rn from
