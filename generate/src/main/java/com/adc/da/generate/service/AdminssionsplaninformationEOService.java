@@ -119,32 +119,34 @@ public class AdminssionsplaninformationEOService extends BaseService<Adminssions
         return dao.getSchoolsPublishedMajor(schoolKey);
     }
 
-    /**
-     * 学校，省份，专业模糊查询
-     * 岳奔 2018-10-12
-     * @return
-     */
-    public List<AdminssionsplaninformationEO> selectBySMP(AdminssionsplaninformationEOPage page){
-        List<AdminssionsplaninformationEO> list = dao.selectBySMP(page);
-        System.out.println("-------AdminPageService====="+list);
+    //学校，省份，专业模糊查询
+    public List<AdminssionsplaninformationVO> selectBySMP(AdminssionsplaninformationEOPage page) throws Exception{
+        List<AdminssionsplaninformationVO> list = dao.selectBySMP(page);
+        Integer rowCount = dao.countBySMP(page);
+        page.getPager().setRowCount(rowCount.intValue());
+        System.out.println("-------AdminPageService计数====="+rowCount);
         return list;
     }
 
+    //查询所有数据
+    public List<AdminssionsplaninformationVO> selectAll(AdminssionsplaninformationEOPage page) throws Exception{
+        List<AdminssionsplaninformationVO> list = dao.selectAll(page);
+        Integer rowCount = dao.queryByCount(page);
+        page.getPager().setRowCount(rowCount.intValue());
+        System.out.println("Service-All-One___:" + list.get(0));
+        return list;
+    }
 
-    /**
-     * 插入一条数据
-     * 岳奔 2018-10-12
-     * @return
-     */
+    //插入一条数据
     public String insertOne(AdminssionsplaninformationEO adminssionsplaninformationEO) throws Exception{
 
 
 
         Date now = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh-mm-ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         //设置创建啊年份
-//        adminssionsplaninformationEO.setCreateyear(Calendar.YEAR);
-        adminssionsplaninformationEO.setCreateyear(String.valueOf(Calendar.YEAR));
+        Calendar cal = Calendar.getInstance();
+        adminssionsplaninformationEO.setCreateyear(String.valueOf(cal.get(Calendar.YEAR)));
 
         //生成ID
         adminssionsplaninformationEO.setAdminssionskey(String.valueOf(IDUtils.genItemId()));
@@ -160,48 +162,35 @@ public class AdminssionsplaninformationEOService extends BaseService<Adminssions
             return "-1";
         }
 
-        return dao.insertSelective(adminssionsplaninformationEO)>0?"r0001":"-1";
+        return dao.insertSelective(adminssionsplaninformationEO)>0?"ok":"fail";
     }
 
-
-    /**
-     * 修改一条数据
-     * 岳奔 2018-10-12
-     * @return
-     */
+    //修改一条数据
     public String updataByKey(AdminssionsplaninformationEO adminssionsplaninformationEO) throws Exception{
         //验重
         if(dao.isRepeat(adminssionsplaninformationEO)>0){
             return "-1";
         }
 
-        return dao.updateByPrimaryKeySelective(adminssionsplaninformationEO)>0?"r0002":"-1";
+        return dao.updateByPrimaryKeySelective(adminssionsplaninformationEO)>0?"ok":"fail";
 
     }
 
-
-    /**
-     * 删除一条数据
-     * 岳奔 2018-10-12
-     * @return
-     */
+    //删除一条数据
     public String deleteByKey(String adminssionskey) throws Exception{
-        return dao.deleteByKey(adminssionskey)>0?"r0003":"-1";
+        return dao.deleteByKey(adminssionskey)>0?"ok":"fail";
     }
 
-
-    /**
-     * 发布招生计划
-     * 岳奔 2018-10-12
-     * @return
-     */
+    //发布招生计划
     public  String release(AdminssionsplaninformationEO adminssionsplaninformationEO) throws Exception{
         Date now = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh-mm-ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         //设置发布时间
         adminssionsplaninformationEO.setPublishtime(sdf.parse(sdf.format(now)));
         //设置状态为未发布
         adminssionsplaninformationEO.setIspublish(1);
-        return dao.updateByPrimaryKeySelective(adminssionsplaninformationEO)>0?"r0002":"-1";
+        System.out.println("++++++++++service_release_:" + adminssionsplaninformationEO);
+        return dao.updateByPrimaryKeySelective(adminssionsplaninformationEO)>0?"ok":"fail";
     }
+
 }
