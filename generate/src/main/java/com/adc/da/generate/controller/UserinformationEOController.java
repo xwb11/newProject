@@ -62,7 +62,14 @@ public class UserinformationEOController extends BaseController<UserinformationE
         return Result.success(userinformationEO);
     }
 
-    @ApiOperation(value = "|UserinformationEO|修改")
+    /**
+     * 修改密码（生成）
+     * 刘笑天 20181022
+     * @param userinformationEO
+     * @return
+     * @throws Exception
+     */
+    @ApiOperation(value = "|UserinformationEO|修改(密码)")
     @PutMapping(consumes = APPLICATION_JSON_UTF8_VALUE)
     public ResponseMessage<UserinformationEO> update(@RequestBody UserinformationEO userinformationEO) throws Exception {
         userinformationEOService.updateByPrimaryKeySelective(userinformationEO);
@@ -205,6 +212,28 @@ public class UserinformationEOController extends BaseController<UserinformationE
             }
         }else{
             return Result.error(LOGIN_FAILED);
+        }
+    }
+
+    /**
+     * 旧密码校验
+     * 刘笑天 20181022
+     * @param userinformationEO
+     * @return
+     */
+    @ApiOperation(value = "|UserinformationEO|旧密码校验")
+    @PostMapping("checkOldPassword")
+    ResponseMessage checkOldPassword(@RequestBody UserinformationEO userinformationEO){
+        String oldPassword = userinformationEO.getUserpassword();
+        if (!"".equals(oldPassword)){//如果旧密码不为空
+            UserinformationEO userinformationEO1 = userinformationEOService.checkOldPassword(userinformationEO);
+            if (userinformationEO1 != null){
+                return Result.success("",CHECKPASSWORD_SUCCESS,"");
+            }else{
+                return Result.error(CHECKPASSWORD_FAILED);
+            }
+        }else{
+            return Result.error(PASSWORD_BLANK);
         }
     }
 }

@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,7 +40,7 @@ public class AdminssionsplaninformationVOController extends BaseController<Admin
      */
     @ApiOperation(value = "|AdminssionsplaninformationVO|查询招生信息（分页加模糊查询）")
     @PostMapping("/queryAdminssionInfoByPage")
-    public ResponseMessage<PageInfo<AdminssionsplaninformationVO>> queryAdminssionInfoByPage(AdminssionsplaninformationVOPage page) throws Exception {
+    public ResponseMessage<PageInfo<AdminssionsplaninformationVO>> queryAdminssionInfoByPage(@RequestBody AdminssionsplaninformationVOPage page) throws Exception {
         List<AdminssionsplaninformationVO> rows = adminssionsplaninformationEOService.queryAdminssionInfoByPage(page);
         return Result.success(getPageInfo(page.getPager(),rows));
     }
@@ -55,7 +56,7 @@ public class AdminssionsplaninformationVOController extends BaseController<Admin
      */
     @ApiOperation(value = "|AdminssionsplaninformationVO|查询去年招考信息（分页）")
     @PostMapping("/queryLastAdminssionInfoByPage")
-    public ResponseMessage<PageInfo<AdminssionsplaninformationVO>> queryLastAdminssionInfoByPage(AdminssionsplaninformationVOPage page) throws Exception {
+    public ResponseMessage<PageInfo<AdminssionsplaninformationVO>> queryLastAdminssionInfoByPage(@RequestBody AdminssionsplaninformationVOPage page) throws Exception {
         List<AdminssionsplaninformationVO> rows = adminssionsplaninformationEOService.selectLastYearAdmission(page);
         return Result.success(getPageInfo(page.getPager(),rows));
     }
