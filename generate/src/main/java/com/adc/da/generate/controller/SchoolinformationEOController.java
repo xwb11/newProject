@@ -58,7 +58,7 @@ public class SchoolinformationEOController extends BaseController<Schoolinformat
     */
     @ApiOperation(value = "|SchoolinformationEO|查询用户信息（分页）")
     @PostMapping("/querySchoolInfoByPage")
-    public ResponseMessage<PageInfo<SchoolinformationEO>> querySchoolInfoByPage( SchoolinformationEOPage page) throws Exception {
+    public ResponseMessage<PageInfo<SchoolinformationEO>> querySchoolInfoByPage(@RequestBody SchoolinformationEOPage page) throws Exception {
         List<SchoolinformationEO> rows = schoolinformationEOService.queryByPage(page);
         return Result.success(getPageInfo(page.getPager(), rows));
     }
