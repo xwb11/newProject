@@ -1,6 +1,7 @@
 package com.adc.da.generate.dao;
 
 import com.adc.da.base.dao.BaseDao;
+import com.adc.da.generate.VO.UserinformationVO;
 import com.adc.da.generate.entity.UserinformationEO;
 import com.adc.da.generate.page.UserinformationEOPage;
 import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion;
@@ -45,7 +46,7 @@ public interface UserinformationEODao extends BaseDao<UserinformationEO> {
      * @param useraccount
      * @return
      */
-    int queryAccount( String useraccount);
+    List<String> AccountRepeat(String useraccount);
     /**
      * 用户登录
      * 刘笑天 20181011
