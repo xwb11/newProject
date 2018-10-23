@@ -140,4 +140,14 @@ public class UserinformationEOService extends BaseService<UserinformationEO, Str
             return null;
         }
     }
+
+    /**
+     * 旧密码校验
+     * 刘笑天 20181022
+     * @param userinformationEO
+     * @return
+     */
+    public UserinformationEO checkOldPassword(UserinformationEO userinformationEO){
+        return dao.checkOldPassword(userinformationEO);
+    }
 }

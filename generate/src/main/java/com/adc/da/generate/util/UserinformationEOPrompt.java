@@ -31,4 +31,12 @@ public class UserinformationEOPrompt extends PublicPrompt {
     public static final String USER_IS_FAKEDELETED = "用户已被删除";
     public static final String USERROLE_NOTEXIST = "登录失败，角色类型不存在";
 
+    /**
+     * 用户注册
+     * 刘笑天 20181022
+     */
+    public static final String PASSWORD_BLANK = "旧密码不能为空";
+    public static final String CHECKPASSWORD_SUCCESS = "旧密码输入正确";
+    public static final String CHECKPASSWORD_FAILED = "旧密码输入错误";
+
 }

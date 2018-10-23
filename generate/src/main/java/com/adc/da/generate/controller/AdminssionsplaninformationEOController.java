@@ -37,7 +37,7 @@ public class AdminssionsplaninformationEOController extends BaseController<Admin
 	@ApiOperation(value = "|AdminssionsplaninformationEO|分页查询")
     @GetMapping("/page")
     @RequiresPermissions("generate:adminssionsplaninformation:page")
-    public ResponseMessage<PageInfo<AdminssionsplaninformationEO>> page(AdminssionsplaninformationEOPage page) throws Exception {
+    public ResponseMessage<PageInfo<AdminssionsplaninformationEO>> page(@RequestBody AdminssionsplaninformationEOPage page) throws Exception {
         List<AdminssionsplaninformationEO> rows = adminssionsplaninformationEOService.queryByPage(page);
         return Result.success(getPageInfo(page.getPager(), rows));
     }

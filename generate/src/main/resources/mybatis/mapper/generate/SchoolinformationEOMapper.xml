@@ -157,9 +157,10 @@
                 "SchoolName" LIKE '%${schoolname}%'
             </if>
         </where>
+        ORDER BY "CreateTime" DESC
         ) tmp_tb where rownum &lt;= ${pager.endIndex})
         where rn &gt;= ${pager.startIndex}
-        ORDER BY "CreateTime" DESC
+
     </select>
 
 
@@ -180,7 +181,7 @@
 
   </select>
 
-  <!-- 查询SCHOOLINFORMATION列表 -->
+  <!-- 查询SCHOOLINFORMATION列表 使用原框架分页+模糊查询 宣文彬 2019/10/23 -->
   <select id="queryByPage" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">
 	select <include refid="Base_Column_List" /> from
 		(select tmp_tb.* , rownum rn from
@@ -190,9 +191,10 @@
                       "SchoolName" LIKE '%${schoolname}%'
                   </if>
               </where>
+      ORDER BY "CreateTime" DESC
 			) tmp_tb where rownum &lt;= ${pager.endIndex})
 			where rn &gt;= ${pager.startIndex}
-      ORDER BY "CreateTime" DESC
+
   </select>
 
   <select id="queryByList" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">

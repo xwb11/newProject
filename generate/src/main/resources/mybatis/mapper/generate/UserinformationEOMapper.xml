@@ -10,6 +10,11 @@
     <result column="CreateTime" property="createtime" />
     <result column="Status" property="status" />
   </resultMap>
+    <!-- 旧密码校验 刘笑天 20181022-->
+    <select id="checkOldPassword" resultMap="BaseResultMap">
+        SELECT * FROM USERINFORMATION
+        WHERE "UserPassword" = #{userpassword} AND "UserKey" = #{userkey}
+    </select>
     <!-- 用户登录 刘笑天-->
     <select id="userLogin" resultMap="BaseResultMap" resultType="com.adc.da.generate.entity.UserinformationEO">
         SELECT * FROM USERINFORMATION
