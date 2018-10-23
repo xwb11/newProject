@@ -130,7 +130,7 @@
 
   </select>
 
-  <!-- 查询MAJORINFORMATION列表 使用原框架分页查询加模糊查询-->
+  <!-- 查询MAJORINFORMATION列表 使用原框架分页查询加模糊查询 宣文彬 2019/10/23-->
   <select id="queryByPage" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">
 	select <include refid="Base_Column_List" /> from
 		(select tmp_tb.* , rownum rn from
@@ -140,9 +140,10 @@
                       "MajorName" LIKE '%${majorname}%'
                   </if>
               </where>
+      ORDER BY "CreateTime" DESC
 			) tmp_tb where rownum &lt;= ${pager.endIndex})
 			where rn &gt;= ${pager.startIndex}
-      ORDER BY "CreateTime" DESC
+
   </select>
 
   <select id="queryByList" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">
