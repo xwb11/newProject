@@ -158,7 +158,7 @@ public class AdminssionsplaninformationEOService extends BaseService<Adminssions
         adminssionsplaninformationEO.setIspublish(0);
 
         //验重
-        if(dao.isRepeat(adminssionsplaninformationEO)>0){
+        if(dao.isRepeat(adminssionsplaninformationEO) != null){
             return "-1";
         }
 
@@ -168,7 +168,9 @@ public class AdminssionsplaninformationEOService extends BaseService<Adminssions
     //修改一条数据
     public String updataByKey(AdminssionsplaninformationEO adminssionsplaninformationEO) throws Exception{
         //验重
-        if(dao.isRepeat(adminssionsplaninformationEO)>0){
+        String adminKey = dao.isRepeat(adminssionsplaninformationEO);
+        System.out.println("Service-验重___:" + adminKey + "," + adminssionsplaninformationEO.getAdminssionskey() + !adminKey.equals(adminssionsplaninformationEO.getAdminssionskey()));
+        if(!adminKey.equals(adminssionsplaninformationEO.getAdminssionskey()) && adminKey != null){
             return "-1";
         }
 

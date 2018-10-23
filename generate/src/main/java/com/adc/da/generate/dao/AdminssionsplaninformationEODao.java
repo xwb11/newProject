@@ -93,7 +93,7 @@ public interface AdminssionsplaninformationEODao extends BaseDao<Adminssionsplan
      * 岳奔 2018-10-12
      * @return
      */
-    int isRepeat(AdminssionsplaninformationEO adminssionsplaninformationEO);
+    String isRepeat(AdminssionsplaninformationEO adminssionsplaninformationEO);
 
     /**
      * 删除一条计划

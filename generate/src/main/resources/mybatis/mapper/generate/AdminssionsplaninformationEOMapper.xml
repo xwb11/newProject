@@ -167,37 +167,37 @@
      where  adminssionskey = #{adminssionskey}
   </update>
 
-  <!-- 修改记录，只修改只不为空的字段 -->
-  <update id="updateByPrimaryKeySelective" parameterType="com.adc.da.generate.entity.AdminssionsplaninformationEO" >
-    update ADMINSSIONSPLANINFORMATION
-    <set >
-      <if test="schoolkey != null" >
-        schoolkey = #{schoolkey},
-      </if>
-      <if test="majorkey != null" >
-        majorkey = #{majorkey},
-      </if>
-      <if test="adminssionsnumber != null" >
-        adminssionsnumber = #{adminssionsnumber},
-      </if>
-      <if test="createtime != null" >
-        createtime = #{createtime},
-      </if>
-      <if test="ispublish != null" >
-        ispublish = #{ispublish},
-      </if>
-      <if test="publishtime != null" >
-        publishtime = #{publishtime},
-      </if>
-      <if test="offlinetime != null" >
-        offlinetime = #{offlinetime},
-      </if>
-      <if test="createyear != null" >
-        createyear = #{createyear},
-      </if>
-    </set>
-     where adminssionskey = #{adminssionskey}
-  </update>
+    <!-- 修改记录，只修改只不为空的字段 -->
+    <update id="updateByPrimaryKeySelective" parameterType="com.adc.da.generate.entity.AdminssionsplaninformationEO" >
+        update ADMINSSIONSPLANINFORMATION
+        <set >
+            <if test="schoolkey != null" >
+                "SchoolKey" = #{schoolkey},
+            </if>
+            <if test="majorkey != null" >
+                "MajorKey" = #{majorkey},
+            </if>
+            <if test="adminssionsnumber != null" >
+                "AdminssionsNumber" = #{adminssionsnumber},
+            </if>
+            <if test="createtime != null" >
+                "CreateTime" = #{createtime},
+            </if>
+            <if test="ispublish != null" >
+                "IsPublish" = #{ispublish},
+            </if>
+            <if test="publishtime != null" >
+                "PublishTime" = #{publishtime},
+            </if>
+            <if test="offlinetime != null" >
+                "OfflineTime" = #{offlinetime},
+            </if>
+            <if test="createyear != null" >
+                "CreateYear" = #{createyear},
+            </if>
+        </set>
+        where "AdminssionsKey" = #{adminssionskey}
+    </update>
 
   <!-- 根据id查询 ADMINSSIONSPLANINFORMATION -->
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
@@ -462,8 +462,8 @@
     </select>
 
     <!--//验重操作(将学校查询字段放在SchoolKey里，专业查询字段放在MajorKey，省份查询字段放在AdminssionsKey)-->
-    <select id="isRepeat" resultType="java.lang.Integer" parameterType="com.adc.da.generate.entity.AdminssionsplaninformationEO">
-        select count(1) from ADMINSSIONSPLANINFORMATION
+    <select id="isRepeat" resultType="java.lang.String" parameterType="com.adc.da.generate.entity.AdminssionsplaninformationEO">
+        select "AdminssionsKey" from ADMINSSIONSPLANINFORMATION
         WHERE
         "MajorKey" = #{majorkey}
         and "SchoolKey" = #{schoolkey}
