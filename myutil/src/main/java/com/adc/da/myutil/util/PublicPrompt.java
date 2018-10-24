@@ -17,4 +17,5 @@ public class PublicPrompt implements Serializable {
     public static final String INSERT_SUCCESS = "添加成功";
     public static final String UPDATE_SUCCESS = "修改成功";
     public static final String DELETE_SUCCESS = "删除成功";
+    public static final String VALUE_EMPTY = "传值不可为空";
 }
