@@ -29,37 +29,37 @@ public class AdminssionsplaninformationVOController extends BaseController<Admin
     @Autowired
     private AdminssionsplaninformationEOService adminssionsplaninformationEOService;
 
-    /**
-     * @Description:    查询招生信息（分页)
-     * @Author:         xwb
-     * @CreateDate:     2018/10/10 10:44
-     * @UpdateUser:     xwb
-     * @UpdateDate:     2018/10/10 10:44
-     * @UpdateRemark:   修改内容
-     * @Version:        1.0
-     */
-    @ApiOperation(value = "|AdminssionsplaninformationVO|查询招生信息（分页加模糊查询）")
-    @PostMapping("/queryAdminssionInfoByPage")
-    public ResponseMessage<PageInfo<AdminssionsplaninformationVO>> queryAdminssionInfoByPage(@RequestBody AdminssionsplaninformationVOPage page) throws Exception {
-        List<AdminssionsplaninformationVO> rows = adminssionsplaninformationEOService.queryAdminssionInfoByPage(page);
-        return Result.success(getPageInfo(page.getPager(),rows));
-    }
+//    /**
+//     * @Description:    查询招生信息（分页)
+//     * @Author:         xwb
+//     * @CreateDate:     2018/10/10 10:44
+//     * @UpdateUser:     xwb
+//     * @UpdateDate:     2018/10/10 10:44
+//     * @UpdateRemark:   修改内容
+//     * @Version:        1.0
+//     */
+//    @ApiOperation(value = "|AdminssionsplaninformationVO|查询招生信息（分页加模糊查询）")
+//    @PostMapping("/queryAdminssionInfoByPage")
+//    public ResponseMessage<PageInfo<AdminssionsplaninformationVO>> queryAdminssionInfoByPage(@RequestBody AdminssionsplaninformationVOPage page) throws Exception {
+//        List<AdminssionsplaninformationVO> rows = adminssionsplaninformationEOService.queryAdminssionInfoByPage(page);
+//        return Result.success(getPageInfo(page.getPager(),rows));
+//    }
 
-    /**
-     * @Description:    查询去年招考信息（分页)
-     * @Author:         xwb
-     * @CreateDate:     2018/10/10 10:44
-     * @UpdateUser:     xwb
-     * @UpdateDate:     2018/10/10 10:44
-     * @UpdateRemark:   修改内容
-     * @Version:        1.0
-     */
-    @ApiOperation(value = "|AdminssionsplaninformationVO|查询去年招考信息（分页）")
-    @PostMapping("/queryLastAdminssionInfoByPage")
-    public ResponseMessage<PageInfo<AdminssionsplaninformationVO>> queryLastAdminssionInfoByPage(@RequestBody AdminssionsplaninformationVOPage page) throws Exception {
-        List<AdminssionsplaninformationVO> rows = adminssionsplaninformationEOService.selectLastYearAdmission(page);
-        return Result.success(getPageInfo(page.getPager(),rows));
-    }
+//    /**
+//     * @Description:    查询去年招考信息（分页)
+//     * @Author:         xwb
+//     * @CreateDate:     2018/10/10 10:44
+//     * @UpdateUser:     xwb
+//     * @UpdateDate:     2018/10/10 10:44
+//     * @UpdateRemark:   修改内容
+//     * @Version:        1.0
+//     */
+//    @ApiOperation(value = "|AdminssionsplaninformationVO|查询去年招考信息（分页）")
+//    @PostMapping("/queryLastAdminssionInfoByPage")
+//    public ResponseMessage<PageInfo<AdminssionsplaninformationVO>> queryLastAdminssionInfoByPage(@RequestBody AdminssionsplaninformationVOPage page) throws Exception {
+//        List<AdminssionsplaninformationVO> rows = adminssionsplaninformationEOService.selectLastYearAdmission(page);
+//        return Result.success(getPageInfo(page.getPager(),rows));
+//    }
 
     /**
     * @Description:   _加载招生计划信息（后台-分页）
