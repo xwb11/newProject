@@ -90,8 +90,8 @@ public class ExamineevolunteerinformationEOService extends BaseService<Examineev
      * 刘笑天 20181011
      * @param volunteers
      */
-    public void examineeUpdateVolunteer(ExamineevolunteerinformationVO examineevolunteerinformationVO){
-        dao.examineeUpdateVolunteer(examineevolunteerinformationVO);
+    public void examineeUpdateVolunteer(List<ExamineevolunteerinformationEO> volunteers){
+        dao.examineeUpdateVolunteer(volunteers);
     }
 
     /**
@@ -99,8 +99,8 @@ public class ExamineevolunteerinformationEOService extends BaseService<Examineev
      * 刘笑天 20181011
      * @param
      */
-    public void examineeBatchDeleteVolunteer(ExamineevolunteerinformationVO examineevolunteerinformationVO){
-        dao.examineeBatchDeleteVolunteer(examineevolunteerinformationVO);
+    public void examineeBatchDeleteVolunteer(List<ExamineevolunteerinformationEO> list){
+        dao.examineeBatchDeleteVolunteer(list);
     }
 //    public void examineeBatchDeleteVolunteer(List volunteerKeys){
 //        dao.examineeBatchDeleteVolunteer(volunteerKeys);

@@ -175,12 +175,9 @@ public class ExamineevolunteerinformationEOController extends BaseController<Exa
 
     @ApiOperation(value = "|ExamineevolunteerinformationEO|考生修改志愿顺序")
     @PostMapping("/ExamineeUpdateVolunteer")
-    public ResponseMessage examineeUpdateVolunteer(@RequestBody List<ExamineevolunteerinformationEO> volunteers){
-        ExamineevolunteerinformationVO examineevolunteerinformationVO = new ExamineevolunteerinformationVO();
-        if (volunteers!=null||volunteers.size()!=0){
-            examineevolunteerinformationVO.setVolunteers(volunteers);
-        }
-        examineevolunteerinformationEOService.examineeUpdateVolunteer(examineevolunteerinformationVO);
+    public ResponseMessage examineeUpdateVolunteer(@RequestBody ExamineevolunteerinformationVO examineevolunteerinformationVO){
+        List<ExamineevolunteerinformationEO> volunteers = examineevolunteerinformationVO.getVolunteers();
+        examineevolunteerinformationEOService.examineeUpdateVolunteer(volunteers);
 	    return Result.success(UPDATE_SUCCESS);
     }
 
@@ -192,20 +189,9 @@ public class ExamineevolunteerinformationEOController extends BaseController<Exa
      */
     @ApiOperation(value = "|ExamineevolunteerinformationEO|考生批量删除志愿")
     @PostMapping("/ExamineeBatchDeleteVolunteer")
-    public ResponseMessage examineeBatchDeleteVolunteer(@RequestBody List<ExamineevolunteerinformationEO> volunteerKeys){
-//        ExamineevolunteerinformationEO EO = new ExamineevolunteerinformationEO();
-//        EO.setVolunteerkey("1");
-
-
-//        List<ExamineevolunteerinformationEO> volunteerKeys = new ArrayList();
-
-//        ExamineevolunteerinformationVO examineevolunteerinformationVO = new ExamineevolunteerinformationVO();
-//        examineevolunteerinformationVO.setList(volunteerKeys);
-        ExamineevolunteerinformationVO examineevolunteerinformationVO = new ExamineevolunteerinformationVO();
-        if(volunteerKeys.size() != 0 ||volunteerKeys != null){
-            examineevolunteerinformationVO.setList(volunteerKeys);
-        }
-        examineevolunteerinformationEOService.examineeBatchDeleteVolunteer(examineevolunteerinformationVO);
+    public ResponseMessage examineeBatchDeleteVolunteer(@RequestBody ExamineevolunteerinformationVO examineevolunteerinformationVO){
+        List<ExamineevolunteerinformationEO> list = examineevolunteerinformationVO.getVolunteers();
+        examineevolunteerinformationEOService.examineeBatchDeleteVolunteer(list);
         return Result.success(BATCHDELETE_SUCCESS);
     }
 }

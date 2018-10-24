@@ -57,15 +57,15 @@ public interface ExamineevolunteerinformationEODao extends BaseDao<Examineevolun
     /**
      * 考生修改志愿顺序
      * 刘笑天 20181011
-     * @param examineevolunteerinformationVO
+     * @param volunteers
      */
-    void examineeUpdateVolunteer(@Param("list") ExamineevolunteerinformationVO examineevolunteerinformationVO);
+    void examineeUpdateVolunteer(@Param("list") List<ExamineevolunteerinformationEO> volunteers);
 
     /**
      * 考生志愿批量删除
      * 刘笑天 20181011
      * @param
      */
-    void examineeBatchDeleteVolunteer(@Param("list") ExamineevolunteerinformationVO examineevolunteerinformationVO);
+    void examineeBatchDeleteVolunteer(@Param("list") List<ExamineevolunteerinformationEO> list);
 //    void examineeBatchDeleteVolunteer(List volunteerKeys);
 }
