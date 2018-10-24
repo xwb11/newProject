@@ -40,6 +40,18 @@ public class ExamineevolunteerinformationVO extends Examineevolunteerinformation
     //刘笑天添加 20181011 list volunteers
     public List<ExamineevolunteerinformationEO> list;
     public List<ExamineevolunteerinformationEO> volunteers;
+
+    //刘笑天添加 20181024
+    public String majorname;
+
+    public String getMajorname() {
+        return majorname;
+    }
+
+    public void setMajorname(String majorname) {
+        this.majorname = majorname;
+    }
+
     public List<ExamineevolunteerinformationEO> getList() {
         return list;
     }
