@@ -82,29 +82,39 @@ public interface AdminssionsplaninformationEODao extends BaseDao<Adminssionsplan
     List<Map<String,Object>> getSchoolsPublishedMajor(String schoolKey);
 
 
-    //学校，专业，省份进行模糊查询
+    /**
+    * @Description:   _学校，专业，省份进行模糊查询
+    * @Author:         yueben
+    * @CreateDate:     2018/10/24 9:58
+    */
     List<AdminssionsplaninformationVO> selectBySMP(AdminssionsplaninformationEOPage page);
 
 
-
-
     /**
-     * 验重
-     * 岳奔 2018-10-12
-     * @return
-     */
+    * @Description:   _验重
+    * @Author:         yueben
+    * @CreateDate:     2018/10/24 9:59
+    */
     String isRepeat(AdminssionsplaninformationEO adminssionsplaninformationEO);
 
     /**
-     * 删除一条计划
-     * 岳奔 2018-10-12
-     * @return
-     */
+    * @Description:   _删除招生计划
+    * @Author:         yueben
+    * @CreateDate:     2018/10/24 9:59
+    */
     int deleteByKey(String adminKey);
 
-    //查询所有
+    /**
+    * @Description:   _加载招生计划（分页）
+    * @Author:         yueben
+    * @CreateDate:     2018/10/24 10:00
+    */
     List<AdminssionsplaninformationVO> selectAll(AdminssionsplaninformationEOPage page);
 
-    //模糊查询计数
+    /**
+    * @Description:   _模糊查询分页计数
+    * @Author:         yueben
+    * @CreateDate:     2018/10/24 10:00
+    */
     int countBySMP(AdminssionsplaninformationEOPage page);
 }

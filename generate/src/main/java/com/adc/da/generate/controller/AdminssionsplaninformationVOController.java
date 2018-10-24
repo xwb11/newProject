@@ -61,37 +61,61 @@ public class AdminssionsplaninformationVOController extends BaseController<Admin
         return Result.success(getPageInfo(page.getPager(),rows));
     }
 
-    //加载所有项-岳奔
+    /**
+    * @Description:   _加载招生计划信息（后台-分页）
+    * @Author:         yueben
+    * @CreateDate:     2018/10/24 9:40
+    * @UpdateUser:     yueben
+    * @UpdateDate:     2018/10/24 9:40
+    * @UpdateRemark:   修改内容
+    */
     @ApiOperation(value = "|AdminssionsplaninformationVO|分页查询")
     @PostMapping("AdminssionsplaninformationVOPageAll")
     @RequiresPermissions("generate:adminssionsplaninformation:page")
     public ResponseMessage<PageInfo<AdminssionsplaninformationVO>> page(@RequestBody AdminssionsplaninformationVOPage page) throws Exception {
-        //ResponseMessage<PageInfo<AdminssionsplaninformationVO>>
-        System.out.println("---分页查询Admin_All____:" + page.getPage() + "," + page.getPageSize());
         List<AdminssionsplaninformationVO> rows = adminssionsplaninformationEOService.selectAll(page);
-        //return new Gson().toJson(rows);
         return Result.success(getPageInfo(page.getPager(), rows));
     }
 
-    //学校，省份，专业模糊查询-岳奔
+    /**
+    * @Description:   _通过学校，省份，专业进行模糊查询（后台-分页）
+    * @Author:         yueben
+    * @CreateDate:     2018/10/24 9:41
+    * @UpdateUser:     yueben
+    * @UpdateDate:     2018/10/24 9:41
+    * @UpdateRemark:   修改内容
+    */
     @PostMapping("/AdminssionsplaninformationVOPageBySMP")
     @RequiresPermissions("generate:adminssionsplaninformation:page")
     public ResponseMessage<PageInfo<AdminssionsplaninformationVO>> selectBySMP(@RequestBody  AdminssionsplaninformationEOPage page) throws Exception{
         List<AdminssionsplaninformationVO> rows = adminssionsplaninformationEOService.selectBySMP(page);
-        System.out.println("------------controllerAdminSelectBySMP-----------被访问了！！！" + page.getSchoolkey() + page.getAdminssionskey() + page.getMajorkey());
         return Result.success(getPageInfo(page.getPager(), rows));
     }
 
-    //删除一条招生计划-岳奔
+
+    /**
+    * @Description:   _删除一条招生计划
+    * @Author:         yueben
+    * @CreateDate:     2018/10/24 9:44
+    * @UpdateUser:     yueben
+    * @UpdateDate:     2018/10/24 9:44
+    * @UpdateRemark:   修改内容
+    */
     @PostMapping("/deleteAdminssionsplaninformationVO/{adminssionskey}")
     @RequiresPermissions("generate:adminssionsplaninformation:delete")
     public ResponseMessage deleteByKey(@PathVariable String adminssionskey) throws Exception{
-        System.out.println("adminControllerDeleteById==="+adminssionskey);
         adminssionsplaninformationEOService.deleteByKey(adminssionskey);
         return Result.success();
     }
 
-    //新增一条数据-岳奔
+    /**
+    * @Description:   _新增一条数据
+    * @Author:         yueben
+    * @CreateDate:     2018/10/24 9:45
+    * @UpdateUser:     yueben
+    * @UpdateDate:     2018/10/24 9:45
+    * @UpdateRemark:   修改内容
+    */
     @PostMapping("/createAdminssionsplaninformationVO")
     @RequiresPermissions("generate:adminssionsplaninformation:save")
     public ResponseMessage insertOne(@RequestBody AdminssionsplaninformationEO adminssionsplaninformationEO) throws Exception{
@@ -99,7 +123,14 @@ public class AdminssionsplaninformationVOController extends BaseController<Admin
         return getReturn(str);
     }
 
-    //修改一条数据-岳奔
+    /**
+    * @Description:   _修改一条数据
+    * @Author:         yueben
+    * @CreateDate:     2018/10/24 9:45
+    * @UpdateUser:     yueben
+    * @UpdateDate:     2018/10/24 9:45
+    * @UpdateRemark:   修改内容
+    */
     @PostMapping("/updateAdminssionsplaninformationVO")
     @RequiresPermissions("generate:adminssionsplaninformation:update")
     public ResponseMessage updateByKey(@RequestBody AdminssionsplaninformationEO adminssionsplaninformationEO) throws  Exception{
@@ -112,7 +143,15 @@ public class AdminssionsplaninformationVOController extends BaseController<Admin
 
     }
 
-    //发布招生计划-岳奔
+
+    /**
+    * @Description:   _发布招生计划
+    * @Author:         yueben
+    * @CreateDate:     2018/10/24 9:46
+    * @UpdateUser:     yueben
+    * @UpdateDate:     2018/10/24 9:46
+    * @UpdateRemark:   修改内容
+    */
     @PostMapping("/releaseAdminssionsplaninformationVO")
     @RequiresPermissions("generate:adminssionsplaninformation:update")
     public ResponseMessage release(AdminssionsplaninformationEO adminssionsplaninformationEO) throws  Exception{
@@ -120,7 +159,15 @@ public class AdminssionsplaninformationVOController extends BaseController<Admin
         String str = adminssionsplaninformationEOService.release(adminssionsplaninformationEO);
         return getReturn(str);
     }
-    //获取返回参数-岳奔
+
+    /**
+    * @Description:   _根据service层，新增、修改是否成功来确定返回值
+    * @Author:         yueben
+    * @CreateDate:     2018/10/24 9:46
+    * @UpdateUser:     yueben
+    * @UpdateDate:     2018/10/24 9:46
+    * @UpdateRemark:   修改内容
+    */
     public ResponseMessage getReturn(String str){
         if (str == "-1"){
             return Result.error("repeat");
