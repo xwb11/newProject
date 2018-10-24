@@ -352,7 +352,8 @@
         SCHOOLINFORMATION."SchoolName",
         MAJORINFORMATION."MajorName",
         SCHOOLINFORMATION."ProvinceName",
-        ADMINSSIONSPLANINFORMATION."PublishTime"
+        ADMINSSIONSPLANINFORMATION."PublishTime",
+        ADMINSSIONSPLANINFORMATION."OfflineTime"
         from
         ADMINSSIONSPLANINFORMATION ,SCHOOLINFORMATION ,
         MAJORINFORMATION
@@ -363,6 +364,7 @@
         AND ADMINSSIONSPLANINFORMATION."SchoolKey"=SCHOOLINFORMATION."SchoolKey"
         AND ADMINSSIONSPLANINFORMATION."IsPublish"=1
         AND ADMINSSIONSPLANINFORMATION."CreateYear"=(Select Extract(year from sysdate) from dual)
+        AND ADMINSSIONSPLANINFORMATION."OfflineTime">(select sysdate  from dual)
         ORDER BY "CreateTime" ASC
         <if test="pager.orderCondition != null and pager.orderCondition != ''" >
             ${pager.orderCondition}
