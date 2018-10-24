@@ -70,49 +70,49 @@
     where 1=1
     <trim suffixOverrides="," >
       <if test="adminssionskey != null" >
-        and adminssionskey ${adminssionskeyOperator} #{adminssionskey}
+        and "AdminssionsKey" ${adminssionskeyOperator} #{adminssionskey}
       </if>
       <if test="schoolkey != null" >
-        and schoolkey ${schoolkeyOperator} #{schoolkey}
+        and "SchoolKey" ${schoolkeyOperator} #{schoolkey}
       </if>
       <if test="majorkey != null" >
-        and majorkey ${majorkeyOperator} #{majorkey}
+        and "MajorKey" ${majorkeyOperator} #{majorkey}
       </if>
       <if test="adminssionsnumber != null" >
-        and adminssionsnumber ${adminssionsnumberOperator} #{adminssionsnumber}
+        and "AdminssionsNumber" ${adminssionsnumberOperator} #{adminssionsnumber}
       </if>
       <if test="createtime != null" >
-        and createtime ${createtimeOperator} #{createtime}
+        and "CreateTime" ${createtimeOperator} #{createtime}
       </if>
       <if test="createtime1 != null" >
-        and createtime &gt;= #{createtime1}
+        and "CreateTime" &gt;= #{createtime1}
       </if>
       <if test="createtime2 != null" >
-        and createtime &lt;= #{createtime2}
+        and "CreateTime" &lt;= #{createtime2}
       </if>
       <if test="ispublish != null" >
-        and ispublish ${ispublishOperator} #{ispublish}
+        and "IsPublish" ${ispublishOperator} #{ispublish}
       </if>
       <if test="publishtime != null" >
-        and publishtime ${publishtimeOperator} #{publishtime}
+        and "PublishTime" ${publishtimeOperator} #{publishtime}
       </if>
       <if test="publishtime1 != null" >
-        and publishtime &gt;= #{publishtime1}
+        and "PublishTime" &gt;= #{publishtime1}
       </if>
       <if test="publishtime2 != null" >
-        and publishtime &lt;= #{publishtime2}
+        and "PublishTime" &lt;= #{publishtime2}
       </if>
       <if test="offlinetime != null" >
-        and offlinetime ${offlinetimeOperator} #{offlinetime}
+        and "OfflineTime" ${offlinetimeOperator} #{offlinetime}
       </if>
       <if test="offlinetime1 != null" >
-        and offlinetime &gt;= #{offlinetime1}
+        and "OfflineTime" &gt;= #{offlinetime1}
       </if>
       <if test="offlinetime2 != null" >
-        and offlinetime &lt;= #{offlinetime2}
+        and "OfflineTime" &lt;= #{offlinetime2}
       </if>
       <if test="createyear != null" >
-        and createyear ${createyearOperator} #{createyear}
+        and "CreateYear" ${createyearOperator} #{createyear}
       </if>
     </trim>
   </sql>
@@ -446,6 +446,7 @@
         left join MAJORINFORMATION m on a."MajorKey" = m."MajorKey"
         left join SCHOOLINFORMATION s on a."SchoolKey" = s."SchoolKey"
         WHERE 1=1
+        AND "CreateYear" = #{createyear}
         <if test="schoolkey!=null and schoolkey!=''">
             AND  "SchoolName" LIKE '%'||#{schoolkey}||'%'
     </if>
@@ -456,7 +457,9 @@
 
         <if test="adminssionskey!=null and adminssionskey!=''">
             AND "ProvinceName" LIKE '%'||#{adminssionskey}||'%'
-        </if>) tmp_tb where rownum &lt;= ${pager.endIndex})
+        </if>
+        ORDER BY "CreateTime" DESC
+        ) tmp_tb where rownum &lt;= ${pager.endIndex})
         where rn >= ${pager.startIndex}
 
     </select>
@@ -476,6 +479,7 @@
         left join MAJORINFORMATION m on a."MajorKey" = m."MajorKey"
         left join SCHOOLINFORMATION s on a."SchoolKey" = s."SchoolKey"
         WHERE 1=1
+        AND "CreateYear" = #{createyear}
         <if test="schoolkey!=null and schoolkey!=''">
             AND  "SchoolName" LIKE '%'||#{schoolkey}||'%'
         </if>
@@ -496,6 +500,8 @@
         (select <include refid="Base_Column_List_vo" /> from ADMINSSIONSPLANINFORMATION a
         left join MAJORINFORMATION m on a."MajorKey" = m."MajorKey"
         left join SCHOOLINFORMATION s on a."SchoolKey" = s."SchoolKey"
+        WHERE "CreateYear" = #{createyear}
+        ORDER BY "CreateTime" DESC
         ) tmp_tb where rownum &lt;= ${pager.endIndex})
         where rn &gt;= ${pager.startIndex}
     </select>

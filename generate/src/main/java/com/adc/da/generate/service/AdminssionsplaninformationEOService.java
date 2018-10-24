@@ -121,6 +121,8 @@ public class AdminssionsplaninformationEOService extends BaseService<Adminssions
 
     //学校，省份，专业模糊查询
     public List<AdminssionsplaninformationVO> selectBySMP(AdminssionsplaninformationEOPage page) throws Exception{
+        Calendar cal = Calendar.getInstance();
+        page.setCreateyear(String.valueOf(cal.get(Calendar.YEAR)));
         List<AdminssionsplaninformationVO> list = dao.selectBySMP(page);
         Integer rowCount = dao.countBySMP(page);
         page.getPager().setRowCount(rowCount.intValue());
@@ -130,6 +132,9 @@ public class AdminssionsplaninformationEOService extends BaseService<Adminssions
 
     //查询所有数据
     public List<AdminssionsplaninformationVO> selectAll(AdminssionsplaninformationEOPage page) throws Exception{
+        //设置创建啊年份
+        Calendar cal = Calendar.getInstance();
+        page.setCreateyear(String.valueOf(cal.get(Calendar.YEAR)));
         List<AdminssionsplaninformationVO> list = dao.selectAll(page);
         Integer rowCount = dao.queryByCount(page);
         page.getPager().setRowCount(rowCount.intValue());
