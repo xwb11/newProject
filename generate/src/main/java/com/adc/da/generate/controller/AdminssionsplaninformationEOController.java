@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.adc.da.generate.VO.AdminssionsplaninformationVO;
+import com.adc.da.generate.page.AdminssionsplaninformationVOPage;
 import com.adc.da.myutil.util.IsEmpty;
 import com.adc.da.myutil.util.PublicPrompt;
 import org.slf4j.Logger;
@@ -46,53 +47,37 @@ public class AdminssionsplaninformationEOController extends BaseController<Admin
         return Result.success(getPageInfo(page.getPager(), rows));
     }
 
-//    /**
-//    * @Description:    查询招生信息（分页)
-//    * @Author:         xwb
-//    * @CreateDate:     2018/10/10 10:44
-//    * @UpdateUser:     xwb
-//    * @UpdateDate:     2018/10/10 10:44
-//    * @UpdateRemark:   修改内容
-//    * @Version:        1.0
-//    */
-//    @ApiOperation(value = "|AdminssionsplaninformationVO|查询招生信息（分页）")
-//    @GetMapping("/queryAdminssionInfoByPage")
-//    public ResponseMessage<PageInfo<AdminssionsplaninformationVO>> queryAdminssionInfoByPage(AdminssionsplaninformationVOPage page) throws Exception {
-//        List<AdminssionsplaninformationVO> rows = adminssionsplaninformationEOService.queryAdminssionInfoByPage(page);
-//        return Result.success(getPageInfo(page.getPager(),rows));
-//    }
-
     /**
-    * @Description:    查询本年招生信息(模糊查询)
+    * @Description:    查询招生信息（分页)
     * @Author:         xwb
-    * @CreateDate:     2018/10/9 22:23
+    * @CreateDate:     2018/10/10 10:44
     * @UpdateUser:     xwb
-    * @UpdateDate:     2018/10/9 22:23
+    * @UpdateDate:     2018/10/10 10:44
     * @UpdateRemark:   修改内容
     * @Version:        1.0
     */
-	@ApiOperation(value = "|AdminssionsplaninformationEO|查询本年招生信息")
-    @PostMapping("/selectAdminssion")
-    @RequiresPermissions("generate:adminssionsplaninformation:list")
-    public ResponseMessage selectAdminssion(@RequestBody AdminssionsplaninformationVO adminssionsplaninformationVO) throws Exception {
-        return Result.success(PublicPrompt.SEARCH_SUCCESS,adminssionsplaninformationEOService.selectAdminssion(adminssionsplaninformationVO));
-	}
+    @ApiOperation(value = "|AdminssionsplaninformationVO|查询招生信息（分页）")
+    @PostMapping("/queryAdminssionInfoByPage")
+    public ResponseMessage<PageInfo<AdminssionsplaninformationVO>> queryAdminssionInfoByPage(@RequestBody AdminssionsplaninformationVOPage page) throws Exception {
+        PageInfo<AdminssionsplaninformationVO> rows = adminssionsplaninformationEOService.queryAdmissionByPage(page);
+        return Result.success(rows);
+    }
 
-//
-//	* @Description:    查询去年招考信息
-//	* @Author:         xwb
-//	* @CreateDate:     2018/10/9 22:22
-//	* @UpdateUser:     xwb
-//	* @UpdateDate:     2018/10/9 22:22
-//	* @UpdateRemark:   修改内容
-//	* @Version:        1.0
-//	*/
-//    @ApiOperation(value = "|AdminssionsplaninformationEO|查询去年招考信息")
-//    @PostMapping("/selectLastYearAdminssion")
-//    @RequiresPermissions("generate:adminssionsplaninformation:list")
-//    public ResponseMessage selectLastYearAdminssion(@RequestBody AdminssionsplaninformationVO adminssionsplaninformationVO) throws Exception {
-//        return Result.success(PublicPrompt.SEARCH_SUCCESS,adminssionsplaninformationEOService.selectLastYearAdmission(adminssionsplaninformationVO));
-//    }
+	/** @Description:    查询去年招考信息
+	* @Author:         xwb
+	* @CreateDate:     2018/10/9 22:22
+	* @UpdateUser:     xwb
+	* @UpdateDate:     2018/10/9 22:22
+	* @UpdateRemark:   修改内容
+	* @Version:        1.0
+	*/
+    @ApiOperation(value = "|AdminssionsplaninformationEO|查询去年招考信息")
+    @PostMapping("/queryLastAdminssionInfoByPage")
+    @RequiresPermissions("generate:adminssionsplaninformation:list")
+     public ResponseMessage<PageInfo<AdminssionsplaninformationVO>> queryLastAdminssionInfoByPage(@RequestBody AdminssionsplaninformationVOPage page) throws Exception {
+        PageInfo<AdminssionsplaninformationVO> rows = adminssionsplaninformationEOService.queryLastAdmissionByPage(page);
+        return Result.success(rows);
+    }
 
 
     @ApiOperation(value = "|AdminssionsplaninformationEO|详情")
@@ -158,40 +143,6 @@ public class AdminssionsplaninformationEOController extends BaseController<Admin
         }
     }
 
-    /**
-     * fyx
-     * 测试判空组件
-     * @return
-     */
-    /*@PostMapping("/testEmpty")
-    public ResponseMessage testEmpty(){
-        IsEmpty isEmpty = new IsEmpty();
-        int a0 = 1;
-        isEmpty.IsValueEmpty(a0);
-        Integer b0 = 1;
-        isEmpty.IsValueEmpty(b0);
-        char a1 = 'a';
-        isEmpty.IsValueEmpty(a1);
-        Character b1 = 'a';
-        isEmpty.IsValueEmpty(b1);
-        long a2 = 2;
-        isEmpty.IsValueEmpty(a2);
-        Long b2 = Long.valueOf(3);
-        isEmpty.IsValueEmpty(b2);
-        String a[] = {"","",""};
-        isEmpty.IsValueEmpty(a);
-        int b[] = {1,2,3};
-        isEmpty.IsValueEmpty(b);
-        Integer c[] = {2,3,4};
-        isEmpty.IsValueEmpty(c);
-        AdminssionsplaninformationEO adminssionsplaninformationEO = new AdminssionsplaninformationEO();
-        isEmpty.IsValueEmpty(adminssionsplaninformationEO);
-        List list = new ArrayList();
-        isEmpty.IsValueEmpty(list);
-        Map<String,String> map = new HashMap<>();
-        isEmpty.IsValueEmpty(map);
-        return  Result.success();
-    }*/
 
 
 }

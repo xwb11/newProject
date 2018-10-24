@@ -2,9 +2,11 @@ package com.adc.da.generate.service;
 
 import com.adc.da.base.page.BasePage;
 import com.adc.da.generate.VO.AdminssionsplaninformationVO;
+import com.adc.da.generate.VO.ExamineeinformationVO;
 import com.adc.da.generate.page.AdminssionsplaninformationEOPage;
 import com.adc.da.generate.page.AdminssionsplaninformationVOPage;
 import com.adc.da.myutil.service.IDUtils;
+import com.adc.da.util.http.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,16 +44,34 @@ public class AdminssionsplaninformationEOService extends BaseService<Adminssions
     public AdminssionsplaninformationEODao getDao() {
         return dao;
     }
+//    /**
+//    * @Description:    查询本年招生信息（分页查询）
+//    * @Author:         xwb
+//    * @CreateDate:     2018/10/10 16:58
+//    * @Version:        1.0
+//    */
+//    public List<AdminssionsplaninformationVO> queryAdminssionInfoByPage(BasePage page) throws Exception {
+//        Integer rowCount = this.queryByCount(page);
+//        page.getPager().setRowCount(rowCount);
+//        return this.dao.queryAdmissionInfoByPage(page);
+//    }
+
     /**
-    * @Description:    查询本年招生信息（分页查询）
+    * @Description:    当年录取信息分页模糊查询
     * @Author:         xwb
-    * @CreateDate:     2018/10/10 16:58
+    * @CreateDate:     2018/10/24 15:34
     * @Version:        1.0
     */
-    public List<AdminssionsplaninformationVO> queryAdminssionInfoByPage(BasePage page) throws Exception {
+    public PageInfo<AdminssionsplaninformationVO> queryAdmissionByPage(BasePage page) throws Exception {
         Integer rowCount = this.queryByCount(page);
         page.getPager().setRowCount(rowCount);
-        return this.dao.queryAdmissionInfoByPage(page);
+        PageInfo<AdminssionsplaninformationVO> pageInfo = new PageInfo();
+        pageInfo.setList(this.dao.queryAdmissionInfoByPage(page));
+        pageInfo.setCount((long)rowCount);
+        pageInfo.setPageSize(page.getPager().getPageSize());
+        pageInfo.setPageCount((long)page.getPager().getPageCount());
+        pageInfo.setPageNo(page.getPager().getPageId());
+        return pageInfo;
     }
 
     /**
@@ -63,18 +83,7 @@ public class AdminssionsplaninformationEOService extends BaseService<Adminssions
     public int queryByCount(BasePage page) throws Exception {
         return this.getDao().queryAdminssionByCount(page);
     }
-    /**
-    * @Description:    查询本年招生信息（模糊查询）
-    * @Author:         xwb
-    * @CreateDate:     2018/10/10 16:58
-    * @UpdateUser:     xwb
-    * @UpdateDate:     2018/10/10 16:58
-    * @UpdateRemark:   修改内容
-    * @Version:        1.0
-    */
-    public List<AdminssionsplaninformationVO> selectAdminssion (AdminssionsplaninformationVO adminssionsplaninformationVO){
-        return dao.selectAdmission(adminssionsplaninformationVO);
-    }
+
 
     /**
      * @Description:    获取去年招考信息符合条件的信息数
@@ -100,6 +109,24 @@ public class AdminssionsplaninformationEOService extends BaseService<Adminssions
         page.getPager().setRowCount(rowCount);
         return this.dao.selectLastYearAdmission(page);
     }
+
+    /**
+    * @Description:    查询去年招考信息 分页模糊查询
+    * @Author:         xwb
+    * @CreateDate:     2018/10/24 15:46
+    */
+    public PageInfo<AdminssionsplaninformationVO> queryLastAdmissionByPage(BasePage page) throws Exception {
+        Integer rowCount = this.queryLastByCount(page);
+        page.getPager().setRowCount(rowCount);
+        PageInfo<AdminssionsplaninformationVO> pageInfo = new PageInfo();
+        pageInfo.setList(this.dao.selectLastYearAdmission(page));
+        pageInfo.setCount((long)rowCount);
+        pageInfo.setPageSize(page.getPager().getPageSize());
+        pageInfo.setPageCount((long)page.getPager().getPageCount());
+        pageInfo.setPageNo(page.getPager().getPageId());
+        return pageInfo;
+    }
+
     /**
      * 获取已发布专业的学校
      * 刘笑天 20181011
