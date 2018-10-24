@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.adc.da.generate.dao.UserinformationEODao" >
+<mapper namespace="com.adc.da.generate.dao.UserinformationEODa  o" >
   <!-- Result Map-->
   <resultMap id="BaseResultMap" type="com.adc.da.generate.entity.UserinformationEO" >
     <id column="UserKey" property="userkey" />
@@ -9,15 +9,17 @@
     <result column="UserRole" property="userrole" />
     <result column="CreateTime" property="createtime" />
     <result column="Status" property="status" />
-  </resultMap>
+</resultMap>
     <!-- 旧密码校验 刘笑天 20181022-->
     <select id="checkOldPassword" resultMap="BaseResultMap">
         SELECT * FROM USERINFORMATION
         WHERE "UserPassword" = #{userpassword} AND "UserKey" = #{userkey}
     </select>
-    <!-- 用户登录 刘笑天-->
-    <select id="userLogin" resultMap="BaseResultMap" resultType="com.adc.da.generate.entity.UserinformationEO">
-        SELECT * FROM USERINFORMATION
+    <!-- 用户登录 刘笑天 20181024修改-->
+    <select id="userLogin" resultType="com.adc.da.generate.VO.UserinformationVO">
+        SELECT UI."UserKey",UI."UserRole",EI."ExamineeKey",EI."QuasiExaminationNumber" FROM USERINFORMATION  UI
+        left join EXAMINEEINFORMATION EI
+        on EI."UserKey" = UI."UserKey"
         WHERE "UserAccount" = #{useraccount} AND "UserPassword" = #{userpassword}
     </select>
   <!-- USERINFORMATION table all fields -->

@@ -107,14 +107,15 @@ public class ExamineevolunteerinformationEOController extends BaseController<Exa
     /**
      * 获取考生志愿
      * 刘笑天 20181011
-     * @param examinationnumber
+     * @param examineevolunteerinformationVO
      * @return
      */
     @ApiOperation(value = "|ExamineevolunteerinformationEO|获取考生志愿")
-    @GetMapping("/getExamineeVolunteerInformation")
-    public ResponseMessage getExamineeVolunteerInformation(@RequestParam String examinationnumber){
-        List<Map<String,Object>> examineeVolunteers= examineevolunteerinformationEOService.getExamineeVolunteerInformation(examinationnumber);
-        return Result.success("","查询成功",examineeVolunteers);
+    @PostMapping("/getExamineeVolunteerInformation")
+//    public ResponseMessage getExamineeVolunteerInformation(@RequestParam String examinationnumber,String schoolName,String majorName){
+    public ResponseMessage getExamineeVolunteerInformation(@RequestBody ExamineevolunteerinformationVO examineevolunteerinformationVO){
+        List<Map<String,Object>> examineeVolunteers= examineevolunteerinformationEOService.getExamineeVolunteerInformation(examineevolunteerinformationVO);
+        return Result.success(examineeVolunteers);
     }
 
     /**
@@ -156,7 +157,7 @@ public class ExamineevolunteerinformationEOController extends BaseController<Exa
                                                     @RequestParam String majorkey)
     {
         //验证是否到达7条
-        List<Map<String,Object>> examineeVolunteers= examineevolunteerinformationEOService.getExamineeVolunteerInformation(examinationnumber);
+        List<Map<String,Object>> examineeVolunteers= examineevolunteerinformationEOService.getExamineeVolunteers(examinationnumber);
         System.out.println(examineeVolunteers.size());
         if(examineeVolunteers.size()>=7){
             return Result.error(APPLY_SEVEN);
