@@ -132,7 +132,7 @@ public class UserinformationEOService extends BaseService<UserinformationEO, Str
      * @param userPassword
      * @return
      */
-    public UserinformationEO userLogin(String userAccount, String userPassword) {
+    public UserinformationVO userLogin(String userAccount, String userPassword) {
 //        UserinformationEO userinformationEO = new UserinformationEO();
         if (dao.userLogin(userAccount, userPassword) != null) {
             return dao.userLogin(userAccount, userPassword);

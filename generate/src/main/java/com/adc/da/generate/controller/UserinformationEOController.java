@@ -184,9 +184,9 @@ public class UserinformationEOController extends BaseController<UserinformationE
     @ApiOperation(value = "|UserinformationEO|登录")
     @PostMapping("/userLogin")
     public ResponseMessage userLogin(@RequestParam String userAccount,@RequestParam String userPassword) throws Exception{
-        UserinformationEO userinformationEO = userinformationEOService.userLogin(userAccount,userPassword);
-        if (userinformationEO != null){
-            String userRole = userinformationEO.getUserrole();
+        UserinformationVO userinformationVO = userinformationEOService.userLogin(userAccount,userPassword);
+        if (userinformationVO != null){
+            String userRole = userinformationVO.getUserrole();
 //            if ("0".equals(userRole)){//考生
 //                return Result.success(EXAMINEE_LOGIN_SUCCESS,userinformationEO);
 //            }else if("1".equals(userRole)){//管理员
@@ -200,13 +200,13 @@ public class UserinformationEOController extends BaseController<UserinformationE
 //            }
             switch(userRole){
                 case "0": //考生
-                    return Result.success("00",EXAMINEE_LOGIN_SUCCESS,userinformationEO);
+                    return Result.success("00",EXAMINEE_LOGIN_SUCCESS,userinformationVO);
                 case "1": //管理员
-                    return Result.success("01",ADMIN_LOGIN_SUCCESS,userinformationEO);
+                    return Result.success("01",ADMIN_LOGIN_SUCCESS,userinformationVO);
                 case "2": //招生者
-                    return Result.success("02",ADMISSIONS_LOGIN_SUCCESS,userinformationEO);
+                    return Result.success("02",ADMISSIONS_LOGIN_SUCCESS,userinformationVO);
                 case "3": //逻辑删除
-                    return Result.success("03",USER_IS_FAKEDELETED,userinformationEO);
+                    return Result.success("03",USER_IS_FAKEDELETED,userinformationVO);
                 default: //角色类型不存在
                     return Result.error(USERROLE_NOTEXIST);
             }
