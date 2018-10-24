@@ -68,6 +68,25 @@
         left join MAJORINFORMATION MI
         on EVI."MajorKey" = MI."MajorKey"
         where "ExaminationNumber" = #{examinationnumber,jdbcType=VARCHAR}
+        <trim suffixOverrides=",">
+            <if test="schoolname != null">
+                and SI."SchoolName" like '%'||#{schoolname}||'%'
+            </if>
+            <if test="majorname != null">
+                and MI."MajorName" like '%'||#{majorname}||'%'
+            </if>
+        </trim>
+        order by EVI."DeclareTime" desc
+    </select>
+    <!-- 验证考生志愿条数 刘笑天 20181024 -->
+    <select id="getExamineeVolunteers" resultMap="ResultMap2">
+        select distinct SI."SchoolName",MI."MajorName",EVI."DeclareTime",EVI."DeclareTime"
+        from EXAMINEEVOLUNTEERINFORMATION EVI
+        left join SCHOOLINFORMATION SI
+        on EVI."SchoolKey" = SI."SchoolKey"
+        left join MAJORINFORMATION MI
+        on EVI."MajorKey" = MI."MajorKey"
+        where "ExaminationNumber" = #{examinationnumber,jdbcType=VARCHAR}
         order by EVI."DeclareTime" desc
     </select>
     <!-- 报考学校查重 刘笑天 20181011 -->
@@ -103,7 +122,6 @@
     </delete>
   <!-- EXAMINEEVOLUNTEERINFORMATION table all fields -->
     <sql id="Base_Column_List" >
-/*--      volunteerkey, examinationnumber, volunteernumber, schoolkey, majorkey, declaretime, admissionstatue, admissiontime*/
     "VolunteerKey","ExaminationNumber","VolunteerNumber","SchoolKey","MajorKey","DeclareTime","AdmissionStatue","AdmissionTime"
 </sql>
 

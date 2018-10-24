@@ -2,11 +2,15 @@ package com.adc.da.generate.controller;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static com.adc.da.generate.util.AdminssionsplaninformationEOPrompt.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.adc.da.generate.VO.AdminssionsplaninformationVO;
 import com.adc.da.generate.page.AdminssionsplaninformationVOPage;
+import com.adc.da.myutil.util.IsEmpty;
 import com.adc.da.myutil.util.PublicPrompt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -126,9 +130,17 @@ public class AdminssionsplaninformationEOController extends BaseController<Admin
      */
     @ApiOperation(value = "|AdminssionsplaninformationEO|获取学校发布的专业")
     @PostMapping("/getSchoolsPublishedMajor")
-    public ResponseMessage getSchoolsPublishedMajor(@RequestParam String schoolKey){
-        List<Map<String,Object>> schoolPublishedMajors= adminssionsplaninformationEOService.getSchoolsPublishedMajor(schoolKey);
-        return Result.success(schoolPublishedMajors);
+    public ResponseMessage getSchoolsPublishedMajor(@RequestParam String schoolKey) throws Exception {
+        IsEmpty isEmpty = new IsEmpty();
+        boolean flag = isEmpty.IsValueEmpty(schoolKey);
+        System.out.println(flag);
+        if(flag){
+            List<Map<String,Object>> schoolPublishedMajors= adminssionsplaninformationEOService.getSchoolsPublishedMajor(schoolKey);
+            return Result.success(schoolPublishedMajors);
+        }
+        else {
+            return Result.error("-1",VALUE_EMPTY);
+        }
     }
 
 

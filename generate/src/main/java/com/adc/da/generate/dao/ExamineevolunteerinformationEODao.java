@@ -29,11 +29,16 @@ public interface ExamineevolunteerinformationEODao extends BaseDao<Examineevolun
     /**
      * 获取考生志愿
      * 刘笑天 20181011
-     * @param examinationnumber
+     * @param examineevolunteerinformationVO
      * @return
      */
-    List<Map<String,Object>> getExamineeVolunteerInformation(String examinationnumber);
+    List<Map<String,Object>> getExamineeVolunteerInformation(ExamineevolunteerinformationVO examineevolunteerinformationVO);
 
+    /**
+     * 验证考生志愿条数
+     * 刘笑天 20181024
+     */
+    public List<Map<String,Object>> getExamineeVolunteers(String examinationnumber);
     /**
      * 考生报考学校查重
      * 刘笑天 20181011

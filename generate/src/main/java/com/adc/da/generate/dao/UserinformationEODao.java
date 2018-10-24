@@ -54,7 +54,7 @@ public interface UserinformationEODao extends BaseDao<UserinformationEO> {
      * @param userPassword
      * @return
      */
-    UserinformationEO userLogin(@Param("useraccount") String userAccount, @Param("userpassword") String userPassword);
+    UserinformationVO userLogin(@Param("useraccount") String userAccount, @Param("userpassword") String userPassword);
 
     /**
      * 旧密码校验

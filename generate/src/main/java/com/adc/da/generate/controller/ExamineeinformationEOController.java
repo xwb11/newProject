@@ -13,6 +13,7 @@ import com.adc.da.generate.page.ExamineeinformationVOPage;
 import com.adc.da.generate.service.UserinformationEOService;
 import com.adc.da.generate.util.ExamineeinformationEOPrompt;
 import com.adc.da.myutil.service.ExeclCheck;
+import com.adc.da.myutil.util.IsEmpty;
 import com.adc.da.util.utils.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -120,6 +121,9 @@ public class ExamineeinformationEOController extends BaseController<Examineeinfo
     @ApiOperation(value = "|ExamineeinformationEO|考生信息录入")
     @PostMapping("/informationEntry")
     public ResponseMessage informationEntry(@RequestBody ExamineeinformationVO examineeinformationVO) throws Exception {
+        IsEmpty isEmpty = new IsEmpty();
+        boolean flag = isEmpty.IsValueEmpty(examineeinformationVO);
+        System.out.println(flag);
         //校验，如果成功 返回字符串"true",否则返回提示语
         UserinformationEO userinformationEO = examineeinformationVO.getUserinformationEO();
         ExamineeinformationEO examineeinformationEO = examineeinformationVO.getExamineeinformationEO();

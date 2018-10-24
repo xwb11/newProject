@@ -52,13 +52,19 @@ public class ExamineevolunteerinformationEOService extends BaseService<Examineev
     /**
      * 获取考生志愿
      * 刘笑天 20181011
-     * @param examinationnumber
+     * @param examineevolunteerinformationVO
      * @return
      */
-    public List<Map<String,Object>> getExamineeVolunteerInformation(String examinationnumber){
-        return dao.getExamineeVolunteerInformation(examinationnumber);
+    public List<Map<String,Object>> getExamineeVolunteerInformation(ExamineevolunteerinformationVO examineevolunteerinformationVO){
+        return dao.getExamineeVolunteerInformation(examineevolunteerinformationVO);
     }
-
+    /**
+     * 验证考生志愿条数
+     * 刘笑天 20181024
+     */
+    public List<Map<String,Object>> getExamineeVolunteers(String examinationnumber){
+        return dao.getExamineeVolunteers(examinationnumber);
+    }
     /**
      * 考生学校查重
      * 刘笑天 20181011
