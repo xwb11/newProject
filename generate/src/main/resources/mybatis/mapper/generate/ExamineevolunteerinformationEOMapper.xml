@@ -61,7 +61,7 @@
     </resultMap>
     <!-- 获取考生志愿 刘笑天 20181011 -->
     <select id="getExamineeVolunteerInformation" resultMap="ResultMap2">
-        select distinct SI."SchoolName",MI."MajorName",EVI."DeclareTime",EVI."DeclareTime"
+        select distinct SI."SchoolName",MI."MajorName",EVI.*
         from EXAMINEEVOLUNTEERINFORMATION EVI
         left join SCHOOLINFORMATION SI
         on EVI."SchoolKey" = SI."SchoolKey"
