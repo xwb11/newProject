@@ -43,6 +43,8 @@
         <result column="majorname" property="majorname" />
         <result column="createtime" property="createtime" />
     </resultMap>
+
+
     <!-- 获取已发布专业的学校 刘笑天 20181011-->
     <select id = "getSchools" resultMap="SchoolInformationResultMap">
         select distinct SI."SchoolKey",SI."SchoolName"
@@ -58,9 +60,9 @@
         AND APIN."MajorKey" = MI."MajorKey"
         AND "IsPublish" = 1
     </select>
-  <!-- ADMINSSIONSPLANINFORMATION table all fields -->
-  <sql id="Base_Column_List" >
-     AdminssionsKey, SchoolKey, MajorKey, AdminssionsNumber, CreateTime, IsPublish, PublishTime, OfflineTime, CreateYear
+    <!-- ADMINSSIONSPLANINFORMATION table all fields -->
+    <sql id="Base_Column_List" >
+     "AdminssionsKey", "SchoolKey", "MajorKey", "AdminssionsNumber", "CreateTime", "IsPublish", "PublishTime", "OfflineTime", "CreateYear"
   </sql>
 
   <!-- 查询条件 -->
@@ -68,49 +70,49 @@
     where 1=1
     <trim suffixOverrides="," >
       <if test="adminssionskey != null" >
-        and adminssionskey ${adminssionskeyOperator} #{adminssionskey}
+        and "AdminssionsKey" ${adminssionskeyOperator} #{adminssionskey}
       </if>
       <if test="schoolkey != null" >
-        and schoolkey ${schoolkeyOperator} #{schoolkey}
+        and "SchoolKey" ${schoolkeyOperator} #{schoolkey}
       </if>
       <if test="majorkey != null" >
-        and majorkey ${majorkeyOperator} #{majorkey}
+        and "MajorKey" ${majorkeyOperator} #{majorkey}
       </if>
       <if test="adminssionsnumber != null" >
-        and adminssionsnumber ${adminssionsnumberOperator} #{adminssionsnumber}
+        and "AdminssionsNumber" ${adminssionsnumberOperator} #{adminssionsnumber}
       </if>
       <if test="createtime != null" >
-        and createtime ${createtimeOperator} #{createtime}
+        and "CreateTime" ${createtimeOperator} #{createtime}
       </if>
       <if test="createtime1 != null" >
-        and createtime &gt;= #{createtime1}
+        and "CreateTime" &gt;= #{createtime1}
       </if>
       <if test="createtime2 != null" >
-        and createtime &lt;= #{createtime2}
+        and "CreateTime" &lt;= #{createtime2}
       </if>
       <if test="ispublish != null" >
-        and ispublish ${ispublishOperator} #{ispublish}
+        and "IsPublish" ${ispublishOperator} #{ispublish}
       </if>
       <if test="publishtime != null" >
-        and publishtime ${publishtimeOperator} #{publishtime}
+        and "PublishTime" ${publishtimeOperator} #{publishtime}
       </if>
       <if test="publishtime1 != null" >
-        and publishtime &gt;= #{publishtime1}
+        and "PublishTime" &gt;= #{publishtime1}
       </if>
       <if test="publishtime2 != null" >
-        and publishtime &lt;= #{publishtime2}
+        and "PublishTime" &lt;= #{publishtime2}
       </if>
       <if test="offlinetime != null" >
-        and offlinetime ${offlinetimeOperator} #{offlinetime}
+        and "OfflineTime" ${offlinetimeOperator} #{offlinetime}
       </if>
       <if test="offlinetime1 != null" >
-        and offlinetime &gt;= #{offlinetime1}
+        and "OfflineTime" &gt;= #{offlinetime1}
       </if>
       <if test="offlinetime2 != null" >
-        and offlinetime &lt;= #{offlinetime2}
+        and "OfflineTime" &lt;= #{offlinetime2}
       </if>
       <if test="createyear != null" >
-        and createyear ${createyearOperator} #{createyear}
+        and "CreateYear" ${createyearOperator} #{createyear}
       </if>
     </trim>
   </sql>
@@ -124,22 +126,19 @@
     values (#{adminssionskey, jdbcType=VARCHAR}, #{schoolkey, jdbcType=VARCHAR}, #{majorkey, jdbcType=VARCHAR}, #{adminssionsnumber, jdbcType=INTEGER}, #{createtime, jdbcType=TIMESTAMP}, #{ispublish, jdbcType=INTEGER}, #{publishtime, jdbcType=TIMESTAMP}, #{offlinetime, jdbcType=TIMESTAMP}, #{createyear, jdbcType=INTEGER})
   </insert>
 
-  <!-- 动态插入记录 主键是序列 -->
+  <!-- 创建招生计划-岳奔 -->
   <insert id="insertSelective" parameterType="com.adc.da.generate.entity.AdminssionsplaninformationEO" >
-        <!-- <selectKey resultType="java.lang.String" order="BEFORE" keyProperty="adminssionskey">
-        SELECT SEQ_ADMINSSIONSPLANINFORMATION.NEXTVAL FROM DUAL
-    </selectKey> -->
         insert into ADMINSSIONSPLANINFORMATION
     <trim prefix="(" suffix=")" suffixOverrides="," >
-                <if test="adminssionskey != null" >adminssionskey,</if>
-                <if test="schoolkey != null" >schoolkey,</if>
-                <if test="majorkey != null" >majorkey,</if>
-                <if test="adminssionsnumber != null" >adminssionsnumber,</if>
-                <if test="createtime != null" >createtime,</if>
-                <if test="ispublish != null" >ispublish,</if>
-                <if test="publishtime != null" >publishtime,</if>
-                <if test="offlinetime != null" >offlinetime,</if>
-                <if test="createyear != null" >createyear,</if>
+        <if test="adminssionskey != null" >"AdminssionsKey",</if>
+        <if test="schoolkey != null" >"SchoolKey",</if>
+        <if test="majorkey != null" >"MajorKey",</if>
+        <if test="adminssionsnumber != null" >"AdminssionsNumber",</if>
+        <if test="createtime != null" >"CreateTime",</if>
+        <if test="ispublish != null" >"IsPublish",</if>
+        <if test="publishtime != null" >"PublishTime",</if>
+        <if test="offlinetime != null" >"OfflineTime",</if>
+        <if test="createyear != null" >"CreateYear",</if>
             </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
                 <if test="adminssionskey != null" >#{adminssionskey, jdbcType=VARCHAR},</if>
@@ -150,7 +149,7 @@
                 <if test="ispublish != null" >#{ispublish, jdbcType=INTEGER},</if>
                 <if test="publishtime != null" >#{publishtime, jdbcType=TIMESTAMP},</if>
                 <if test="offlinetime != null" >#{offlinetime, jdbcType=TIMESTAMP},</if>
-                <if test="createyear != null" >#{createyear, jdbcType=INTEGER},</if>
+                <if test="createyear != null" >#{createyear, jdbcType=VARCHAR},</if>
             </trim>
   </insert>
 
@@ -168,37 +167,37 @@
      where  adminssionskey = #{adminssionskey}
   </update>
 
-  <!-- 修改记录，只修改只不为空的字段 -->
-  <update id="updateByPrimaryKeySelective" parameterType="com.adc.da.generate.entity.AdminssionsplaninformationEO" >
-    update ADMINSSIONSPLANINFORMATION
-    <set >
-      <if test="schoolkey != null" >
-        schoolkey = #{schoolkey},
-      </if>
-      <if test="majorkey != null" >
-        majorkey = #{majorkey},
-      </if>
-      <if test="adminssionsnumber != null" >
-        adminssionsnumber = #{adminssionsnumber},
-      </if>
-      <if test="createtime != null" >
-        createtime = #{createtime},
-      </if>
-      <if test="ispublish != null" >
-        ispublish = #{ispublish},
-      </if>
-      <if test="publishtime != null" >
-        publishtime = #{publishtime},
-      </if>
-      <if test="offlinetime != null" >
-        offlinetime = #{offlinetime},
-      </if>
-      <if test="createyear != null" >
-        createyear = #{createyear},
-      </if>
-    </set>
-     where adminssionskey = #{adminssionskey}
-  </update>
+    <!-- 修改记录，只修改只不为空的字段 -->
+    <update id="updateByPrimaryKeySelective" parameterType="com.adc.da.generate.entity.AdminssionsplaninformationEO" >
+        update ADMINSSIONSPLANINFORMATION
+        <set >
+            <if test="schoolkey != null" >
+                "SchoolKey" = #{schoolkey},
+            </if>
+            <if test="majorkey != null" >
+                "MajorKey" = #{majorkey},
+            </if>
+            <if test="adminssionsnumber != null" >
+                "AdminssionsNumber" = #{adminssionsnumber},
+            </if>
+            <if test="createtime != null" >
+                "CreateTime" = #{createtime},
+            </if>
+            <if test="ispublish != null" >
+                "IsPublish" = #{ispublish},
+            </if>
+            <if test="publishtime != null" >
+                "PublishTime" = #{publishtime},
+            </if>
+            <if test="offlinetime != null" >
+                "OfflineTime" = #{offlinetime},
+            </if>
+            <if test="createyear != null" >
+                "CreateYear" = #{createyear},
+            </if>
+        </set>
+        where "AdminssionsKey" = #{adminssionskey}
+    </update>
 
   <!-- 根据id查询 ADMINSSIONSPLANINFORMATION -->
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
@@ -414,44 +413,105 @@
         where rn>= ${pager.startIndex}
     </select>
 
-    <!--//学校，专业，省份进行模糊查询(将学校查询字段放在SchoolKey里，专业查询字段放在MajorKey，省份查询字段放在AdminssionsKey) 岳奔2018-10-12-->
-    <select id="selectBySMP" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">
-        select <include refid="Base_Column_List"/> from
+
+    <!--岳奔-->
+    <resultMap id="ResultVoMap" type="com.adc.da.generate.VO.AdminssionsplaninformationVO" >
+        <id column="AdminssionsKey" property="adminssionskey" />
+        <result column="SchoolKey" property="schoolkey" />
+        <result column="SchoolName" property="schoolname" />
+        <result column="ProvinceName" property="provincename" />
+        <result column="MajorKey" property="majorkey" />
+        <result column="MajorName" property="majorname" />
+        <result column="AdminssionsNumber" property="adminssionsnumber" />
+        <result column="CreateTime" property="createtime" />
+        <result column="IsPublish" property="ispublish" />
+        <result column="PublishTime" property="publishtime" />
+        <result column="OfflineTime" property="offlinetime" />
+        <result column="CreateYear" property="createyear" />
+    </resultMap>
+
+    <!--vo-->
+    <sql id="Base_Column_List_vo" >
+        a."AdminssionsKey", a."SchoolKey",s."SchoolName", s."ProvinceName",a."MajorKey",m."MajorName", a."AdminssionsNumber", a."CreateTime", a."IsPublish", a."PublishTime", a."OfflineTime", a."CreateYear"
+    </sql>
+
+    <sql id="Base_Column_List_vo_1" >
+        "AdminssionsKey", "SchoolKey","SchoolName", "ProvinceName","MajorKey","MajorName", "AdminssionsNumber", TO_CHAR("CreateTime",'yyyy-MM-dd HH:mm:ss') "CreateTime", "IsPublish", "PublishTime", "OfflineTime", "CreateYear"
+    </sql>
+
+
+    <!--//学校，专业，省份进行模糊查询-->
+    <select id="selectBySMP" resultMap="ResultVoMap" parameterType="com.adc.da.base.page.BasePage">
+        select <include refid="Base_Column_List_vo_1"/> from
         (select tmp_tb.* , rownum rn from
-        (SELECT DISTINCT <include refid="Base_Column_List"/> FROM ADMINSSIONSPLANINFORMATION
+        (SELECT DISTINCT <include refid="Base_Column_List_vo"/> FROM ADMINSSIONSPLANINFORMATION a
+        left join MAJORINFORMATION m on a."MajorKey" = m."MajorKey"
+        left join SCHOOLINFORMATION s on a."SchoolKey" = s."SchoolKey"
         WHERE 1=1
+        AND "CreateYear" = #{createyear}
         <if test="schoolkey!=null and schoolkey!=''">
-            AND "SchoolKey" = ANY(SELECT "SchoolKey" FROM SCHOOLINFORMATION WHERE "SchoolName" LIKE '%'||#{schoolkey}||'%')
-        </if>
+            AND  "SchoolName" LIKE '%'||#{schoolkey}||'%'
+    </if>
 
         <if test="majorkey!=null and majorkey!=''">
-            AND "MajorKey" = ANY(SELECT "MajorKey" FROM MAJORINFORMATION WHERE "MajorName" LIKE '%'||#{majorkey}||'%')
+            AND  "MajorName" LIKE '%'||#{majorkey}||'%'
         </if>
 
         <if test="adminssionskey!=null and adminssionskey!=''">
-            AND "SchoolKey" = ANY(SELECT "SchoolKey" FROM SCHOOLINFORMATION WHERE "ProvinceName" LIKE '%'||#{adminssionskey}||'%')
-        </if>) tmp_tb where rownum &lt;= ${pager.endIndex})
+            AND "ProvinceName" LIKE '%'||#{adminssionskey}||'%'
+        </if>
+        ORDER BY "CreateTime" DESC
+        ) tmp_tb where rownum &lt;= ${pager.endIndex})
         where rn >= ${pager.startIndex}
 
     </select>
 
-    <!--//验重操作(将学校查询字段放在SchoolKey里，专业查询字段放在MajorKey，省份查询字段放在AdminssionsKey) 岳奔2018-10-12-->
-    <select id="isRepeat" resultType="java.lang.Integer" parameterType="com.adc.da.generate.entity.AdminssionsplaninformationEO">
-        select count(1) from ADMINSSIONSPLANINFORMATION
+    <!--//验重操作(将学校查询字段放在SchoolKey里，专业查询字段放在MajorKey，省份查询字段放在AdminssionsKey)-->
+    <select id="isRepeat" resultType="java.lang.String" parameterType="com.adc.da.generate.entity.AdminssionsplaninformationEO">
+        select "AdminssionsKey" from ADMINSSIONSPLANINFORMATION
         WHERE
         "MajorKey" = #{majorkey}
         and "SchoolKey" = #{schoolkey}
         and "CreateYear" = #{createyear}
-        <!--<if test="majorkey!='' and majorkey!=null">"MajorKey" = #{majorkey}</if>
-        <if test="schoolkey!='' and schoolkey!=null">"SchoolKey" = #{schoolkey}</if>
-        <if test="createyear!='' and createyear!=null">"CreateYear" = #{createyear}</if>-->
     </select>
 
-    <!--删除一条记录 岳奔2018-10-12-->
+    <!--模糊查询计数-->
+    <select id="countBySMP" resultType="java.lang.Integer" parameterType="com.adc.da.base.page.BasePage">
+        SELECT DISTINCT count(1) FROM ADMINSSIONSPLANINFORMATION a
+        left join MAJORINFORMATION m on a."MajorKey" = m."MajorKey"
+        left join SCHOOLINFORMATION s on a."SchoolKey" = s."SchoolKey"
+        WHERE 1=1
+        AND "CreateYear" = #{createyear}
+        <if test="schoolkey!=null and schoolkey!=''">
+            AND  "SchoolName" LIKE '%'||#{schoolkey}||'%'
+        </if>
+
+        <if test="majorkey!=null and majorkey!=''">
+            AND  "MajorName" LIKE '%'||#{majorkey}||'%'
+        </if>
+
+        <if test="adminssionskey!=null and adminssionskey!=''">
+            AND "ProvinceName" LIKE '%'||#{adminssionskey}||'%'
+        </if>
+    </select>
+
+    <!-- 查询ADMINSSIONSPLANINFORMATION列表 -->
+    <select id="selectAll" resultMap="ResultVoMap" parameterType="com.adc.da.base.page.BasePage">
+        select <include refid="Base_Column_List_vo_1" /> from
+        (select tmp_tb.* , rownum rn from
+        (select <include refid="Base_Column_List_vo" /> from ADMINSSIONSPLANINFORMATION a
+        left join MAJORINFORMATION m on a."MajorKey" = m."MajorKey"
+        left join SCHOOLINFORMATION s on a."SchoolKey" = s."SchoolKey"
+        WHERE "CreateYear" = #{createyear}
+        ORDER BY "CreateTime" DESC
+        ) tmp_tb where rownum &lt;= ${pager.endIndex})
+        where rn &gt;= ${pager.startIndex}
+    </select>
+
+    <!--删除一条记录-->
     <delete id="deleteByKey" parameterType="java.lang.String">
         delete from ADMINSSIONSPLANINFORMATION
         where "AdminssionsKey" = #{adminKey}
-
     </delete>
 
 </mapper>

@@ -127,7 +127,7 @@
 
   <!-- 根据id查询 USERINFORMATION -->
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
-    select <include refid="Base_Column_List" /> 
+    select <include refid="Base_Column_List" />
       from USERINFORMATION
      where userkey = #{value}
 
@@ -143,6 +143,13 @@
   <!-- USERINFORMATION 列表总数 使用原框架查询总数据  宣文彬2019/10/11-->
   <select id="queryByCount" resultType="java.lang.Integer" parameterType="com.adc.da.base.page.BasePage">
     select count(1) from USERINFORMATION WHERE USERINFORMATION."UserRole" != '3'
+      <if test="useraccount != null" >
+          AND  "UserAccount" LIKE '%${useraccount}%'
+      </if>
+      <if test="status != null " >
+          AND "Status" = ${status}
+      </if>
+
 
   </select>
 
@@ -152,7 +159,13 @@
 		(select tmp_tb.* , rownum rn from
 			(select <include refid="Base_Column_List" /> from USERINFORMATION
               WHERE
-              USERINFORMATION."UserRole" != '3' AND  "UserAccount" LIKE '%${useraccount}%'
+              USERINFORMATION."UserRole" != '3'
+              <if test="useraccount != null" >
+                  AND  "UserAccount" LIKE '%${useraccount}%'
+              </if>
+              <if test="status != null " >
+                  AND "Status" = ${status}
+              </if>
 			) tmp_tb where rownum &lt;= ${pager.endIndex})
 			where rn &gt;= ${pager.startIndex}
       ORDER BY "CreateTime" desc
@@ -184,8 +197,8 @@
     </select>
 
     <!--检查账户是否重复-->
-    <select id="queryAccount" resultType="java.lang.Integer" parameterType="java.lang.String">
-        select count("UserKey") from USERINFORMATION WHERE "UserAccount"=#{useraccount,jdbcType=VARCHAR}
+    <select id="AccountRepeat" resultType="java.lang.String" parameterType="java.lang.String">
+        select "UserKey" from USERINFORMATION WHERE "UserAccount"=#{useraccount,jdbcType=VARCHAR}
     </select>
 
 </mapper>

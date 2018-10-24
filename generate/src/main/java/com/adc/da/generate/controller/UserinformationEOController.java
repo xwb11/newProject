@@ -119,8 +119,8 @@ public class UserinformationEOController extends BaseController<UserinformationE
             return Result.error(UserinformationEOPrompt.USE_PERMIT);
         }
         //用户名验重
-        if(userinformationEOService.AccountRepeat(userinformationVO.getUseraccount())){
-            return Result.error(UserinformationEOPrompt.USE_PERMIT);
+        if(userinformationEOService.AccountRepeat(userinformationVO)){
+            return Result.error(UserinformationEOPrompt.ACOUNT_REPEAT);
         }
         userinformationEOService.insertUserInfo(userinformationVO);
         return Result.success(userinformationVO);
@@ -141,8 +141,8 @@ public class UserinformationEOController extends BaseController<UserinformationE
             return Result.error(UserinformationEOPrompt.USE_PERMIT);
         }
         //用户名验重
-        if(userinformationEOService.AccountRepeat(userinformationVO.getUseraccount())){
-            return Result.error(UserinformationEOPrompt.USE_PERMIT);
+        if(userinformationEOService.AccountRepeat(userinformationVO)){
+            return Result.error(UserinformationEOPrompt.ACOUNT_REPEAT);
         }
         userinformationEOService.updateByPrimaryKeySelective(userinformationVO);
         return Result.success(userinformationVO);
@@ -169,7 +169,7 @@ public class UserinformationEOController extends BaseController<UserinformationE
      */
     @ApiOperation(value = "|UserinformationEO|查询用户信息（分页）")
     @PostMapping("/queryUserInfoByPage")
-    public ResponseMessage<PageInfo<UserinformationEO>> queryUserInfoByPage(UserinformationEOPage page) throws Exception {
+    public ResponseMessage<PageInfo<UserinformationEO>> queryUserInfoByPage(@RequestBody UserinformationEOPage page) throws Exception {
         List<UserinformationEO> rows = userinformationEOService.queryByPage(page);
         return Result.success(getPageInfo(page.getPager(), rows));
     }
