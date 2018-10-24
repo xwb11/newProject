@@ -134,11 +134,7 @@ public class AdminssionsplaninformationVOController extends BaseController<Admin
     @PostMapping("/updateAdminssionsplaninformationVO")
     @RequiresPermissions("generate:adminssionsplaninformation:update")
     public ResponseMessage updateByKey(@RequestBody AdminssionsplaninformationEO adminssionsplaninformationEO) throws  Exception{
-        System.out.println("++++++++++UpdateController__:" + adminssionsplaninformationEO.getMajorkey() + ","
-                + adminssionsplaninformationEO.getSchoolkey() + ","
-                + adminssionsplaninformationEO.getCreateyear());
         String str = adminssionsplaninformationEOService.updataByKey(adminssionsplaninformationEO);
-        System.out.println("-----------" + str);
         return getReturn(str);
 
     }
@@ -155,7 +151,6 @@ public class AdminssionsplaninformationVOController extends BaseController<Admin
     @PostMapping("/releaseAdminssionsplaninformationVO")
     @RequiresPermissions("generate:adminssionsplaninformation:update")
     public ResponseMessage release(AdminssionsplaninformationEO adminssionsplaninformationEO) throws  Exception{
-        System.out.println("++++++++++releaseController__:" + adminssionsplaninformationEO);
         String str = adminssionsplaninformationEOService.release(adminssionsplaninformationEO);
         return getReturn(str);
     }
