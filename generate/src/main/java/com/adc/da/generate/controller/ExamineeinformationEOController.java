@@ -163,6 +163,13 @@ public class ExamineeinformationEOController extends BaseController<Examineeinfo
         return Result.success("",REGIST_SUCCESS,"");
     }
 
+    /**
+     * 注册_检测准考证号
+     * 刘笑天 20181022
+     * @param quasiExaminationNumber
+     * @return
+     * @throws Exception
+     */
     @ApiOperation(value = "|ExamineeinformationEO|注册_检测准考证号")
     @PostMapping("/checkExaminationNumber")
     public ResponseMessage checkExaminationNumber(@RequestParam String quasiExaminationNumber) throws Exception{

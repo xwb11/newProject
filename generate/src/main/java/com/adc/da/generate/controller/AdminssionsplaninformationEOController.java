@@ -125,6 +125,7 @@ public class AdminssionsplaninformationEOController extends BaseController<Admin
 
     /**
      * 获取学校发布的专业
+     * 刘笑天 20181011
      * @param schoolKey
      * @return
      */

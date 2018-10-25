@@ -173,6 +173,12 @@ public class ExamineevolunteerinformationEOController extends BaseController<Exa
         return Result.success(APPLY_SUCCESS);
     }
 
+    /**
+     * 考生修改志愿顺序
+     * 刘笑天 20181011
+     * @param examineevolunteerinformationVO
+     * @return
+     */
     @ApiOperation(value = "|ExamineevolunteerinformationEO|考生修改志愿顺序")
     @PostMapping("/ExamineeUpdateVolunteer")
     public ResponseMessage examineeUpdateVolunteer(@RequestBody ExamineevolunteerinformationVO examineevolunteerinformationVO){
