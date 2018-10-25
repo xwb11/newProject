@@ -184,13 +184,13 @@ public class ExamineevolunteerinformationEOController extends BaseController<Exa
     /**
      * 考生批量删除志愿
      * 刘笑天 20181011
-     * @param volunteerKeys
+     * @param examineevolunteerinformationVO
      * @return
      */
     @ApiOperation(value = "|ExamineevolunteerinformationEO|考生批量删除志愿")
     @PostMapping("/ExamineeBatchDeleteVolunteer")
     public ResponseMessage examineeBatchDeleteVolunteer(@RequestBody ExamineevolunteerinformationVO examineevolunteerinformationVO){
-        List<ExamineevolunteerinformationEO> list = examineevolunteerinformationVO.getVolunteers();
+        List<ExamineevolunteerinformationEO> list = examineevolunteerinformationVO.getList();
         examineevolunteerinformationEOService.examineeBatchDeleteVolunteer(list);
         return Result.success(BATCHDELETE_SUCCESS);
     }
