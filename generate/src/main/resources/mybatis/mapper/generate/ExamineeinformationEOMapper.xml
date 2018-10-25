@@ -341,7 +341,7 @@
         "EMail"=#{email,jdbcType=VARCHAR}
     </select>
 
-
+    <!-- 集成考生信息和用户信息 宣文彬 2018/10/25 -->
     <resultMap id="ExamineeinformationVOMap" type="com.adc.da.generate.VO.ExamineeinformationVO" >
         <id column="ExamineeKey" property="examineekey" />
         <result column="QuasiexaminationNumber" property="quasiexaminationnumber" />
@@ -383,7 +383,7 @@
         WHERE EXAMINEEINFORMATION."UserKey"=USERINFORMATION."UserKey"
     </select>
 
-    <!-- 查询考生信息录入列表 宣文彬 2019/10/15 未完成对接-->
+    <!-- 查询考生信息录入列表 宣文彬 2019/10/15 -->
     <select id="examineeinformationByPage" resultMap="ExamineeinformationVOMap" parameterType="com.adc.da.base.page.BasePage">
         select "QuasiExaminationNumber","GraduateSchool","IDCardNumber","Age","Chinese","EMail","ExamineeKey","Math","NativePlace","OtherSynthesis","PhoneNumber",
 "PoliticalOutlook","RealName","RegisteredResidence","Sex","SpecialBonus","Sports",
