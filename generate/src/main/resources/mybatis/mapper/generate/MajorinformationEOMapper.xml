@@ -153,11 +153,11 @@
        ${pager.orderCondition}
     </if>
   </select>
-    <!--学校名称查重(新增时) 2019/10/10-->
+    <!--学校名称查重(新增时) 宣文彬 2019/10/10-->
     <select id="majorNameTesting" resultType="java.lang.String" parameterType="java.lang.String">
         select * from MAJORINFORMATION where "MajorName"=#{majorname,jdbcType=VARCHAR}
     </select>
-    <!--学校名称查重（更新时） 2019/10/10-->
+    <!--学校名称查重（更新时） 宣文彬 2019/10/10-->
     <select id="majorNameTestingWhenUpdate" resultType="java.lang.String" parameterType="java.lang.String">
         select * from MAJORINFORMATION where "MajorName"=#{majorname,jdbcType=VARCHAR} and "MajorKey"=#{majorkey,jdbcType=VARCHAR}
     </select>

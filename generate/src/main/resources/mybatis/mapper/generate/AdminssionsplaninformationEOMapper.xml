@@ -241,7 +241,7 @@
     </if>
   </select>
 
-
+    <!-- 招生录取信息以及报考分析集成在一起 宣文彬 2018/10/15 -->
     <resultMap id="AdminssionsplaninformationMap" type="com.adc.da.generate.VO.AdminssionsplaninformationVO" >
         <id column="AdminssionsKey" property="adminssionskey" />
         <result column="SchoolKey" property="schoolkey" />
@@ -257,6 +257,7 @@
         <result column="MajorName" property="majorname" />
     </resultMap>
 
+    <!--  当年招生信息查询符合条件数量 宣文彬 2018/10/15   -->
     <select id="queryAdminssionByCount" resultType="java.lang.Integer" parameterType="com.adc.da.base.page.BasePage">
         select count(1) from
         ADMINSSIONSPLANINFORMATION ,SCHOOLINFORMATION ,
@@ -271,6 +272,8 @@
         AND ADMINSSIONSPLANINFORMATION."OfflineTime">(select sysdate  from dual)
 
     </select>
+
+    <!-- 查询去年报考信息符合条件数量 2018/10/25 -->
     <select id="queryLastAdminssionByCount" resultType="java.lang.Integer" parameterType="com.adc.da.base.page.BasePage">
         select count(1) from
         ADMINSSIONSPLANINFORMATION a,SCHOOLINFORMATION s,

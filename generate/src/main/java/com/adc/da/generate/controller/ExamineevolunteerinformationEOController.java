@@ -72,13 +72,13 @@ public class ExamineevolunteerinformationEOController extends BaseController<Exa
         return Result.success(examineevolunteerinformationEOService.selectByPrimaryKey(volunteerkey));
     }
 
-    @ApiOperation(value = "|ExamineevolunteerinformationEO|新增")
-    @PostMapping(consumes = APPLICATION_JSON_UTF8_VALUE)
-    @RequiresPermissions("generate:examineevolunteerinformation:save")
-    public ResponseMessage<ExamineevolunteerinformationEO> create(@RequestBody ExamineevolunteerinformationEO examineevolunteerinformationEO) throws Exception {
-        examineevolunteerinformationEOService.insertSelective(examineevolunteerinformationEO);
-        return Result.success(examineevolunteerinformationEO);
-    }
+//    @ApiOperation(value = "|ExamineevolunteerinformationEO|新增")
+//    @PostMapping(consumes = APPLICATION_JSON_UTF8_VALUE)
+//    @RequiresPermissions("generate:examineevolunteerinformation:save")
+//    public ResponseMessage<ExamineevolunteerinformationEO> create(@RequestBody ExamineevolunteerinformationEO examineevolunteerinformationEO) throws Exception {
+//        examineevolunteerinformationEOService.insertSelective(examineevolunteerinformationEO);
+//        return Result.success(examineevolunteerinformationEO);
+//    }
 
     /**
      * 修改考生志愿
@@ -88,7 +88,7 @@ public class ExamineevolunteerinformationEOController extends BaseController<Exa
      * @throws Exception
      */
     @ApiOperation(value = "|ExamineevolunteerinformationEO|修改考生志愿（学校和专业）")
-    @PutMapping(consumes = APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(consumes = APPLICATION_JSON_UTF8_VALUE)
     @RequiresPermissions("generate:examineevolunteerinformation:update")
     public ResponseMessage<ExamineevolunteerinformationEO> update(@RequestBody ExamineevolunteerinformationEO examineevolunteerinformationEO) throws Exception {
         examineevolunteerinformationEOService.updateByPrimaryKeySelective(examineevolunteerinformationEO);
@@ -173,39 +173,31 @@ public class ExamineevolunteerinformationEOController extends BaseController<Exa
         return Result.success(APPLY_SUCCESS);
     }
 
+    /**
+     * 考生修改志愿顺序
+     * 刘笑天 20181011
+     * @param examineevolunteerinformationVO
+     * @return
+     */
     @ApiOperation(value = "|ExamineevolunteerinformationEO|考生修改志愿顺序")
     @PostMapping("/ExamineeUpdateVolunteer")
-    public ResponseMessage examineeUpdateVolunteer(@RequestBody List<ExamineevolunteerinformationEO> volunteers){
-        ExamineevolunteerinformationVO examineevolunteerinformationVO = new ExamineevolunteerinformationVO();
-        if (volunteers!=null||volunteers.size()!=0){
-            examineevolunteerinformationVO.setVolunteers(volunteers);
-        }
-        examineevolunteerinformationEOService.examineeUpdateVolunteer(examineevolunteerinformationVO);
+    public ResponseMessage examineeUpdateVolunteer(@RequestBody ExamineevolunteerinformationVO examineevolunteerinformationVO){
+        List<ExamineevolunteerinformationEO> volunteers = examineevolunteerinformationVO.getVolunteers();
+        examineevolunteerinformationEOService.examineeUpdateVolunteer(volunteers);
 	    return Result.success(UPDATE_SUCCESS);
     }
 
     /**
      * 考生批量删除志愿
      * 刘笑天 20181011
-     * @param volunteerKeys
+     * @param examineevolunteerinformationVO
      * @return
      */
     @ApiOperation(value = "|ExamineevolunteerinformationEO|考生批量删除志愿")
     @PostMapping("/ExamineeBatchDeleteVolunteer")
-    public ResponseMessage examineeBatchDeleteVolunteer(@RequestBody List<ExamineevolunteerinformationEO> volunteerKeys){
-//        ExamineevolunteerinformationEO EO = new ExamineevolunteerinformationEO();
-//        EO.setVolunteerkey("1");
-
-
-//        List<ExamineevolunteerinformationEO> volunteerKeys = new ArrayList();
-
-//        ExamineevolunteerinformationVO examineevolunteerinformationVO = new ExamineevolunteerinformationVO();
-//        examineevolunteerinformationVO.setList(volunteerKeys);
-        ExamineevolunteerinformationVO examineevolunteerinformationVO = new ExamineevolunteerinformationVO();
-        if(volunteerKeys.size() != 0 ||volunteerKeys != null){
-            examineevolunteerinformationVO.setList(volunteerKeys);
-        }
-        examineevolunteerinformationEOService.examineeBatchDeleteVolunteer(examineevolunteerinformationVO);
+    public ResponseMessage examineeBatchDeleteVolunteer(@RequestBody ExamineevolunteerinformationVO examineevolunteerinformationVO){
+        List<ExamineevolunteerinformationEO> list = examineevolunteerinformationVO.getList();
+        examineevolunteerinformationEOService.examineeBatchDeleteVolunteer(list);
         return Result.success(BATCHDELETE_SUCCESS);
     }
 }

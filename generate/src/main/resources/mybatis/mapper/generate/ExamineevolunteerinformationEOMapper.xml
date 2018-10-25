@@ -61,7 +61,7 @@
     </resultMap>
     <!-- 获取考生志愿 刘笑天 20181011 -->
     <select id="getExamineeVolunteerInformation" resultMap="ResultMap2">
-        select distinct SI."SchoolName",MI."MajorName",EVI."DeclareTime",EVI."DeclareTime"
+        select distinct SI."SchoolName",MI."MajorName",EVI.*
         from EXAMINEEVOLUNTEERINFORMATION EVI
         left join SCHOOLINFORMATION SI
         on EVI."SchoolKey" = SI."SchoolKey"
@@ -102,14 +102,14 @@
         values
         (SEQ_EXAMINEEVOLUNTEER.nextval,#{examinationnumber},#{volunteernumber},#{schoolkey},#{majorkey},#{declaretime})
     </insert>
-    <!-- 考生修改志愿顺序 刘笑天 20181011 未完成-->
+    <!-- 考生修改志愿顺序 刘笑天 20181011 -->
     <update id="examineeUpdateVolunteer" parameterType="com.adc.da.generate.entity.ExamineevolunteerinformationEO">
         <foreach collection="list" item="item" open="begin" close="end;">
-            update EXAMINEEVOLUNTEERINFORMATION
+            UPDATE EXAMINEEVOLUNTEERINFORMATION
             set
             "VolunteerNumber" =#{item.volunteernumber}
             where
-            "VolunteerKey" = #{item.volunteerkey}
+            "VolunteerKey" = #{item.volunteerkey};
         </foreach>
     </update>
     <!-- 批量删除考生志愿 刘笑天 20181011 -->
@@ -332,7 +332,7 @@
     </if>
   </select>
 
-
+    <!-- 考生志愿和学校管理集成 2018/10/25 -->
     <resultMap id="ExamineevolunteerinformationMap" type="com.adc.da.generate.VO.ExamineevolunteerinformationVO" >
         <id column="VolunteerKey" property="volunteerkey" />
         <result column="ExaminationNumber" property="examinationnumber" />

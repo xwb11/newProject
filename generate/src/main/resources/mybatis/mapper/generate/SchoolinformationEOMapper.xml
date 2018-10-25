@@ -205,11 +205,11 @@
     </if>
   </select>
 
-    <!--学校名称查重(新增时) 2019/10/10-->
+    <!--学校名称查重(新增时) 宣文彬 2019/10/10-->
     <select id="schoolNameTesting" resultType="java.lang.String" parameterType="java.lang.String">
         select * from SCHOOLINFORMATION where "SchoolName"=#{schoolname,jdbcType=VARCHAR}
     </select>
-    <!--学校名称查重（更新时） 2019/10/10-->
+    <!--学校名称查重（更新时） 宣文彬 2019/10/10-->
     <select id="schoolNameTestingWhenUpdate" resultType="java.lang.String" parameterType="java.lang.String">
         select * from SCHOOLINFORMATION where "SchoolName"=#{schoolname,jdbcType=VARCHAR} and "SchoolKey"=#{schoolkey,jdbcType=VARCHAR}
     </select>
