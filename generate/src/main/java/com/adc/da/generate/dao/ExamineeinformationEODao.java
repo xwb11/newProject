@@ -26,6 +26,15 @@ public interface ExamineeinformationEODao extends BaseDao<ExamineeinformationEO>
     * @Version:        1.0
     */
     List<ExamineeinformationVO> examineeinformationByPage(BasePage page);
+
+    /**
+    * @Description:    根据考生id获取录入信息
+    * @Author:         xwb
+    * @CreateDate:     2018/10/25 17:14
+    * @Version:        1.0
+    */
+    List<ExamineeinformationVO> selectByExamineeKey(String examineekey);
+
     /**
     * @Description:    查询录入信息总数
     * @Author:         xwb

@@ -377,10 +377,22 @@
        "UserRole","CreateTime","Status"
     </sql>
 
-    <!-- 招生信息查询 列表总数 宣文彬2019/10/15-->
+    <!-- 招生信息查询 列表总数 宣文彬2018/10/15-->
     <select id="queryExamineeinformationCount" resultType="java.lang.Integer" parameterType="com.adc.da.base.page.BasePage">
         select count(1) from EXAMINEEINFORMATION,USERINFORMATION
         WHERE EXAMINEEINFORMATION."UserKey"=USERINFORMATION."UserKey"
+    </select>
+
+    <!-- 根据考生id查询考生信息 宣文彬2018/10/25 -->
+    <select id="selectByExamineeKey" resultMap="ExamineeinformationVOMap" parameterType="com.adc.da.generate.VO.ExamineeinformationVO">
+        select e."QuasiExaminationNumber",e."Age",e."Chinese",e."EMail",e."ExamineeKey",
+        e."ForeignLanguages",e."GraduateSchool",e."IDCardNumber",
+        e."Math",e."NativePlace",e."OtherSynthesis",e."PhoneNumber",e."PoliticalOutlook",
+        e."RealName",e."RegisteredResidence",e."Sex",e."SpecialBonus",e."Sports",u."Status",e."TotalScore",
+        u."UserKey",u."UserPassword",u."UserRole",u."CreateTime",u."UserAccount"  FROM EXAMINEEINFORMATION e,USERINFORMATION u
+        WHERE e."UserKey"=u."UserKey"
+        AND "ExamineeKey" = #{examineekey}
+
     </select>
 
     <!-- 查询考生信息录入列表 宣文彬 2019/10/15 -->

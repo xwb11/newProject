@@ -73,6 +73,19 @@ public class ExamineeinformationEOController extends BaseController<Examineeinfo
     }
 
     /**
+    * @Description:    获取考生录入信息
+    * @Author:         xwb
+    * @CreateDate:     2018/10/25 17:37
+    * @Version:        1.0
+    */
+    @ApiOperation(value = "|ExamineeinformationEO|获取考生录入信息")
+    @PostMapping("/selectExamineeinfomation")
+    public ResponseMessage<List<ExamineeinformationVO>> selectExamineeinfomation(@RequestParam String examineekey) throws Exception {
+        return Result.success(examineeinformationEOService.selectExamineeinfomation(examineekey));
+    }
+
+
+    /**
      * 获取考生基本信息详情
      * 刘笑天 20181011
      * 框架生成方法

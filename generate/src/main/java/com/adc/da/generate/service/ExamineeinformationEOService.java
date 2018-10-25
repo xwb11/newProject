@@ -42,6 +42,15 @@ public class ExamineeinformationEOService extends BaseService<Examineeinformatio
     }
 
     /**
+    * @Description:    根据考生id获取相应的内容
+    * @Author:         xwb
+    * @CreateDate:     2018/10/25 17:20
+    * @Version:        1.0
+    */
+    public List<ExamineeinformationVO> selectExamineeinfomation(String examineekey){
+        return dao.selectByExamineeKey(examineekey);
+    }
+    /**
     * @Description:    查询录入信息
     * @Author:         xwb
     * @CreateDate:     2018/10/15 9:36
