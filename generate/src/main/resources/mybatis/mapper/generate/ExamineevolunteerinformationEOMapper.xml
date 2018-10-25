@@ -102,7 +102,7 @@
         values
         (SEQ_EXAMINEEVOLUNTEER.nextval,#{examinationnumber},#{volunteernumber},#{schoolkey},#{majorkey},#{declaretime})
     </insert>
-    <!-- 考生修改志愿顺序 刘笑天 20181011 未完成-->
+    <!-- 考生修改志愿顺序 刘笑天 20181011 -->
     <update id="examineeUpdateVolunteer" parameterType="com.adc.da.generate.entity.ExamineevolunteerinformationEO">
         <foreach collection="list" item="item" open="begin" close="end;">
             UPDATE EXAMINEEVOLUNTEERINFORMATION
