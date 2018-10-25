@@ -72,13 +72,13 @@ public class ExamineevolunteerinformationEOController extends BaseController<Exa
         return Result.success(examineevolunteerinformationEOService.selectByPrimaryKey(volunteerkey));
     }
 
-    @ApiOperation(value = "|ExamineevolunteerinformationEO|新增")
-    @PostMapping(consumes = APPLICATION_JSON_UTF8_VALUE)
-    @RequiresPermissions("generate:examineevolunteerinformation:save")
-    public ResponseMessage<ExamineevolunteerinformationEO> create(@RequestBody ExamineevolunteerinformationEO examineevolunteerinformationEO) throws Exception {
-        examineevolunteerinformationEOService.insertSelective(examineevolunteerinformationEO);
-        return Result.success(examineevolunteerinformationEO);
-    }
+//    @ApiOperation(value = "|ExamineevolunteerinformationEO|新增")
+//    @PostMapping(consumes = APPLICATION_JSON_UTF8_VALUE)
+//    @RequiresPermissions("generate:examineevolunteerinformation:save")
+//    public ResponseMessage<ExamineevolunteerinformationEO> create(@RequestBody ExamineevolunteerinformationEO examineevolunteerinformationEO) throws Exception {
+//        examineevolunteerinformationEOService.insertSelective(examineevolunteerinformationEO);
+//        return Result.success(examineevolunteerinformationEO);
+//    }
 
     /**
      * 修改考生志愿
@@ -88,7 +88,7 @@ public class ExamineevolunteerinformationEOController extends BaseController<Exa
      * @throws Exception
      */
     @ApiOperation(value = "|ExamineevolunteerinformationEO|修改考生志愿（学校和专业）")
-    @PutMapping(consumes = APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(consumes = APPLICATION_JSON_UTF8_VALUE)
     @RequiresPermissions("generate:examineevolunteerinformation:update")
     public ResponseMessage<ExamineevolunteerinformationEO> update(@RequestBody ExamineevolunteerinformationEO examineevolunteerinformationEO) throws Exception {
         examineevolunteerinformationEOService.updateByPrimaryKeySelective(examineevolunteerinformationEO);
