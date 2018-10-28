@@ -106,7 +106,7 @@ public class MajorinformationEOController extends BaseController<Majorinformatio
         }
         if(majorinformationEOService.majorNameTesting(majorinformationVO).equals("1")){
             majorinformationEOService.majorInfoAdd(majorinformationVO);
-           return Result.success(PublicPrompt.INSERT_SUCCESS) ;
+           return Result.success(INSERT_SUCCESS) ;
         }else {
            return Result.error(MAJORNAME_REPEAT);
         }
