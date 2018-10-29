@@ -158,7 +158,11 @@
         select * from MAJORINFORMATION where "MajorName"=#{majorname,jdbcType=VARCHAR}
     </select>
     <!--学校名称查重（更新时） 宣文彬 2019/10/10-->
-    <select id="majorNameTestingWhenUpdate" resultType="java.lang.String" parameterType="java.lang.String">
-        select * from MAJORINFORMATION where "MajorName"=#{majorname,jdbcType=VARCHAR} and "MajorKey"=#{majorkey,jdbcType=VARCHAR}
+    <select id="majorNameTestingWhenUpdate" resultType="java.lang.Integer" parameterType="java.lang.String">
+        select COUNT(1) from MAJORINFORMATION where "MajorName"=#{majorname,jdbcType=VARCHAR}
+    </select>
+    <!--查询是否存在同id下的专业名称 宣文彬 2019/10/10-->
+    <select id="selectMajorName" resultType="java.lang.String" parameterType="java.lang.String">
+         SELECT MAJORINFORMATION."MajorName" FROM MAJORINFORMATION WHERE "MajorKey"=#{majorkey,jdbcType=VARCHAR}
     </select>
 </mapper>

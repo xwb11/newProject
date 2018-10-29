@@ -16,6 +16,14 @@ import java.util.List;
  * <b>版权所有：<b>版权归北京卡达克数据技术中心所有。<br>
  */
 public interface MajorinformationEODao extends BaseDao<MajorinformationEO> {
+
+    /**
+    * @Description:    查询同id下的专业名称
+    * @Author:         xwb
+    * @CreateDate:     2018/10/29 17:06
+    * @Version:        1.0
+    */
+    String selectMajorName(String majorkey);
     /**
     * @Description:   新增专业信息
     * @Author:         xwb
@@ -75,6 +83,6 @@ public interface MajorinformationEODao extends BaseDao<MajorinformationEO> {
     //新增时
     public String majorNameTesting(MajorinformationEO majorinformationEO);
     //修改时
-    public String majorNameTestingWhenUpdate(MajorinformationEO majorinformationEO);
+    public int majorNameTestingWhenUpdate(MajorinformationEO majorinformationEO);
 
 }

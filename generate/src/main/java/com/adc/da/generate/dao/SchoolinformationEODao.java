@@ -20,6 +20,15 @@ import java.util.List;
  * <b>版权所有：<b>版权归北京卡达克数据技术中心所有。<br>
  */
 public interface SchoolinformationEODao extends BaseDao<SchoolinformationEO> {
+
+    /**
+    * @Description:    查询学校名称
+    * @Author:         xwb
+    * @CreateDate:     2018/10/29
+    * @Version:        1.0
+    */
+    String selectSchoolName(String schoolkey);
+
     /**
     * @Description:    新增学校信息
     * @Author:         xwb
@@ -78,5 +87,5 @@ public interface SchoolinformationEODao extends BaseDao<SchoolinformationEO> {
     //新增时
     public String schoolNameTesting(SchoolinformationEO schoolinformationEO);
     //修改时
-    public String schoolNameTestingWhenUpdate(SchoolinformationEO schoolinformationEO);
+    public int schoolNameTestingWhenUpdate(SchoolinformationEO schoolinformationEO);
 }

@@ -129,9 +129,14 @@ public class MajorinformationEOController extends BaseController<Majorinformatio
         if(!"1".equals(majorinformationVO.getUserLoginRole())){//若不是管理员
             return Result.error(UserinformationEOPrompt.USE_PERMIT);
         }
-        if(majorinformationEOService.majorNameTestingWhenUpdate(majorinformationVO).equals("1")){
-            majorinformationEOService.updateMajorInfo(majorinformationVO);
-            return Result.success(PublicPrompt.UPDATE_SUCCESS) ;
+//        if(majorinformationEOService.majorNameTestingWhenUpdate(majorinformationVO).equals("1")){
+//            majorinformationEOService.updateMajorInfo(majorinformationVO);
+//            return Result.success(PublicPrompt.UPDATE_SUCCESS) ;
+//        }else {
+//            return Result.error(MAJORNAME_REPEAT);
+//        }
+        if(majorinformationEOService.updateMajorInfo(majorinformationVO)){
+            return Result.success(UPDATE_SUCCESS);
         }else {
             return Result.error(MAJORNAME_REPEAT);
         }

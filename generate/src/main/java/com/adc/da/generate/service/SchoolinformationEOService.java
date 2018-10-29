@@ -94,16 +94,35 @@ public class SchoolinformationEOService extends BaseService<SchoolinformationEO,
      * @return
      * 宣文彬 2018/10/8
      */
-    public boolean updateSchoolInfo(SchoolinformationEO schoolinformationEO){
+    public String updateSchoolInfo(SchoolinformationEO schoolinformationEO){
         if(schoolinformationEO.getSchoolkey()!=null&&!"".equals(schoolinformationEO.getSchoolkey())){
 //            schoolinformationEO.setCreatetime(new Date());
             try {
-                    int num = schoolinformationEODao.updateByPrimaryKeySelective(schoolinformationEO);
-                    if (num>0) {
-                        return true;
-                    } else {
-                        throw new RuntimeException(UPDATESCHOOLNAME_ERROR);
+                    //查询id下所对应的学校名称
+                    String schoolname = schoolinformationEODao.selectSchoolName(schoolinformationEO.getSchoolkey());
+                    //数据库中的学校名称与现页面中传过来的学校名称比较
+                    if(schoolname.equals(schoolinformationEO.getSchoolname())){//相等则说明没有修改学校名称，则不进行判重
+                        int num = schoolinformationEODao.updateByPrimaryKeySelective(schoolinformationEO);
+                        if (num>0) {
+                            return UPDATE_SUCCESS;
+                        } else {
+                            throw new RuntimeException(UPDATESCHOOLNAME_ERROR);
+                        }
+                    }else {
+                        //判断是否存在相同名称
+                        int number = schoolinformationEODao.schoolNameTestingWhenUpdate(schoolinformationEO);
+                        if(number==0){//==0则不存在相同名称
+                            int num = schoolinformationEODao.updateByPrimaryKeySelective(schoolinformationEO);
+                            if (num>0) {
+                                return UPDATE_SUCCESS;
+                            } else {
+                                throw new RuntimeException(UPDATESCHOOLNAME_ERROR);
+                            }
+                        }else {
+                            return SCHOOLNAME_REPEAT;
+                        }
                     }
+
             } catch (Exception e) {
                 throw new RuntimeException(UPDATESCHOOLNAME_ERROR + e.getMessage());
             }
@@ -150,17 +169,17 @@ public class SchoolinformationEOService extends BaseService<SchoolinformationEO,
             //设定返回1代表名称没有重复
             return "1";
         }else {
-            return MAJORNAME_REPEAT;
+            return SCHOOLNAME_REPEAT;
         }
     }
     //更新时
-    public String schoolNameTestingWhenUpdate(SchoolinformationEO schoolinformationEO){
-        //判断数据库中是否已存在相同的名称
-        if(schoolinformationEODao.schoolNameTestingWhenUpdate(schoolinformationEO)==null){
-            //设定返回1代表名称没有重复
-            return "1";
-        }else {
-            return MAJORNAME_REPEAT;
-        }
-    }
+//    public String schoolNameTestingWhenUpdate(SchoolinformationEO schoolinformationEO){
+//        //判断数据库中是否已存在相同的名称
+//        if(schoolinformationEODao.schoolNameTestingWhenUpdate(schoolinformationEO)==null){
+//            //设定返回1代表名称没有重复
+//            return "1";
+//        }else {
+//            return SCHOOLNAME_REPEAT;
+//        }
+//    }
 }

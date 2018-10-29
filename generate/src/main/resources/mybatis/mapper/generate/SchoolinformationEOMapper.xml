@@ -210,8 +210,12 @@
         select * from SCHOOLINFORMATION where "SchoolName"=#{schoolname,jdbcType=VARCHAR}
     </select>
     <!--学校名称查重（更新时） 宣文彬 2019/10/10-->
-    <select id="schoolNameTestingWhenUpdate" resultType="java.lang.String" parameterType="java.lang.String">
-        select * from SCHOOLINFORMATION where "SchoolName"=#{schoolname,jdbcType=VARCHAR} and "SchoolKey"=#{schoolkey,jdbcType=VARCHAR}
+    <select id="schoolNameTestingWhenUpdate" resultType="java.lang.Integer" parameterType="java.lang.String">
+        select count(1) from SCHOOLINFORMATION where "SchoolName"=#{schoolname,jdbcType=VARCHAR}
     </select>
-
+    
+    <!-- 查询是否存在学校名称 宣文彬 2019/10/29-->
+    <select id="selectSchoolName" resultType="java.lang.String" parameterType="java.lang.String">
+        SELECT SCHOOLINFORMATION."SchoolName" FROM SCHOOLINFORMATION WHERE "SchoolKey"=#{schoolkey,jdbcType=VARCHAR}
+    </select>
 </mapper>

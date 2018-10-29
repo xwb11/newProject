@@ -1,6 +1,7 @@
 package com.adc.da.generate.controller;
 
 import static com.adc.da.generate.util.SchoolinformationEOPrompt.SCHOOLNAME_REPEAT;
+import static com.adc.da.generate.util.SchoolinformationEOPrompt.UPDATESCHOOLNAME_ERROR;
 import static com.adc.da.myutil.util.PublicPrompt.UPDATE_SUCCESS;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
@@ -114,11 +115,16 @@ public class SchoolinformationEOController extends BaseController<Schoolinformat
         if(!"1".equals(schoolinformationVO.getUserLoginRole())){//若不是管理员
             return Result.error(UserinformationEOPrompt.USE_PERMIT);
         }
-        if(schoolinformationEOService.schoolNameTestingWhenUpdate(schoolinformationVO).equals("1")){
-            schoolinformationEOService.updateSchoolInfo(schoolinformationVO);
-            return Result.success(UPDATE_SUCCESS);
+//        if(schoolinformationEOService.schoolNameTestingWhenUpdate(schoolinformationVO).equals("1")){
+//            schoolinformationEOService.updateSchoolInfo(schoolinformationVO);
+//            return Result.success(UPDATE_SUCCESS);
+//        }else {
+//            return Result.error(SCHOOLNAME_REPEAT);
+//        }
+        if(schoolinformationEOService.updateSchoolInfo(schoolinformationVO).equals("学校名称已存在")){
+            return Result.success(SCHOOLNAME_REPEAT);
         }else {
-            return Result.error(SCHOOLNAME_REPEAT);
+            return Result.success(UPDATE_SUCCESS);
         }
     }
 

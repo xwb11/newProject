@@ -96,12 +96,31 @@ public class MajorinformationEOService extends BaseService<MajorinformationEO, S
         if(majorinformationEO.getMajorname()!=null&&!"".equals(majorinformationEO.getMajorname())){
 //            majorinformationEO.setCreatetime(new Date());
             try {
-                    int num = majorinformationEODao.updateByPrimaryKeySelective(majorinformationEO);
-                    if (num>0) {
-                        return true;
-                    } else {
-                        throw new RuntimeException(UPDATEMAJORNAME_ERROR);
+                    ////查询id下所对应的专业名称
+                    String majorName = majorinformationEODao.selectMajorName(majorinformationEO.getMajorkey());
+                    //数据库中的专业名称与现页面中传过来的专业名称比较
+                    if(majorName.equals(majorinformationEO.getMajorname())){//相等则说明没有修改学校名称，则不进行判重
+                        int num = majorinformationEODao.updateByPrimaryKeySelective(majorinformationEO);
+                        if (num>0) {
+                            return true;
+                        } else {
+                            throw new RuntimeException(UPDATEMAJORNAME_ERROR);
+                        }
+                    }else {
+                        //判断是否存在相同名称
+                        int number = majorinformationEODao.majorNameTestingWhenUpdate(majorinformationEO);
+                        if(number ==0){//==0则不存在相同名称
+                            int num = majorinformationEODao.updateByPrimaryKeySelective(majorinformationEO);
+                            if (num>0) {
+                                return true;
+                            } else {
+                                throw new RuntimeException(UPDATEMAJORNAME_ERROR);
+                            }
+                        }else {
+                            return false;
+                        }
                     }
+
             } catch (Exception e) {
                 throw new RuntimeException( UPDATEMAJORNAME_ERROR+ e.getMessage());
             }
@@ -151,14 +170,14 @@ public class MajorinformationEOService extends BaseService<MajorinformationEO, S
         }
     }
     //更新时
-    public String majorNameTestingWhenUpdate(MajorinformationEO majorinformationEO){
-        //判断数据库中是否已存在相同的名称
-        if(majorinformationEODao.majorNameTestingWhenUpdate(majorinformationEO)==null){
-            //设定返回1代表名称没有重复
-            return "1";
-        }else {
-            return MAJORNAME_REPEAT;
-        }
-    }
+//    public String majorNameTestingWhenUpdate(MajorinformationEO majorinformationEO){
+//        //判断数据库中是否已存在相同的名称
+//        if(majorinformationEODao.majorNameTestingWhenUpdate(majorinformationEO)==null){
+//            //设定返回1代表名称没有重复
+//            return "1";
+//        }else {
+//            return MAJORNAME_REPEAT;
+//        }
+//    }
 
 }
