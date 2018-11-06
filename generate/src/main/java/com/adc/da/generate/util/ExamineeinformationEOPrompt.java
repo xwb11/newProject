@@ -24,6 +24,7 @@ public class ExamineeinformationEOPrompt extends PublicPrompt {
     public static final String QUASIEXAMINATIONNUMBER_NOTRIGHT = "准考证号不存在";
     public static final String QUASIEXAMINATIONNUMBER_EXIST = "准考证号已被注册";
     public static final String QUASIEXAMINATIONNUMBER_NOTEXIST = "准考证号可以使用";
+    public static final String REGIST_NOTCOMPLETE = "请输入完整信息";
 
 
     /**

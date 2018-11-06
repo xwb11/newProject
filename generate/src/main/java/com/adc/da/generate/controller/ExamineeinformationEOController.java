@@ -56,15 +56,16 @@ public class ExamineeinformationEOController extends BaseController<Examineeinfo
     public ResponseMessage<List<ExamineeinformationEO>> list(ExamineeinformationEOPage page) throws Exception {
         return Result.success(examineeinformationEOService.queryByList(page));
     }
+
     /**
-    * @Description:    考生录入信息分页查询
-    * @Author:         xwb
-    * @CreateDate:     2018/10/15 9:03
-    * @UpdateUser:     xwb
-    * @UpdateDate:     2018/10/15 9:03
-    * @UpdateRemark:   修改内容
-    * @Version:        1.0
-    */
+     * @Description: 考生录入信息分页查询
+     * @Author: xwb
+     * @CreateDate: 2018/10/15 9:03
+     * @UpdateUser: xwb
+     * @UpdateDate: 2018/10/15 9:03
+     * @UpdateRemark: 修改内容
+     * @Version: 1.0
+     */
     @ApiOperation(value = "|ExamineeinformationEO|考生录入信息分页查询")
     @PostMapping("/queryByPage")
     public ResponseMessage<PageInfo<ExamineeinformationVO>> queryByPage(@RequestBody ExamineeinformationVOPage page) throws Exception {
@@ -73,22 +74,22 @@ public class ExamineeinformationEOController extends BaseController<Examineeinfo
     }
 
     /**
-    * @Description:    获取考生录入信息
-    * @Author:         xwb
-    * @CreateDate:     2018/10/25 17:37
-    * @Version:        1.0
-    */
+     * @Description: 获取考生录入信息
+     * @Author: xwb
+     * @CreateDate: 2018/10/25 17:37
+     * @Version: 1.0
+     */
     @ApiOperation(value = "|ExamineeinformationEO|获取考生录入信息")
     @PostMapping("/selectExamineeinfomation")
     public ResponseMessage<List<ExamineeinformationVO>> selectExamineeinfomation(@RequestParam String examineekey) throws Exception {
         return Result.success(examineeinformationEOService.selectExamineeinfomation(examineekey));
     }
 
-
     /**
      * 获取考生基本信息详情
      * 刘笑天 20181011
      * 框架生成方法
+     *
      * @param examineekey
      * @return
      * @throws Exception
@@ -121,16 +122,17 @@ public class ExamineeinformationEOController extends BaseController<Examineeinfo
         return Result.success();
     }
 
-     //2018/10/12 13:39:43
+    //2018/10/12 13:39:43
+
     /**
-    * @Description:    考生信息录入
-    * @Author:         lzj
-    * @CreateDate:     2018/10/10
-    * @UpdateUser:     xwb修改
-    * @UpdateDate:     2018/10/12 13:40
-    * @UpdateRemark:   修改内容
-    * @Version:        1.0
-    */
+     * @Description: 考生信息录入
+     * @Author: lzj
+     * @CreateDate: 2018/10/10
+     * @UpdateUser: xwb修改
+     * @UpdateDate: 2018/10/12 13:40
+     * @UpdateRemark: 修改内容
+     * @Version: 1.0
+     */
     @ApiOperation(value = "|ExamineeinformationEO|考生信息录入")
     @PostMapping("/informationEntry")
     public ResponseMessage informationEntry(@RequestBody ExamineeinformationVO examineeinformationVO) throws Exception {
@@ -140,7 +142,7 @@ public class ExamineeinformationEOController extends BaseController<Examineeinfo
         //校验，如果成功 返回字符串"true",否则返回提示语
         UserinformationEO userinformationEO = examineeinformationVO.getUserinformationEO();
         ExamineeinformationEO examineeinformationEO = examineeinformationVO.getExamineeinformationEO();
-        String result=examineeinformationEOService.informationCheck(examineeinformationEO,userinformationEO);
+        String result = examineeinformationEOService.informationCheck(examineeinformationEO, userinformationEO);
         if (result != "true") {
             return Result.error(result);
         }
@@ -157,44 +159,54 @@ public class ExamineeinformationEOController extends BaseController<Examineeinfo
      * 考生注册
      * 刘笑天 20181011
      * 最后修改 刘笑天 20181022
+     *
      * @param examineeinformationVO
      * @return
      * @throws Exception
      */
     @ApiOperation(value = "|ExamineeinformationEO|注册")
     @PostMapping("/examineeRegist")
-    public ResponseMessage userRegist(@RequestBody ExamineeinformationVO examineeinformationVO) throws Exception{
+    public ResponseMessage userRegist(@RequestBody ExamineeinformationVO examineeinformationVO) throws Exception {
+        //得到从VO中的对象参数
+        ExamineeinformationEO examineeinformationEO = examineeinformationVO.getExamineeinformationEO();
         UserinformationEO userinformationEO = examineeinformationVO.getUserinformationEO();
+        //判断对象中的用户信息是否存在null 若存在 则不继续进行注册
+        if (examineeinformationEO.getQuasiexaminationnumber() == null
+                || examineeinformationEO.getEmail() == null
+                || examineeinformationEO.getPhonenumber() == null
+                || userinformationEO.getUseraccount() == null
+                || userinformationEO.getUserpassword() == null) {
+            return Result.error(REGIST_NOTCOMPLETE);
+        }
         //获取当前时间作为账号注册时间
         userinformationEO.setCreatetime(new Date());
         //先注册账号密码
         examineeinformationEOService.addUserInformation(userinformationEO);
-
-        ExamineeinformationEO examineeinformationEO = examineeinformationVO.getExamineeinformationEO();
         //将准考证号邮箱手机号和用户账号密码关联
         examineeinformationEOService.addExamineeInformation(examineeinformationEO);
-        return Result.success("",REGIST_SUCCESS,"");
+        return Result.success("", REGIST_SUCCESS, "");
     }
 
     /**
      * 注册_检测准考证号
      * 刘笑天 20181022
+     *
      * @param quasiExaminationNumber
      * @return
      * @throws Exception
      */
     @ApiOperation(value = "|ExamineeinformationEO|注册_检测准考证号")
     @PostMapping("/checkExaminationNumber")
-    public ResponseMessage checkExaminationNumber(@RequestParam String quasiExaminationNumber) throws Exception{
+    public ResponseMessage checkExaminationNumber(@RequestParam String quasiExaminationNumber) throws Exception {
         ExeclCheck execlCheck = new ExeclCheck();
-        if(execlCheck.execlCheck(quasiExaminationNumber)==1){//若excel中存在 检测数据库中是否存在
+        if (execlCheck.execlCheck(quasiExaminationNumber) == 1) {//若excel中存在 检测数据库中是否存在
             ExamineeinformationEO examineeinformationEO = examineeinformationEOService.checkQuasiExaminationNumber(quasiExaminationNumber);
-            if(examineeinformationEO != null){
+            if (examineeinformationEO != null) {
                 return Result.error(QUASIEXAMINATIONNUMBER_EXIST);//数据库中存在
-            }else{
-                return Result.success("",QUASIEXAMINATIONNUMBER_NOTEXIST,"");//数据库中不存在
+            } else {
+                return Result.success("", QUASIEXAMINATIONNUMBER_NOTEXIST, "");//数据库中不存在
             }
-        }else {//若excel中不存在 直接不可以注册
+        } else {//若excel中不存在 直接不可以注册
             return Result.error(QUASIEXAMINATIONNUMBER_NOTRIGHT);
         }
     }
