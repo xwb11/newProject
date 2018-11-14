@@ -398,6 +398,12 @@
 				<version>2.6.1</version>
 			</dependency>
 
+			<dependency>
+				<groupId>org.javassist</groupId>
+				<artifactId>javassist</artifactId>
+				<version>3.18.0-GA</version>
+			</dependency>
+
 			<!-- Dozer -->
 			<dependency>
 				<groupId>net.sf.dozer</groupId>
@@ -418,6 +424,7 @@
 					</exclusion>
 				</exclusions>
 			</dependency>
+
 
 			<!-- SECURITY begin -->
 			<!--<dependency>

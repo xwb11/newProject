@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.adc.da.generate.dao.RecruitpeopleEODao" >
+  <!-- Result Map-->
+  <resultMap id="BaseResultMap" type="com.adc.da.generate.entity.RecruitpeopleEO" >
+      <id column="USER_KEY" property="userKey" />
+      <result column="PROJECT_KEY" property="projectKey" />
+      <result column="USER_ACCOUNT" property="userAccount" />
+      <result column="USER_PASSWORD" property="userPassword" />
+      <result column="USER_ROLE" property="userRole" />
+      <result column="STATUS" property="status" />
+      <result column="MAIL" property="mail" />
+      <result column="PHONE" property="phone" />
+      <result column="REALNAME" property="realname" />
+      <result column="LOCATION" property="location" />
+      <result column="QQNUMBER" property="qqnumber" />
+  </resultMap>
+
+  <!-- RECRUITPEOPLE table all fields -->
+  <sql id="Base_Column_List" >
+     PROJECT_KEY, USER_KEY, USER_ACCOUNT, USER_PASSWORD, USER_ROLE, STATUS, MAIL, PHONE, REALNAME, LOCATION, QQNUMBER
+  </sql>
+
+  <!-- 查询条件 -->
+  <sql id="Base_Where_Clause">
+    where 1=1
+    <trim suffixOverrides="," >
+      <if test="projectKey != null" >
+        and project_key ${projectKeyOperator} #{projectKey}
+      </if>
+      <if test="userKey != null" >
+        and user_key ${userKeyOperator} #{userKey}
+      </if>
+      <if test="userAccount != null" >
+        and user_account ${userAccountOperator} #{userAccount}
+      </if>
+      <if test="userPassword != null" >
+        and user_password ${userPasswordOperator} #{userPassword}
+      </if>
+      <if test="userRole != null" >
+        and user_role ${userRoleOperator} #{userRole}
+      </if>
+      <if test="status != null" >
+        and status ${statusOperator} #{status}
+      </if>
+      <if test="mail != null" >
+        and mail ${mailOperator} #{mail}
+      </if>
+      <if test="phone != null" >
+        and phone ${phoneOperator} #{phone}
+      </if>
+      <if test="realname != null" >
+        and realname ${realnameOperator} #{realname}
+      </if>
+      <if test="location != null" >
+        and location ${locationOperator} #{location}
+      </if>
+      <if test="qqnumber != null" >
+        and qqnumber ${qqnumberOperator} #{qqnumber}
+      </if>
+    </trim>
+  </sql>
+
+  <!-- 插入记录 -->
+  <insert id="insert" parameterType="com.adc.da.generate.entity.RecruitpeopleEO" >
+    <!-- <selectKey resultType="java.lang.String" order="BEFORE" keyProperty="user_key">
+        SELECT SEQ_RECRUITPEOPLE.NEXTVAL FROM DUAL
+    </selectKey> -->
+    insert into RECRUITPEOPLE(<include refid="Base_Column_List" />)
+    values (#{projectKey, jdbcType=VARCHAR}, #{userKey, jdbcType=VARCHAR}, #{userAccount, jdbcType=VARCHAR}, #{userPassword, jdbcType=VARCHAR}, #{userRole, jdbcType=VARCHAR}, #{status, jdbcType=VARCHAR}, #{mail, jdbcType=VARCHAR}, #{phone, jdbcType=VARCHAR}, #{realname, jdbcType=VARCHAR}, #{location, jdbcType=VARCHAR}, #{qqnumber, jdbcType=VARCHAR})
+  </insert>
+
+  <!-- 动态插入记录 主键是序列 -->
+  <insert id="insertSelective" parameterType="com.adc.da.generate.entity.RecruitpeopleEO" >
+        <!-- <selectKey resultType="java.lang.String" order="BEFORE" keyProperty="user_key">
+        SELECT SEQ_RECRUITPEOPLE.NEXTVAL FROM DUAL
+    </selectKey> -->
+        insert into RECRUITPEOPLE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+                <if test="projectKey != null" >PROJECT_KEY,</if>
+                <if test="userKey != null" >USER_KEY,</if>
+                <if test="userAccount != null" >USER_ACCOUNT,</if>
+                <if test="userPassword != null" >USER_PASSWORD,</if>
+                <if test="userRole != null" >USER_ROLE,</if>
+                <if test="status != null" >STATUS,</if>
+                <if test="mail != null" >MAIL,</if>
+                <if test="phone != null" >PHONE,</if>
+                <if test="realname != null" >REALNAME,</if>
+                <if test="location != null" >LOCATION,</if>
+                <if test="qqnumber != null" >QQNUMBER,</if>
+            </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+                <if test="projectKey != null" >#{projectKey, jdbcType=VARCHAR},</if>
+                <if test="userKey != null" >#{userKey, jdbcType=VARCHAR},</if>
+                <if test="userAccount != null" >#{userAccount, jdbcType=VARCHAR},</if>
+                <if test="userPassword != null" >#{userPassword, jdbcType=VARCHAR},</if>
+                <if test="userRole != null" >#{userRole, jdbcType=VARCHAR},</if>
+                <if test="status != null" >#{status, jdbcType=VARCHAR},</if>
+                <if test="mail != null" >#{mail, jdbcType=VARCHAR},</if>
+                <if test="phone != null" >#{phone, jdbcType=VARCHAR},</if>
+                <if test="realname != null" >#{realname, jdbcType=VARCHAR},</if>
+                <if test="location != null" >#{location, jdbcType=VARCHAR},</if>
+                <if test="qqnumber != null" >#{qqnumber, jdbcType=VARCHAR},</if>
+            </trim>
+  </insert>
+
+  <!-- 根据pk，修改记录-->
+  <update id="updateByPrimaryKey" parameterType="com.adc.da.generate.entity.RecruitpeopleEO" >
+    update RECRUITPEOPLE
+       set  project_key = #{projectKey},
+            user_account = #{userAccount},
+            user_password = #{userPassword},
+            user_role = #{userRole},
+            status = #{status},
+            mail = #{mail},
+            phone = #{phone},
+            realname = #{realname},
+            location = #{location},
+            qqnumber = #{qqnumber}
+     where  user_key = #{userKey}
+  </update>
+
+  <!-- 修改记录，只修改只不为空的字段 -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.adc.da.generate.entity.RecruitpeopleEO" >
+    update RECRUITPEOPLE
+    <set >
+      <if test="projectKey != null" >
+        PROJECT_KEY = #{projectKey},
+      </if>
+      <if test="userAccount != null" >
+        USER_ACCOUNT = #{userAccount},
+      </if>
+      <if test="userPassword != null" >
+        USER_PASSWORD = #{userPassword},
+      </if>
+      <if test="userRole != null" >
+        USER_ROLE = #{userRole},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status},
+      </if>
+      <if test="mail != null" >
+        MAIL = #{mail},
+      </if>
+      <if test="phone != null" >
+        PHONE = #{phone},
+      </if>
+      <if test="realname != null" >
+        REALNAME = #{realname},
+      </if>
+      <if test="location != null" >
+        LOCATION = #{location},
+      </if>
+      <if test="qqnumber != null" >
+        QQNUMBER = #{qqnumber},
+      </if>
+    </set>
+     where USER_KEY = #{userKey}
+  </update>
+
+  <!-- 根据id查询 RECRUITPEOPLE -->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select <include refid="Base_Column_List" /> 
+      from RECRUITPEOPLE
+     where user_key = #{value}
+
+  </select>
+
+  <!-- 删除记录 -->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from RECRUITPEOPLE
+     where USER_KEY = #{userKey}
+
+  </delete>
+
+  <!-- RECRUITPEOPLE 列表总数-->
+  <select id="queryByCount" resultType="java.lang.Integer" parameterType="com.adc.da.base.page.BasePage">
+    select count(1) from RECRUITPEOPLE
+    <include refid="Base_Where_Clause"/>
+  </select>
+
+  <!-- 查询RECRUITPEOPLE列表 -->
+  <select id="queryByPage" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">
+	select <include refid="Base_Column_List" /> from
+		(select tmp_tb.* , rownum rn from
+			(select <include refid="Base_Column_List" /> from RECRUITPEOPLE
+			 <include refid="Base_Where_Clause"/>
+			 <if test="pager.orderCondition != null and pager.orderCondition != ''" >
+			 	${pager.orderCondition}
+			 </if>
+			) tmp_tb where rownum &lt;= ${pager.endIndex})
+			where rn &gt;= ${pager.startIndex}
+  </select>
+
+  <select id="queryByList" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">
+    select <include refid="Base_Column_List"/> from RECRUITPEOPLE
+    <include refid="Base_Where_Clause"/>
+    <if test="pager.orderCondition != null and pager.orderCondition != ''" >
+       ${pager.orderCondition}
+    </if>
+  </select>
+
+    <resultMap id="RecruitpeopleVOMap" type="com.adc.da.generate.VO.RecruitpeopleVO" >
+        <id column="USER_KEY" property="userKey" />
+        <result column="PROJECT_KEY" property="projectKey" />
+        <result column="USER_ACCOUNT" property="userAccount" />
+        <result column="USER_PASSWORD" property="userPassword" />
+        <result column="USER_ROLE" property="userRole" />
+        <result column="STATUS" property="status" />
+        <result column="MAIL" property="mail" />
+        <result column="PHONE" property="phone" />
+        <result column="REALNAME" property="realname" />
+        <result column="LOCATION" property="location" />
+        <result column="QQNUMBER" property="qqnumber" />
+
+        <result column="PROJECT_NAME" property="projectName" />
+        <result column="PROJECT_TYPE" property="projectType" />
+        <result column="RECRUIT_QUESTION" property="recruitQuestion" />
+        <result column="BRIEFINTRODUCTION" property="briefintroduction" />
+        <result column="PROJECT_BUDGET" property="projectBudget" />
+    </resultMap>
+
+    <!-- 查询招募人员数量 -->
+    <select id="queryRecruitpeopleVOCount" resultType="java.lang.Integer" parameterType="com.adc.da.generate.VO.RecruitpeopleVO">
+        select count(1) from RECRUITPEOPLE r,PROJECTINFO p
+        WHERE r.PROJECT_KEY = p.PROJECT_KEY
+        AND p.PROJECT_NAME LIKE '%${projectName}%'
+    </select>
+
+    <!-- 查询招募者列表 -->
+    <select id="queryByRecruitpeopleVO" resultMap="RecruitpeopleVOMap" parameterType="com.adc.da.generate.VO.RecruitpeopleVO">
+        select * from
+        (select tmp_tb.* , rownum rn from
+        (SELECT r.USER_KEY,r.USER_ACCOUNT,r.USER_PASSWORD,r.USER_ROLE,
+        r.STATUS,r.MAIL,r.PHONE,r.REALNAME,r."LOCATION",r.QQNUMBER,
+        p.PROJECT_KEY, p.PROJECT_NAME
+        FROM RECRUITPEOPLE r, PROJECTINFO p
+        WHERE r.PROJECT_KEY=p.PROJECT_KEY AND p.PROJECT_NAME LIKE '%${projectName}%'
+        ) tmp_tb where rownum &lt;= ${pager.endIndex})
+        where rn &gt;= ${pager.startIndex}
+    </select>
+
+</mapper>

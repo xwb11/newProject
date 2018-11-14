@@ -19,8 +19,10 @@ public class CodeUtil {
 
         entityPackage = "generate";
 
-        DbCodeGenerateFactory.codeGenerate("TS_USER_LOGIN", entityPackage);
-//        DbCodeGenerateFactory.codeGenerate("TS_ROLE", entityPackage);
+        DbCodeGenerateFactory.codeGenerate("FILE_UPLOAD", entityPackage);
+//        DbCodeGenerateFactory.codeGenerate("DEMANDVOLUNTEERINFORMATION", entityPackage);
+//        DbCodeGenerateFactory.codeGenerate("PROJECTINFO", entityPackage);
+//        DbCodeGenerateFactory.codeGenerate("RECRUITPEOPLE", entityPackage);
 //        DbCodeGenerateFactory.codeGenerate("TS_MENU", entityPackage);
 
 //        testOracle();

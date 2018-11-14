@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.adc.da.generate.dao.UserloginEODao" >
+  <!-- Result Map-->
+  <resultMap id="BaseResultMap" type="com.adc.da.generate.entity.UserloginEO" >
+    <id column="USER_KEY" property="userKey" />
+    <result column="USER_ROLE" property="userRole" />
+    <result column="ACCOUNT" property="account" />
+    <result column="PASSWORD" property="password" />
+    <result column="REALNAME" property="realname" />
+  </resultMap>
+
+  <!-- USERLOGIN table all fields -->
+  <sql id="Base_Column_List" >
+     USER_KEY, USER_ROLE, ACCOUNT, PASSWORD,REALNAME
+  </sql>
+
+  <!-- 查询条件 -->
+  <sql id="Base_Where_Clause">
+    where 1=1
+    <trim suffixOverrides="," >
+      <if test="userKey != null" >
+        and USER_KEY ${userKeyOperator} #{userKey}
+      </if>
+      <if test="userRole != null" >
+        and USER_ROLE ${userRoleOperator} #{userRole}
+      </if>
+      <if test="account != null" >
+        and ACCOUNT ${accountOperator} #{account}
+      </if>
+      <if test="password != null" >
+        and PASSWORD ${passwordOperator} #{password}
+      </if>
+        <if test="realname != null" >
+            and REALNAME ${realnameOperator} #{realname}
+        </if>
+    </trim>
+  </sql>
+
+  <!-- 插入记录 -->
+  <insert id="insert" parameterType="com.adc.da.generate.entity.UserloginEO" >
+    <!-- <selectKey resultType="java.lang.String" order="BEFORE" keyProperty="user_key">
+        SELECT SEQ_USERLOGIN.NEXTVAL FROM DUAL
+    </selectKey> -->
+    insert into USERLOGIN(<include refid="Base_Column_List" />)
+    values (#{userKey, jdbcType=VARCHAR}, #{userRole, jdbcType=VARCHAR}, #{account, jdbcType=VARCHAR}, #{password, jdbcType=VARCHAR})
+  </insert>
+
+  <!-- 动态插入记录 主键是序列 -->
+  <insert id="insertSelective" parameterType="com.adc.da.generate.entity.UserloginEO" >
+        <!-- <selectKey resultType="java.lang.String" order="BEFORE" keyProperty="user_key">
+        SELECT SEQ_USERLOGIN.NEXTVAL FROM DUAL
+    </selectKey> -->
+        insert into USERLOGIN
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+                <if test="userKey != null" >user_key,</if>
+                <if test="userRole != null" >user_role,</if>
+                <if test="account != null" >account,</if>
+                <if test="password != null" >password,</if>
+            </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+                <if test="userKey != null" >#{userKey, jdbcType=VARCHAR},</if>
+                <if test="userRole != null" >#{userRole, jdbcType=VARCHAR},</if>
+                <if test="account != null" >#{account, jdbcType=VARCHAR},</if>
+                <if test="password != null" >#{password, jdbcType=VARCHAR},</if>
+            </trim>
+  </insert>
+
+  <!-- 根据pk，修改记录-->
+  <update id="updateByPrimaryKey" parameterType="com.adc.da.generate.entity.UserloginEO" >
+    update USERLOGIN
+       set  user_role = #{userRole},
+            account = #{account},
+            password = #{password}
+     where  user_key = #{userKey}
+  </update>
+
+  <!-- 修改记录，只修改只不为空的字段 -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.adc.da.generate.entity.UserloginEO" >
+    update USERLOGIN
+    <set >
+      <if test="userRole != null" >
+          USER_ROLE = #{userRole},
+      </if>
+      <if test="account != null" >
+          ACCOUNT = #{account},
+      </if>
+      <if test="password != null" >
+          PASSWORD = #{password},
+      </if>
+        <if test="realname != null" >
+            REALNAME = #{realname},
+        </if>
+    </set>
+     where USER_KEY = #{userKey}
+  </update>
+
+    <update id="updatePassword" parameterType="com.adc.da.generate.entity.UserloginEO" >
+        update USERLOGIN
+        <set >
+            <if test="password != null" >
+                PASSWORD = #{password},
+            </if>
+        </set>
+        where ACCOUNT = #{account}
+    </update>
+
+  <!-- 根据id查询 USERLOGIN -->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select <include refid="Base_Column_List" /> 
+      from USERLOGIN
+     where user_key = #{value}
+
+  </select>
+
+  <!-- 删除记录 -->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from USERLOGIN
+     where USER_KEY = #{value}
+
+  </delete>
+
+  <!-- USERLOGIN 列表总数-->
+  <select id="queryByCount" resultType="java.lang.Integer" parameterType="com.adc.da.base.page.BasePage">
+    select count(1) from USERLOGIN
+    <include refid="Base_Where_Clause"/>
+  </select>
+
+  <!-- 查询USERLOGIN列表 -->
+  <select id="queryByPage" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">
+	select <include refid="Base_Column_List" /> from
+		(select tmp_tb.* , rownum rn from
+			(select <include refid="Base_Column_List" /> from USERLOGIN
+			 <include refid="Base_Where_Clause"/>
+			 <if test="pager.orderCondition != null and pager.orderCondition != ''" >
+			 	${pager.orderCondition}
+			 </if>
+			) tmp_tb where rownum &lt;= ${pager.endIndex})
+			where rn &gt;= ${pager.startIndex}
+  </select>
+
+  <select id="queryByList" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">
+    select <include refid="Base_Column_List"/> from USERLOGIN
+      where "ACCOUNT"= #{account} AND  "PASSWORD"= #{password}
+  </select>
+
+    <select id="checkAccount" resultType="java.lang.String" parameterType="java.lang.String">
+        SELECT "ACCOUNT" FROM USERLOGIN WHERE "ACCOUNT"= #{account}
+    </select>
+
+    <select id="checkPassword" resultType="java.lang.String" parameterType="java.lang.String">
+        SELECT "PASSWORD" FROM USERLOGIN WHERE "PASSWORD"= #{password}
+    </select>
+
+    <select id="selectAccoutCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+        SELECT "COUNT"(1) FROM USERLOGIN WHERE "ACCOUNT"= #{account}
+    </select>
+
+    <!-- 查询登录账号对应的类型 -->
+    <select id="selectRole" resultType="java.lang.String" parameterType="java.lang.String">
+        SELECT USER_ROLE FROM USERLOGIN WHERE "ACCOUNT"= #{account} AND "PASSWORD"=#{password}
+    </select>
+
+    <select id="selectPassword" resultType="java.lang.String" parameterType="java.lang.String">
+        SELECT PASSWORD FROM USERLOGIN WHERE "ACCOUNT"=#{account}
+    </select>
+
+
+</mapper>

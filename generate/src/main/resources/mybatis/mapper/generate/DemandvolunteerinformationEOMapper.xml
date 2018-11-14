@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.adc.da.generate.dao.DemandvolunteerinformationEODao" >
+  <!-- Result Map-->
+  <resultMap id="BaseResultMap" type="com.adc.da.generate.entity.DemandvolunteerinformationEO" >
+          <result column="DEMAND_KEY" property="demandKey" />
+      <result column="DEMAND_REQUEST" property="demandRequest" />
+      <result column="PROJECT_KEY" property="projectKey" />
+      <result column="COMPANY_KEY" property="companyKey" />
+      <result column="SUBMISSION_TIME" property="submissionTime" />
+      <result column="CREATE_TIME" property="createTime" />
+      <result column="IS_PUBLISH" property="isPublish" />
+      <result column="PUBLISH_TIME" property="publishTime" />
+      <result column="OFFLINE_TIME" property="offlineTime" />
+  </resultMap>
+
+  <!-- DEMANDVOLUNTEERINFORMATION table all fields -->
+  <sql id="Base_Column_List" >
+     DEMAND_KEY, DEMAND_REQUEST, PROJECT_KEY, COMPANY_KEY, SUBMISSION_TIME, CREATE_TIME, IS_PUBLISH, PUBLISH_TIME,OFFLINE_TIME
+  </sql>
+
+  <!-- 查询条件 -->
+  <sql id="Base_Where_Clause">
+    where 1=1
+    <trim suffixOverrides="," >
+      <if test="demandKey != null" >
+        and demand_key ${demandKeyOperator} #{demandKey}
+      </if>
+      <if test="demandRequest != null" >
+        and demand_request ${demandRequestOperator} #{demandRequest}
+      </if>
+      <if test="projectKey != null" >
+        and project_key ${projectKeyOperator} #{projectKey}
+      </if>
+      <if test="companyKey != null" >
+        and company_key ${companyKeyOperator} #{companyKey}
+      </if>
+      <if test="submissionTime != null" >
+        and submission_time ${submissionTimeOperator} #{submissionTime}
+      </if>
+      <if test="submissionTime1 != null" >
+        and submission_time &gt;= #{submissionTime1}
+      </if>
+      <if test="submissionTime2 != null" >
+        and submission_time &lt;= #{submissionTime2}
+      </if>
+      <if test="createTime != null" >
+        and create_time ${createTimeOperator} #{createTime}
+      </if>
+      <if test="createTime1 != null" >
+        and create_time &gt;= #{createTime1}
+      </if>
+      <if test="createTime2 != null" >
+        and create_time &lt;= #{createTime2}
+      </if>
+      <if test="isPublish != null" >
+        and is_publish ${isPublishOperator} #{isPublish}
+      </if>
+      <if test="publishTime != null" >
+        and publish_time ${publishTimeOperator} #{publishTime}
+      </if>
+      <if test="publishTime1 != null" >
+        and publish_time &gt;= #{publishTime1}
+      </if>
+      <if test="publishTime2 != null" >
+        and publish_time &lt;= #{publishTime2}
+      </if>
+    </trim>
+  </sql>
+
+  <!-- 插入记录 -->
+  <insert id="insert" parameterType="com.adc.da.generate.entity.DemandvolunteerinformationEO" >
+    insert into DEMANDVOLUNTEERINFORMATION(<include refid="Base_Column_List" />)
+    values (#{demandKey, jdbcType=VARCHAR}, #{demandRequest, jdbcType=VARCHAR}, #{projectKey, jdbcType=VARCHAR}, #{companyKey, jdbcType=VARCHAR}, #{submissionTime, jdbcType=TIMESTAMP}, #{createTime, jdbcType=TIMESTAMP}, #{isPublish, jdbcType=INTEGER}, #{publishTime, jdbcType=TIMESTAMP})
+  </insert>
+
+  <!-- 动态插入记录 主键是序列 -->
+  <insert id="insertSelective" parameterType="com.adc.da.generate.entity.DemandvolunteerinformationEO" >
+        insert into DEMANDVOLUNTEERINFORMATION
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+                <if test="demandKey != null" >DEMAND_KEY,</if>
+                <if test="demandRequest != null" >DEMAND_REQUEST,</if>
+                <if test="projectKey != null" >PROJECT_KEY,</if>
+                <if test="companyKey != null" >COMPANY_KEY,</if>
+                <if test="submissionTime != null" >SUBMISSION_TIME,</if>
+                <if test="createTime != null" >CREATE_TIME,</if>
+                <if test="isPublish != null" >IS_PUBLISH,</if>
+                <if test="publishTime != null" >PUBLISH_TIME,</if>
+                <if test="offlineTime != null" >OFFLINE_TIME,</if>
+            </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+                <if test="demandKey != null" >#{demandKey, jdbcType=VARCHAR},</if>
+                <if test="demandRequest != null" >#{demandRequest, jdbcType=VARCHAR},</if>
+                <if test="projectKey != null" >#{projectKey, jdbcType=VARCHAR},</if>
+                <if test="companyKey != null" >#{companyKey, jdbcType=VARCHAR},</if>
+                <if test="submissionTime != null" >#{submissionTime, jdbcType=VARCHAR},</if>
+                <if test="createTime != null" >#{createTime, jdbcType=TIMESTAMP},</if>
+                <if test="isPublish != null" >#{isPublish, jdbcType=INTEGER},</if>
+                <if test="publishTime != null" >#{publishTime, jdbcType=TIMESTAMP},</if>
+                <if test="offlineTime != null" >#{offlineTime, jdbcType=TIMESTAMP},</if>
+            </trim>
+  </insert>
+
+    <!-- 修改记录，只修改只不为空的字段 -->
+    <update id="updateByPrimaryKeySelective" parameterType="com.adc.da.generate.entity.DemandvolunteerinformationEO" >
+        update DEMANDVOLUNTEERINFORMATION
+        <set >
+            <if test="demandRequest != null" >
+                DEMAND_REQUEST = #{demandRequest},
+            </if>
+            <if test="projectKey != null" >
+                PROJECT_KEY = #{projectKey},
+            </if>
+            <if test="companyKey != null" >
+                COMPANY_KEY = #{companyKey},
+            </if>
+            <if test="submissionTime != null" >
+                SUBMISSION_TIME = #{submissionTime},
+            </if>
+            <if test="createTime != null" >
+                CREATE_TIME = #{createTime},
+            </if>
+            <if test="isPublish != null" >
+                IS_PUBLISH = #{isPublish},
+            </if>
+            <if test="publishTime != null" >
+                PUBLISH_TIME = #{publishTime},
+            </if>
+            <if test="offlineTime != null" >
+                OFFLINE_TIME = #{offlineTime},
+            </if>
+        </set>
+        where DEMAND_KEY = #{demandKey}
+    </update>
+
+  <!-- DEMANDVOLUNTEERINFORMATION 列表总数-->
+  <select id="queryByCount" resultType="java.lang.Integer" parameterType="com.adc.da.base.page.BasePage">
+    select count(1) from DEMANDVOLUNTEERINFORMATION
+    <include refid="Base_Where_Clause"/>
+  </select>
+
+  <!-- 查询DEMANDVOLUNTEERINFORMATION列表 -->
+  <select id="queryByPage" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">
+	select <include refid="Base_Column_List" /> from
+		(select tmp_tb.* , rownum rn from
+			(select <include refid="Base_Column_List" /> from DEMANDVOLUNTEERINFORMATION
+			 <include refid="Base_Where_Clause"/>
+			 <if test="pager.orderCondition != null and pager.orderCondition != ''" >
+			 	${pager.orderCondition}
+			 </if>
+			) tmp_tb where rownum &lt;= ${pager.endIndex})
+			where rn &gt;= ${pager.startIndex}
+  </select>
+
+  <select id="queryByList" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">
+    select <include refid="Base_Column_List"/> from DEMANDVOLUNTEERINFORMATION
+    <include refid="Base_Where_Clause"/>
+    <if test="pager.orderCondition != null and pager.orderCondition != ''" >
+       ${pager.orderCondition}
+    </if>
+  </select>
+
+    <resultMap id="DemandvolunteerinformationVOMap" type="com.adc.da.generate.VO.DemandvolunteerinformationVO" >
+        <result column="DEMAND_KEY" property="demandKey" />
+        <result column="DEMAND_REQUEST" property="demandRequest" />
+        <result column="PROJECT_KEY" property="projectKey" />
+        <result column="COMPANY_KEY" property="companyKey" />
+        <result column="SUBMISSION_TIME" property="submissionTime" />
+        <result column="CREATE_TIME" property="createTime" />
+        <result column="IS_PUBLISH" property="isPublish" />
+        <result column="PUBLISH_TIME" property="publishTime" />
+        <result column="OFFLINE_TIME" property="offlineTime" />
+
+        <result column="PROVINCE_NAME" property="provinceName" />
+        <result column="COMPANY_NAME" property="companyName" />
+        <result column="COMPANY_BRIEFINTRODUCTION" property="companyBriefintroduction" />
+        <result column="PHONE" property="phone" />
+        <result column="ADDRESS" property="address" />
+        <result column="COMPANY_NUMBER" property="companyNumber" />
+        <result column="COMPANY_TYPE" property="companyType" />
+        <result column="DEVELOPER_TYPE" property="developerType" />
+
+        <result column="PROJECT_NAME" property="projectName" />
+        <result column="PROJECT_TYPE" property="projectType" />
+        <result column="RECRUIT_QUESTION" property="recruitQuestion" />
+        <result column="BRIEFINTRODUCTION" property="briefintroduction" />
+        <result column="PROJECT_BUDGET" property="projectBudget" />
+    </resultMap>
+
+    <!-- 查询需求计划创建数量 -->
+    <select id="queryByDemandCount" resultType="java.lang.Integer" parameterType="com.adc.da.generate.VO.DemandvolunteerinformationVO">
+         SELECT COUNT(1) from DEMANDVOLUNTEERINFORMATION d,PROJECTINFO p,COMPANYINFO c
+          WHERE d.PROJECT_KEY=p.PROJECT_KEY AND d.COMPANY_KEY=c.COMPANY_KEY
+          AND c.COMPANY_NAME LIKE '%${companyName}%'
+          AND p.PROJECT_NAME LIKE '%${projectName}%'
+          AND p.PROJECT_NAME LIKE '%${projectType}%'
+    </select>
+
+    <!-- 查询公司与项目需求创建信息 -->
+    <select id="selectDemandvolunteerinformation" resultMap="DemandvolunteerinformationVOMap" parameterType="com.adc.da.generate.VO.DemandvolunteerinformationVO">
+        select * from
+        (select tmp_tb.* , rownum rn from
+        (SELECT d.DEMAND_KEY, c.COMPANY_NAME,p.PROJECT_NAME,p.PROJECT_TYPE,
+        p.PROJECT_BUDGET,d.SUBMISSION_TIME,c.FILE_PATH,p.RECRUIT_QUESTION,
+        c.PHONE,d.IS_PUBLISH,d.PUBLISH_TIME,d.CREATE_TIME,d.OFFLINE_TIME
+        FROM DEMANDVOLUNTEERINFORMATION d,PROJECTINFO p,COMPANYINFO c
+        WHERE d.COMPANY_KEY=c.COMPANY_KEY
+        AND d.PROJECT_KEY=p.PROJECT_KEY
+        AND c.COMPANY_NAME LIKE '%${companyName}%'
+        AND p.PROJECT_NAME LIKE '%${projectName}%'
+        AND p.PROJECT_NAME LIKE '%${projectType}%'
+        ) tmp_tb where rownum &lt;= ${pager.endIndex})
+        where rn &gt;= ${pager.startIndex}
+        ORDER BY CREATE_TIME DESC
+    </select>
+
+    <!-- 动态插入记录 主键是序列 -->
+    <insert id="addDemandvolunteerinformation" parameterType="com.adc.da.generate.VO.DemandvolunteerinformationVO" >
+        insert into DEMANDVOLUNTEERINFORMATION
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="demandKey != null" >DEMAND_KEY,</if>
+            <if test="demandRequest != null" >DEMAND_REQUEST,</if>
+            <if test="submissionTime != null" >SUBMISSION_TIME,</if>
+            <if test="createTime != null" >CREATE_TIME,</if>
+            <if test="isPublish != null" >IS_PUBLISH,</if>
+            <if test="publishTime != null" >PUBLISH_TIME,</if>
+            <if test="companyName != null" >COMPANY_NAME,</if>
+            <if test="projectName != null" >PROJECT_NAME,</if>
+            <if test="projectType != null" >PROJECT_TYPE,</if>
+            <if test="projectBudget != null" >PROJECT_BUDGET,</if>
+            <if test="phone != null" >PHONE,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="demandKey != null" >#{demandKey, jdbcType=VARCHAR},</if>
+            <if test="demandRequest != null" >#{demandRequest, jdbcType=VARCHAR},</if>
+            <if test="submissionTime != null" >#{submissionTime, jdbcType=VARCHAR},</if>
+            <if test="createTime != null" >#{createTime, jdbcType=TIMESTAMP},</if>
+            <if test="isPublish != null" >#{isPublish, jdbcType=INTEGER},</if>
+            <if test="publishTime != null" >#{publishTime, jdbcType=TIMESTAMP},</if>
+            <if test="companyName != null" >#{companyName, jdbcType=VARCHAR},</if>
+            <if test="projectName != null" >#{projectName, jdbcType=VARCHAR},</if>
+            <if test="projectType != null" >#{projectType, jdbcType=VARCHAR},</if>
+            <if test="projectBudget != null" >#{projectBudget, jdbcType=INTEGER},</if>
+            <if test="phone != null" >#{phone,jdbcType=VARCHAR},</if>
+        </trim>
+    </insert>
+
+    <!-- 修改记录，只修改只不为空的字段 -->
+    <update id="updateDemandvolunteerinformation" parameterType="com.adc.da.generate.VO.DemandvolunteerinformationVO" >
+        update DEMANDVOLUNTEERINFORMATION
+        <set >
+            <if test="demandRequest != null" >
+                DEMAND_REQUEST = #{demandRequest},
+            </if>
+            <if test="submissionTime != null" >
+                SUBMISSION_TIME = #{submissionTime},
+            </if>
+            <if test="createTime != null" >
+                CREATE_TIME = #{createTime},
+            </if>
+            <if test="isPublish != null" >
+                IS_PUBLISH = #{isPublish},
+            </if>
+            <if test="publishTime != null" >
+                PUBLISH_TIME= #{publishTime},
+            </if>
+            <if test="companyName != null" >
+                COMPANY_NAME= #{companyName},
+            </if>
+            <if test="projectName != null" >
+                PROJECT_NAME = #{projectName},
+            </if>
+            <if test="projectType != null" >
+                PROJECT_TYPE = #{projectType},
+            </if>
+            <if test="projectBudget != null" >
+                PROJECT_BUDGET = #{projectBudget},
+            </if>
+            <if test="phone != null" >
+                PHONE = #{phone},
+            </if>
+        </set>
+        where DEMAND_KEY = #{demandKey}
+    </update>
+
+    <!-- 删除记录 -->
+    <delete id="deleteDemandvolunteerinformation" parameterType="com.adc.da.generate.VO.DemandvolunteerinformationVO">
+        delete from DEMANDVOLUNTEERINFORMATION
+        where DEMAND_KEY = #{demandKey}
+    </delete>
+
+</mapper>

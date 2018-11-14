@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.adc.da.generate.dao.ProjectinfoEODao" >
+  <!-- Result Map-->
+  <resultMap id="BaseResultMap" type="com.adc.da.generate.entity.ProjectinfoEO" >
+    <id column="PROJECT_KEY" property="projectKey" />
+    <result column="PROJECT_NAME" property="projectName" />
+    <result column="CREATE_TIME" property="createTime" />
+    <result column="PROJECT_TYPE" property="projectType" />
+    <result column="RECRUIT_QUESTION" property="recruitQuestion" />
+    <result column="BRIEFINTRODUCTION" property="briefintroduction" />
+    <result column="PROJECT_BUDGET" property="projectBudget" />
+  </resultMap>
+
+  <!-- PROJECTINFO table all fields -->
+  <sql id="Base_Column_List" >
+     PROJECT_KEY, PROJECT_NAME, CREATE_TIME, PROJECT_TYPE, RECRUIT_QUESTION, BRIEFINTRODUCTION,PROJECT_BUDGET
+  </sql>
+
+  <!-- 查询条件 -->
+  <sql id="Base_Where_Clause">
+    where 1=1
+    <trim suffixOverrides="," >
+      <if test="projectKey != null" >
+        and project_key ${projectKeyOperator} #{projectKey}
+      </if>
+      <if test="projectName != null" >
+        and project_name ${projectNameOperator} #{projectName}
+      </if>
+      <if test="createTime != null" >
+        and create_time ${createTimeOperator} #{createTime}
+      </if>
+      <if test="createTime1 != null" >
+        and create_time &gt;= #{createTime1}
+      </if>
+      <if test="createTime2 != null" >
+        and create_time &lt;= #{createTime2}
+      </if>
+      <if test="projectType != null" >
+        and project_type ${projectTypeOperator} #{projectType}
+      </if>
+      <if test="recruitQuestion != null" >
+        and recruit_question ${recruitQuestionOperator} #{recruitQuestion}
+      </if>
+      <if test="briefintroduction != null" >
+        and briefintroduction ${briefintroductionOperator} #{briefintroduction}
+      </if>
+      <if test="projectBudget != null" >
+        and project_budget ${projectBudgetOperator} #{projectBudget}
+      </if>
+    </trim>
+  </sql>
+
+  <!-- 插入记录 -->
+  <insert id="insert" parameterType="com.adc.da.generate.entity.ProjectinfoEO" >
+    <!-- <selectKey resultType="java.lang.String" order="BEFORE" keyProperty="project_key">
+        SELECT SEQ_PROJECTINFO.NEXTVAL FROM DUAL
+    </selectKey> -->
+    insert into PROJECTINFO(<include refid="Base_Column_List" />)
+    values (#{projectKey, jdbcType=VARCHAR}, #{projectName, jdbcType=VARCHAR}, #{createTime, jdbcType=TIMESTAMP}, #{projectType, jdbcType=VARCHAR}, #{recruitQuestion, jdbcType=VARCHAR}, #{briefintroduction, jdbcType=VARCHAR}, #{projectBudget, jdbcType=INTEGER})
+  </insert>
+
+  <!-- 动态插入记录 主键是序列 -->
+  <insert id="insertSelective" parameterType="com.adc.da.generate.entity.ProjectinfoEO" >
+        <!-- <selectKey resultType="java.lang.String" order="BEFORE" keyProperty="project_key">
+        SELECT SEQ_PROJECTINFO.NEXTVAL FROM DUAL
+    </selectKey> -->
+        insert into PROJECTINFO
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+                <if test="projectKey != null" >PROJECT_KEY,</if>
+                <if test="projectName != null" >PROJECT_NAME,</if>
+                <if test="createTime != null" >CREATE_TIME,</if>
+                <if test="projectType != null" >PROJECT_TYPE,</if>
+                <if test="recruitQuestion != null" >RECRUIT_QUESTION,</if>
+                <if test="briefintroduction != null" >BRIEFINTRODUCTION,</if>
+                <if test="projectBudget != null" >PROJECT_BUDGET,</if>
+            </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+                <if test="projectKey != null" >#{projectKey, jdbcType=VARCHAR},</if>
+                <if test="projectName != null" >#{projectName, jdbcType=VARCHAR},</if>
+                <if test="createTime != null" >#{createTime, jdbcType=TIMESTAMP},</if>
+                <if test="projectType != null" >#{projectType, jdbcType=VARCHAR},</if>
+                <if test="recruitQuestion != null" >#{recruitQuestion, jdbcType=VARCHAR},</if>
+                <if test="briefintroduction != null" >#{briefintroduction, jdbcType=VARCHAR},</if>
+                <if test="projectBudget != null" >#{projectBudget, jdbcType=INTEGER},</if>
+            </trim>
+  </insert>
+
+  <!-- 根据pk，修改记录-->
+  <update id="updateByPrimaryKey" parameterType="com.adc.da.generate.entity.ProjectinfoEO" >
+    update PROJECTINFO
+       set  project_name = #{projectName},
+            create_time = #{createTime},
+            project_type = #{projectType},
+            recruit_question = #{recruitQuestion},
+            briefintroduction = #{briefintroduction},
+            project_budget = #{projectBudget},
+            user_key = #{userKey}
+     where  project_key = #{projectKey}
+  </update>
+
+  <!-- 修改记录，只修改只不为空的字段 -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.adc.da.generate.entity.ProjectinfoEO" >
+    update PROJECTINFO
+    <set >
+      <if test="projectName != null" >
+        PROJECT_NAME = #{projectName},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime},
+      </if>
+      <if test="projectType != null" >
+        PROJECT_TYPE = #{projectType},
+      </if>
+      <if test="recruitQuestion != null" >
+        RECRUIT_QUESTION = #{recruitQuestion},
+      </if>
+      <if test="briefintroduction != null" >
+        BRIEFINTRODUCTION = #{briefintroduction},
+      </if>
+      <if test="projectBudget != null" >
+        PROJECT_BUDGET = #{projectBudget},
+      </if>
+    </set>
+     where PROJECT_KEY = #{projectKey}
+  </update>
+
+  <!-- 根据id查询 PROJECTINFO -->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select <include refid="Base_Column_List" /> 
+      from PROJECTINFO
+     where project_key = #{value}
+
+  </select>
+
+  <!-- 删除记录 -->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from PROJECTINFO
+     where PROJECT_KEY = #{projectKey}
+
+  </delete>
+
+  <!-- PROJECTINFO 列表总数-->
+  <select id="queryByCount" resultType="java.lang.Integer" parameterType="com.adc.da.base.page.BasePage">
+    select count(1) from PROJECTINFO WHERE PROJECT_NAME LIKE '%${projectName}%'
+  </select>
+
+  <!-- 查询PROJECTINFO列表 -->
+  <select id="queryByPage" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">
+	select <include refid="Base_Column_List" /> from
+		(select tmp_tb.* , rownum rn from
+			(select <include refid="Base_Column_List" /> from PROJECTINFO
+                  <where>
+                      <if test="projectName!=''">
+                          PROJECT_NAME LIKE  '%${projectName}%'
+                      </if>
+                  </where>
+			) tmp_tb where rownum &lt;= ${pager.endIndex})
+			where rn &gt;= ${pager.startIndex}
+  </select>
+
+  <select id="queryByList" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">
+    select <include refid="Base_Column_List"/> from PROJECTINFO
+    <include refid="Base_Where_Clause"/>
+    <if test="pager.orderCondition != null and pager.orderCondition != ''" >
+       ${pager.orderCondition}
+    </if>
+  </select>
+
+    <!-- 项目名称验重 -->
+    <select id="selectProjectName" resultType="java.lang.Integer" parameterType="java.lang.String">
+        select count(PROJECT_NAME) from PROJECTINFO WHERE PROJECT_NAME=#{projectName,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

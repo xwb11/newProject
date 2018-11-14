@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.adc.da.generate.dao.CompanyinfoEODao" >
+  <!-- Result Map-->
+  <resultMap id="BaseResultMap" type="com.adc.da.generate.entity.CompanyinfoEO" >
+    <id column="COMPANY_KEY" property="companyKey" />
+    <result column="PROVINCE_NAME" property="provinceName" />
+    <result column="COMPANY_NAME" property="companyName" />
+    <result column="COMPANY_BRIEFINTRODUCTION" property="companyBriefintroduction" />
+    <result column="PHONE" property="phone" />
+    <result column="ADDRESS" property="address" />
+    <result column="CREATETIME" property="createtime" />
+    <result column="COMPANY_NUMBER" property="companyNumber" />
+    <result column="COMPANY_TYPE" property="companyType" />
+    <result column="DEVELOPER_TYPE" property="developerType" />
+    <result column="FILE_PATH" property="filePath" />
+  </resultMap>
+
+  <!-- COMPANYINFO table all fields -->
+  <sql id="Base_Column_List" >
+     COMPANY_KEY, PROVINCE_NAME, COMPANY_NAME, COMPANY_BRIEFINTRODUCTION, PHONE, ADDRESS, CREATETIME, COMPANY_NUMBER, COMPANY_TYPE,DEVELOPER_TYPE,FILE_PATH
+  </sql>
+
+  <!-- 查询条件 -->
+  <sql id="Base_Where_Clause">
+    where 1=1
+    <trim suffixOverrides="," >
+      <if test="companyKey != null" >
+        and company_key ${companyKeyOperator} #{companyKey}
+      </if>
+      <if test="provinceName != null" >
+        and province_name ${provinceNameOperator} #{provinceName}
+      </if>
+      <if test="companyName != null" >
+        and company_name ${companyNameOperator} #{companyName}
+      </if>
+      <if test="briefintroduction != null" >
+        and briefintroduction ${briefintroductionOperator} #{briefintroduction}
+      </if>
+      <if test="phone != null" >
+        and phone ${phoneOperator} #{phone}
+      </if>
+      <if test="address != null" >
+        and address ${addressOperator} #{address}
+      </if>
+      <if test="createtime != null" >
+        and createtime ${createtimeOperator} #{createtime}
+      </if>
+      <if test="createtime1 != null" >
+        and createtime &gt;= #{createtime1}
+      </if>
+      <if test="createtime2 != null" >
+        and createtime &lt;= #{createtime2}
+      </if>
+      <if test="companyNumber != null" >
+        and company_number ${companyNumberOperator} #{companyNumber}
+      </if>
+      <if test="companyType != null" >
+        and company_type ${companyTypeOperator} #{companyType}
+      </if>
+    </trim>
+  </sql>
+
+  <!-- 插入记录 -->
+  <insert id="insert" parameterType="com.adc.da.generate.entity.CompanyinfoEO" >
+    <!-- <selectKey resultType="java.lang.String" order="BEFORE" keyProperty="company_key">
+        SELECT SEQ_COMPANYINFO.NEXTVAL FROM DUAL
+    </selectKey> -->
+    insert into COMPANYINFO(<include refid="Base_Column_List" />)
+    values (#{companyKey, jdbcType=VARCHAR}, #{provinceName, jdbcType=VARCHAR}, #{companyName, jdbcType=VARCHAR}, #{briefintroduction, jdbcType=VARCHAR}, #{phone, jdbcType=VARCHAR}, #{address, jdbcType=VARCHAR}, #{createtime, jdbcType=TIMESTAMP}, #{companyNumber, jdbcType=VARCHAR}, #{companyType, jdbcType=VARCHAR})
+  </insert>
+
+  <!-- 动态插入记录 主键是序列 -->
+  <insert id="insertSelective" parameterType="com.adc.da.generate.entity.CompanyinfoEO" >
+        <!-- <selectKey resultType="java.lang.String" order="BEFORE" keyProperty="company_key">
+        SELECT SEQ_COMPANYINFO.NEXTVAL FROM DUAL
+    </selectKey> -->
+        insert into COMPANYINFO
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+                <if test="companyKey != null" >COMPANY_KEY,</if>
+                <if test="provinceName != null" >PROVINCE_NAME,</if>
+                <if test="companyName != null" >COMPANY_NAME,</if>
+                <if test="companyBriefintroduction != null" >COMPANY_BRIEFINTRODUCTION,</if>
+                <if test="phone != null" >PHONE,</if>
+                <if test="address != null" >ADDRESS,</if>
+                <if test="createtime != null" >CREATETIME,</if>
+                <if test="companyNumber != null" >COMPANY_NUMBER,</if>
+                <if test="companyType != null" >COMPANY_TYPE,</if>
+                <if test="developerType != null" >DEVELOPER_TYPE,</if>
+                <if test="filePath != null" >FILE_PATH,</if>
+            </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+                <if test="companyKey != null" >#{companyKey, jdbcType=VARCHAR},</if>
+                <if test="provinceName != null" >#{provinceName, jdbcType=VARCHAR},</if>
+                <if test="companyName != null" >#{companyName, jdbcType=VARCHAR},</if>
+                <if test="companyBriefintroduction != null" >#{companyBriefintroduction, jdbcType=VARCHAR},</if>
+                <if test="phone != null" >#{phone, jdbcType=VARCHAR},</if>
+                <if test="address != null" >#{address, jdbcType=VARCHAR},</if>
+                <if test="createtime != null" >#{createtime, jdbcType=TIMESTAMP},</if>
+                <if test="companyNumber != null" >#{companyNumber, jdbcType=VARCHAR},</if>
+                <if test="companyType != null" >#{companyType, jdbcType=VARCHAR},</if>
+                <if test="developerType != null" >#{developerType, jdbcType=VARCHAR},</if>
+                <if test="filePath != null" >#{filePath, jdbcType=VARCHAR},</if>
+            </trim>
+  </insert>
+
+    <insert id="insertFile" parameterType="com.adc.da.generate.entity.CompanyinfoEO">
+        insert into COMPANYINFO
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="filePath != null" >FILE_PATH,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="filePath != null" >#{filePath, jdbcType=VARCHAR},</if>
+        </trim>
+    </insert>
+
+  <!-- 根据pk，修改记录-->
+  <update id="updateByPrimaryKey" parameterType="com.adc.da.generate.entity.CompanyinfoEO" >
+    update COMPANYINFO
+       set  province_name = #{provinceName},
+            company_name = #{companyName},
+            briefintroduction = #{briefintroduction},
+            phone = #{phone},
+            address = #{address},
+            createtime = #{createtime},
+            company_number = #{companyNumber},
+            company_type = #{companyType}
+     where  company_key = #{companyKey}
+  </update>
+
+  <!-- 修改记录，只修改只不为空的字段 -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.adc.da.generate.entity.CompanyinfoEO" >
+    update COMPANYINFO
+    <set >
+      <if test="provinceName != null" >
+          PROVINCE_NAME = #{provinceName},
+      </if>
+      <if test="companyName != null" >
+        COMPANY_NAME = #{companyName},
+      </if>
+      <if test="companyBriefintroduction != null" >
+        COMPANY_BRIEFINTRODUCTION = #{companyBriefintroduction},
+      </if>
+      <if test="phone != null" >
+        PHONE = #{phone},
+      </if>
+      <if test="address != null" >
+        ADDRESS= #{address},
+      </if>
+      <if test="createtime != null" >
+         CREATETIME= #{createtime},
+      </if>
+      <if test="companyNumber != null" >
+        COMPANY_NUMBER = #{companyNumber},
+      </if>
+      <if test="companyType != null" >
+        COMPANY_TYPE = #{companyType},
+      </if>
+        <if test="developerType != null" >
+            DEVELOPER_TYPE = #{developerType},
+        </if>
+        <if test="filePath != null" >
+            FILE_PATH = #{filePath},
+        </if>
+    </set>
+     where COMPANY_KEY = #{companyKey}
+  </update>
+
+  <!-- 根据id查询 COMPANYINFO -->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select <include refid="Base_Column_List" /> 
+      from COMPANYINFO
+     where company_key = #{value}
+
+  </select>
+
+  <!-- 删除记录 -->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from COMPANYINFO
+     where COMPANY_KEY = #{companyKey}
+
+  </delete>
+
+  <!-- COMPANYINFO 列表总数-->
+  <select id="queryByCount" resultType="java.lang.Integer" parameterType="com.adc.da.base.page.BasePage">
+    select count(1) from COMPANYINFO WHERE  COMPANY_NAME LIKE '%${companyName}%'
+  </select>
+
+  <!-- 查询COMPANYINFO列表 -->
+  <select id="queryByPage" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">
+	select <include refid="Base_Column_List" /> from
+		(select tmp_tb.* , rownum rn from
+			(select <include refid="Base_Column_List" /> from COMPANYINFO
+			 WHERE  COMPANY_NAME LIKE '%${companyName}%'
+			) tmp_tb where rownum &lt;= ${pager.endIndex})
+			where rn &gt;= ${pager.startIndex}
+  </select>
+
+  <select id="queryByList" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">
+    select <include refid="Base_Column_List"/> from COMPANYINFO
+    <include refid="Base_Where_Clause"/>
+    <if test="pager.orderCondition != null and pager.orderCondition != ''" >
+       ${pager.orderCondition}
+    </if>
+  </select>
+
+    <select id="selectCompanyName" resultType="java.lang.Integer" parameterType="java.lang.String">
+        SELECT "COUNT"(COMPANY_NAME) FROM COMPANYINFO where COMPANY_NAME=#{companyName,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectPhone" resultType="java.lang.Integer" parameterType="java.lang.String">
+       SELECT "COUNT"(PHONE) FROM COMPANYINFO where PHONE=#{phone,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="selectCompanyNumber" resultType="java.lang.Integer" parameterType="java.lang.String">
+        SELECT "COUNT"(COMPANY_NUMBER) FROM COMPANYINFO where COMPANY_NUMBER=#{companyNumber,jdbcType=VARCHAR}
+    </select>
+
+</mapper>
