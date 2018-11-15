@@ -102,7 +102,7 @@
                 PASSWORD = #{password},
             </if>
         </set>
-        where ACCOUNT = #{account}
+        where USER_KEY = #{userKey}
     </update>
 
   <!-- 根据id查询 USERLOGIN -->
@@ -162,7 +162,7 @@
     </select>
 
     <select id="selectPassword" resultType="java.lang.String" parameterType="java.lang.String">
-        SELECT PASSWORD FROM USERLOGIN WHERE "ACCOUNT"=#{account}
+        SELECT PASSWORD FROM USERLOGIN WHERE USER_KEY=#{userKey}
     </select>
 
 

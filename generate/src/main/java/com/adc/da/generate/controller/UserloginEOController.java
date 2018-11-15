@@ -104,10 +104,22 @@ public class UserloginEOController extends BaseController<UserloginEO>{
     @PostMapping("/updatePassword")
     public ResponseMessage updatePassword(@RequestBody UserloginEO userloginEO) throws Exception {
 	    boolean result = userloginEOService.checkPassword(userloginEO);
+//	    boolean checkOldWorld = userloginEOService.checkOldPassword(userloginEO);
             if(result){
                return Result.success(UPDATE_SUCCESS);
             }else {
                return Result.error(PASSWORD_ERROR);
             }
         }
+    @ApiOperation(value = "|UserloginEO|检查旧密码")
+    @PostMapping("/checkOldPassword")
+    public ResponseMessage checkOldPassword(@RequestBody UserloginEO userloginEO) throws Exception {
+	    boolean checkOldWorld = userloginEOService.checkOldPassword(userloginEO);
+        if(checkOldWorld){
+            return Result.success();
+        }else {
+            return Result.error(PASSWORD_NOTNULL);
+        }
     }
+
+}
