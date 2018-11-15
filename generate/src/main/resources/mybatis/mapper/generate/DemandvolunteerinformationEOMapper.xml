@@ -209,9 +209,10 @@
         AND c.COMPANY_NAME LIKE '%${companyName}%'
         AND p.PROJECT_NAME LIKE '%${projectName}%'
         AND p.PROJECT_NAME LIKE '%${projectType}%'
+        ORDER BY CREATE_TIME DESC
         ) tmp_tb where rownum &lt;= ${pager.endIndex})
         where rn &gt;= ${pager.startIndex}
-        ORDER BY CREATE_TIME DESC
+
     </select>
 
     <!-- 动态插入记录 主键是序列 -->
