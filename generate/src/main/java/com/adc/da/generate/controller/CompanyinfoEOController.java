@@ -96,7 +96,8 @@ public class CompanyinfoEOController extends BaseController<CompanyinfoEO>{
     @ApiOperation(value = "|CompanyinfoEO|企业信息录入")
     @PostMapping("/addCompanyInfo")
     @RequiresPermissions("generate:companyinfo:save")
-    public ResponseMessage<CompanyinfoEO> addCompanyInfo(@RequestBody CompanyinfoEO companyinfoVO,@RequestParam( value = "file",required = false)MultipartFile file) throws Exception {
+    public ResponseMessage<CompanyinfoEO> addCompanyInfo( @RequestBody CompanyinfoEO companyinfoVO,@RequestParam( value = "file",required = false)MultipartFile file) throws Exception {
+       boolean result= companyinfoEOService.insertCompanyInfo(companyinfoVO);
        //boolean result= companyinfoEOService.insertCompanyInfo(companyinfoVO,file);
         //获取项目根目录
         String realPath = ResourceUtils.getURL("classpath:").getPath();
@@ -113,12 +114,11 @@ public class CompanyinfoEOController extends BaseController<CompanyinfoEO>{
         is.close();
         fos.close();
 //       companyinfoEOService.Upload(file);
-//       if(result){
-//           return Result.success(ENTRY_SUCCESS,companyinfoVO);
-//       }else {
-//            return Result.error(ENTRY_ERROR);
-//       }
-        return null;
+       if(result){
+           return Result.success(ENTRY_SUCCESS,companyinfoVO);
+       }else {
+            return Result.error(ENTRY_ERROR);
+       }
     }
 
     @ApiOperation(value = "|CompanyinfoEO|企业分页查询")

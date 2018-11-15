@@ -96,7 +96,7 @@ public class ProjectinfoEOController extends BaseController<ProjectinfoEO>{
     @ApiOperation(value = "|ProjectinfoEO|项目分页查询")
     @PostMapping("/queryByPage")
     @RequiresPermissions("generate:projectinfo:page")
-    public ResponseMessage<PageInfo<ProjectinfoEO>> queryByPage(ProjectinfoEOPage page) throws Exception {
+    public ResponseMessage<PageInfo<ProjectinfoEO>> queryByPage(@RequestBody ProjectinfoEOPage page) throws Exception {
         List<ProjectinfoEO> rows = projectinfoEOService.queryByPage(page);
         return Result.success(getPageInfo(page.getPager(), rows));
     }
@@ -116,8 +116,8 @@ public class ProjectinfoEOController extends BaseController<ProjectinfoEO>{
     @ApiOperation(value = "|ProjectinfoEO|项目删除")
     @PostMapping("/deleteProject")
     @RequiresPermissions("generate:projectinfo:delete")
-    public ResponseMessage deleteProject(@RequestParam String projectKey) throws Exception {
-        projectinfoEOService.deleteByPrimaryKey(projectKey);
+    public ResponseMessage deleteProject(@RequestBody ProjectinfoEO projectinfoEO) throws Exception {
+        projectinfoEOService.deleteByPrimaryKey(projectinfoEO.getProjectKey());
         return Result.success(PublicPrompt.DELETE_SUCCESS);
     }
 }

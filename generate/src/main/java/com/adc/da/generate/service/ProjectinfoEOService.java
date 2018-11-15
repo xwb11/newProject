@@ -35,28 +35,35 @@ public class ProjectinfoEOService extends BaseService<ProjectinfoEO, String> {
         return dao;
     }
 
-    public boolean addProject(ProjectinfoEO projectinfoEO){
+    public boolean addProject(ProjectinfoEO projectinfoEO) {
         int projectNameNum = dao.selectProjectName(projectinfoEO.getProjectName());
 
-        if(projectNameNum==0 && projectinfoEO.getProjectName()!=null && !"".equals(projectinfoEO.getProjectName())){
+        if (projectNameNum == 0 && projectinfoEO.getProjectName() != null && !"".equals(projectinfoEO.getProjectName())) {
             projectinfoEO.setProjectKey(UUID.randomUUID().toString());
             projectinfoEO.setCreateTime(new Date());
             dao.insertSelective(projectinfoEO);
             return true;
-        }else
+        } else
             return false;
     }
 
-    public boolean updateProject(ProjectinfoEO projectinfoEO){
-        if(projectinfoEO.getProjectKey()!=null && !"".equals(projectinfoEO.getProjectKey())){
-            int projectNameNum = dao.selectProjectName(projectinfoEO.getProjectName());
-            if(projectNameNum<1 && projectinfoEO.getProjectName()!=null && !"".equals(projectinfoEO.getProjectName())){
+    public boolean updateProject(ProjectinfoEO projectinfoEO) {
+        if (projectinfoEO.getProjectKey() != null && !"".equals(projectinfoEO.getProjectKey())) {
+            String projectName = dao.selectProjectNameByProjectKey(projectinfoEO.getProjectKey());
+            if (projectinfoEO.getProjectName().equals(projectName)) {
                 dao.updateByPrimaryKeySelective(projectinfoEO);
-                return true;
-            }else
-                return false;
-        }else {
+            } else {
+                int projectNameNum = dao.selectProjectName(projectinfoEO.getProjectName());
+                if (projectNameNum < 1 && projectinfoEO.getProjectName() != null && !"".equals(projectinfoEO.getProjectName())) {
+                    dao.updateByPrimaryKeySelective(projectinfoEO);
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        } else {
             return false;
         }
+        return true;
     }
 }

@@ -13,4 +13,6 @@ import com.adc.da.generate.entity.ProjectinfoEO;
 public interface ProjectinfoEODao extends BaseDao<ProjectinfoEO> {
 
     int selectProjectName(String projectName);
+
+    String selectProjectNameByProjectKey(String projectKey);
 }

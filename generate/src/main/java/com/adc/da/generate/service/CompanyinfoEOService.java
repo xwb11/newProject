@@ -51,7 +51,7 @@ public class CompanyinfoEOService extends BaseService<CompanyinfoEO, String> {
     * @UpdateRemark:   修改内容
     * @Version:        1.0
     */
-    public boolean insertCompanyInfo(CompanyinfoEO companyinfoVO,MultipartFile file){
+    public boolean insertCompanyInfo(CompanyinfoEO companyinfoVO){
         int nameNum = dao.selectCompanyName(companyinfoVO.getCompanyName());
         int phoneNum = dao.selectPhone(companyinfoVO.getPhone());
         int companyNumberNum = dao.selectCompanyNumber(companyinfoVO.getCompanyNumber());
@@ -59,29 +59,29 @@ public class CompanyinfoEOService extends BaseService<CompanyinfoEO, String> {
         if(nameNum==0 && phoneNum==0 && companyNumberNum==0){
             companyinfoVO.setCompanyKey(UUID.randomUUID().toString());
             companyinfoVO.setCreatetime(new Date());
-//            Upload(MultipartFile);
-            if(!file.isEmpty()) {
-                // 获取文件名称,包含后缀
-                String fileName = file.getOriginalFilename();
-
-                // 存放在这个路径下：该路径是该工程目录下的static文件下：(注：该文件可能需要自己创建)
-                // 放在static下的原因是，存放的是静态文件资源，即通过浏览器输入本地服务器地址，加文件名时是可以访问到的
-                String path = ClassUtils.getDefaultClassLoader().getResource("").getPath()+"File/";
-                String newPath = path.substring(1,path.length());
-                try {
-                    // 该方法是对文件写入的封装，在util类中，导入该包即可使用
-                    FileUtil.fileupload(file.getBytes(), path, fileName);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                // 接着创建对应的实体类，将以下路径进行添加，然后通过数据库操作方法写入
-                companyinfoVO.setFilePath(newPath+fileName);
-                dao.insertSelective(companyinfoVO);
-            }
-            return true;
-//            dao.insertSelective(companyinfoEO);
+////            Upload(MultipartFile);
+//            if(!file.isEmpty()) {
+//                // 获取文件名称,包含后缀
+//                String fileName = file.getOriginalFilename();
+//
+//                // 存放在这个路径下：该路径是该工程目录下的static文件下：(注：该文件可能需要自己创建)
+//                // 放在static下的原因是，存放的是静态文件资源，即通过浏览器输入本地服务器地址，加文件名时是可以访问到的
+//                String path = ClassUtils.getDefaultClassLoader().getResource("").getPath()+"File/";
+//                String newPath = path.substring(1,path.length());
+//                try {
+//                    // 该方法是对文件写入的封装，在util类中，导入该包即可使用
+//                    FileUtil.fileupload(file.getBytes(), path, fileName);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                // 接着创建对应的实体类，将以下路径进行添加，然后通过数据库操作方法写入
+//                companyinfoVO.setFilePath(newPath+fileName);
+//                dao.insertSelective(companyinfoVO);
+//            }
 //            return true;
+            dao.insertSelective(companyinfoVO);
+            return true;
         }else {
             return false;
         }
