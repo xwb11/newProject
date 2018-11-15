@@ -192,8 +192,10 @@
 		(select tmp_tb.* , rownum rn from
 			(select <include refid="Base_Column_List" /> from COMPANYINFO
 			 WHERE  COMPANY_NAME LIKE '%${companyName}%'
+      ORDER  BY CREATETIME DESC
 			) tmp_tb where rownum &lt;= ${pager.endIndex})
 			where rn &gt;= ${pager.startIndex}
+
   </select>
 
   <select id="queryByList" resultMap="BaseResultMap" parameterType="com.adc.da.base.page.BasePage">
