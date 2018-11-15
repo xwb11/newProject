@@ -3,6 +3,9 @@ package com.adc.da.generate.controller;
 import static com.adc.da.generate.util.CompanyinfoEOPrompt.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -13,6 +16,7 @@ import com.adc.da.myutil.util.PublicPrompt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 
 import com.adc.da.base.web.BaseController;
@@ -27,6 +31,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/${restPath}/generate/companyinfo")
@@ -88,14 +96,29 @@ public class CompanyinfoEOController extends BaseController<CompanyinfoEO>{
     @ApiOperation(value = "|CompanyinfoEO|企业信息录入")
     @PostMapping("/addCompanyInfo")
     @RequiresPermissions("generate:companyinfo:save")
-    public ResponseMessage<CompanyinfoEO> addCompanyInfo(CompanyinfoEO companyinfoVO,@RequestParam( value = "file",required = false)MultipartFile file) throws Exception {
-       boolean result= companyinfoEOService.insertCompanyInfo(companyinfoVO,file);
+    public ResponseMessage<CompanyinfoEO> addCompanyInfo(@RequestBody CompanyinfoEO companyinfoVO,@RequestParam( value = "file",required = false)MultipartFile file) throws Exception {
+       //boolean result= companyinfoEOService.insertCompanyInfo(companyinfoVO,file);
+        //获取项目根目录
+        String realPath = ResourceUtils.getURL("classpath:").getPath();
+        String filepath = realPath+"\\fileload\\"+file.getOriginalFilename();
+        System.out.println("---"+filepath);
+        InputStream is = file.getInputStream();
+        FileOutputStream fos = new FileOutputStream(filepath);
+        int b;
+        byte[] bytes = new byte[1024];
+        while((b=is.read(bytes))!=-1){
+            fos.write(bytes,0,b);
+        }
+
+        is.close();
+        fos.close();
 //       companyinfoEOService.Upload(file);
-       if(result){
-           return Result.success(ENTRY_SUCCESS,companyinfoVO);
-       }else {
-            return Result.error(ENTRY_ERROR);
-       }
+//       if(result){
+//           return Result.success(ENTRY_SUCCESS,companyinfoVO);
+//       }else {
+//            return Result.error(ENTRY_ERROR);
+//       }
+        return null;
     }
 
     @ApiOperation(value = "|CompanyinfoEO|企业分页查询")
@@ -126,6 +149,21 @@ public class CompanyinfoEOController extends BaseController<CompanyinfoEO>{
         return Result.success(DELETE_SUCCESS);
     }
 
+    @ApiOperation(value = "|CompanyinfoEO|企业信息下载")
+    @GetMapping("/CompanyInfoFileDown")
+    public ResponseMessage flieDown(@PathVariable String filePath, HttpServletResponse response) throws Exception {
+        System.out.println(filePath);
+        FileInputStream fis = new FileInputStream(filePath);
+        ServletOutputStream os = response.getOutputStream();
+        int b;
+        byte[] bytes = new byte[1024];
+        while((b = fis.read(bytes)) != -1){
+            os.write(bytes,0,b);
+        }
+        fis.close();
+        os.close();
+        return Result.success(DELETE_SUCCESS);
+    }
 
 
 //    // 传入的参数file是我们指定的文件
