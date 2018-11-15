@@ -88,9 +88,8 @@ public class CompanyinfoEOController extends BaseController<CompanyinfoEO>{
     @ApiOperation(value = "|CompanyinfoEO|企业信息录入")
     @PostMapping("/addCompanyInfo")
     @RequiresPermissions("generate:companyinfo:save")
-    public ResponseMessage<CompanyinfoEO> addCompanyInfo(@RequestBody CompanyinfoEO companyinfoVO,@RequestParam( value = "file",required = false)MultipartFile file) throws Exception {
-      String str1 = companyinfoVO.getCompanyType();
-       boolean result= companyinfoEOService.insertCompanyInfo(companyinfoVO,file);
+    public ResponseMessage<CompanyinfoEO> addCompanyInfo( @RequestBody CompanyinfoEO companyinfoVO) throws Exception {
+       boolean result= companyinfoEOService.insertCompanyInfo(companyinfoVO);
 //       companyinfoEOService.Upload(file);
        if(result){
            return Result.success(ENTRY_SUCCESS,companyinfoVO);
