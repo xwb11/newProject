@@ -48,9 +48,9 @@ public class UserloginEOService extends BaseService<UserloginEO, String> {
             int result = dao.selectAccoutCount(userloginEO.getAccount());
             if(result>0){//判断账号是否存在
                 String account = dao.checkAccount(userloginEO.getAccount());
-                String password = dao.checkPassword(userloginEO.getPassword());
+                String password = dao.checkPassword(userloginEO.getAccount());
 
-                if(account.equals(userloginEO.getAccount()) && account!=null  && userloginEO.getPassword().equals(password) && password!=null ){
+                if( userloginEO.getPassword().equals(password) && password!=null ){
                     return LOGIN_SUCCESS;
                 }else {
                     return LOGIN_ERROR;

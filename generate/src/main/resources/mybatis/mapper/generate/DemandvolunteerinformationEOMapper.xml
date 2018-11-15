@@ -291,4 +291,8 @@
         where DEMAND_KEY = #{demandKey}
     </delete>
 
+    <select id="selectIsPublish" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        SELECT COUNT(1) FROM DEMANDVOLUNTEERINFORMATION WHERE IS_PUBLISH=1
+    </select>
+
 </mapper>
