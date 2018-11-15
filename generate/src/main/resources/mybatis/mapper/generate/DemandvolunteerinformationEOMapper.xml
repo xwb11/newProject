@@ -193,7 +193,7 @@
           WHERE d.PROJECT_KEY=p.PROJECT_KEY AND d.COMPANY_KEY=c.COMPANY_KEY
           AND c.COMPANY_NAME LIKE '%${companyName}%'
           AND p.PROJECT_NAME LIKE '%${projectName}%'
-          AND p.PROJECT_NAME LIKE '%${projectType}%'
+          AND p.PROJECT_TYPE LIKE '%${projectType}%'
     </select>
 
     <!-- 查询公司与项目需求创建信息 -->
@@ -208,10 +208,11 @@
         AND d.PROJECT_KEY=p.PROJECT_KEY
         AND c.COMPANY_NAME LIKE '%${companyName}%'
         AND p.PROJECT_NAME LIKE '%${projectName}%'
-        AND p.PROJECT_NAME LIKE '%${projectType}%'
+        AND p.PROJECT_TYPE LIKE '%${projectType}%'
+        ORDER BY CREATE_TIME DESC
         ) tmp_tb where rownum &lt;= ${pager.endIndex})
         where rn &gt;= ${pager.startIndex}
-        ORDER BY CREATE_TIME DESC
+
     </select>
 
     <!-- 动态插入记录 主键是序列 -->

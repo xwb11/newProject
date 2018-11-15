@@ -16,7 +16,9 @@ public class UserloginEOPrompt extends PublicPrompt {
     public static final String ACCOUNTANDPASSWORD_NOTNULL = "账户或密码不能为空";
 
     public static final String PASSWORD_ERROR="密码不能和原密码相同";
+    public static final String PASSWORD_NOTNULL="密码不存在";
     public static final String UPDATE_SUCCESS="修改成功";
+
 
 //    public static final String PASSWORD_ERROR = "密码错误";
 }

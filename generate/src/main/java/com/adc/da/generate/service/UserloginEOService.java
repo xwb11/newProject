@@ -81,18 +81,28 @@ public class UserloginEOService extends BaseService<UserloginEO, String> {
     * @Version:        1.0
     */
     public boolean checkPassword(UserloginEO userloginEO){
-        if( (userloginEO.getPassword() != null && !"".equals(userloginEO.getPassword()))
-                && (userloginEO.getAccount()!=null && !"".equals(userloginEO.getAccount()))
-                ){
+        if(userloginEO.getPassword() != null && !"".equals(userloginEO.getPassword())){
             String result = dao.selectPassword(userloginEO);
-            if(result.equals(userloginEO.getPassword())){
-                return false;
+            if(result != null && !"".equals(result)){
+                if(result.equals(userloginEO.getPassword())){
+                    return false;
+                }else {
+                    dao.updatePassword(userloginEO);
+                    return true;
+                }
             }else {
-                dao.updatePassword(userloginEO);
-                return true;
+                return false;
             }
         }else {
             return false;
         }
+    }
+
+    public boolean checkOldPassword(UserloginEO userloginEO){
+        String result = dao.selectPassword(userloginEO);
+        if(result.equals(userloginEO.getPassword())){
+            return true;
+        }else
+            return false;
     }
 }
