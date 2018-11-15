@@ -150,11 +150,7 @@
 	select <include refid="Base_Column_List" /> from
 		(select tmp_tb.* , rownum rn from
 			(select <include refid="Base_Column_List" /> from PROJECTINFO
-                  <where>
-                      <if test="projectName!=''">
-                          PROJECT_NAME LIKE  '%${projectName}%'
-                      </if>
-                  </where>
+                  WHERE  PROJECT_NAME LIKE  '%${projectName}%'
 			) tmp_tb where rownum &lt;= ${pager.endIndex})
 			where rn &gt;= ${pager.startIndex}
   </select>
@@ -171,5 +167,7 @@
     <select id="selectProjectName" resultType="java.lang.Integer" parameterType="java.lang.String">
         select count(PROJECT_NAME) from PROJECTINFO WHERE PROJECT_NAME=#{projectName,jdbcType=VARCHAR}
     </select>
-
+    <select id="selectProjectNameByProjectKey" resultType="java.lang.String" parameterType="java.lang.String">
+        select PROJECT_NAME from PROJECTINFO WHERE PROJECT_KEY=#{projectKey,jdbcType=VARCHAR}
+    </select>
 </mapper>
