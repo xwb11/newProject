@@ -23,6 +23,8 @@ public class DemandvolunteerinformationVOPage extends Demandvolunteerinformation
 //    private String companyTypeOperator = "=";
     private String developerType;
     private String developerTypeOperator = "=";
+    private String filePath;
+    private String filePathOperator = "=";
 
     private String projectName;
     private String projectNameOperator = "=";
@@ -35,6 +37,7 @@ public class DemandvolunteerinformationVOPage extends Demandvolunteerinformation
 //    private String briefintroductionOperator = "=";
     private String projectBudget;
     private String projectBudgetOperator = "=";
+
 
 //    public String getProvinceName() {
 //        return provinceName;
@@ -252,5 +255,21 @@ public class DemandvolunteerinformationVOPage extends Demandvolunteerinformation
 //
     public void setProjectBudgetOperator(String projectBudgetOperator) {
         this.projectBudgetOperator = projectBudgetOperator;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public String getFilePathOperator() {
+        return filePathOperator;
+    }
+
+    public void setFilePathOperator(String filePathOperator) {
+        this.filePathOperator = filePathOperator;
     }
 }

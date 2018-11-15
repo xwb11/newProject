@@ -27,6 +27,7 @@ public class DemandvolunteerinformationVO extends DemandvolunteerinformationEO {
     private String companyName;
     private String phone;
     private String address;
+    private String filePath;
     //企业描述
     private String companyBriefintroduction;
     //企业资质
@@ -156,5 +157,13 @@ public class DemandvolunteerinformationVO extends DemandvolunteerinformationEO {
 
     public void setCompanyBriefintroduction(String companyBriefintroduction) {
         this.companyBriefintroduction = companyBriefintroduction;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 }

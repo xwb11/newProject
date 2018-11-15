@@ -179,6 +179,7 @@
         <result column="COMPANY_NUMBER" property="companyNumber" />
         <result column="COMPANY_TYPE" property="companyType" />
         <result column="DEVELOPER_TYPE" property="developerType" />
+        <result column="FILE_PATH" property="filePath" />
 
         <result column="PROJECT_NAME" property="projectName" />
         <result column="PROJECT_TYPE" property="projectType" />
