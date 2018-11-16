@@ -3,6 +3,7 @@ package com.adc.da.generate.controller;
 import static com.adc.da.generate.util.CompanyinfoEOPrompt.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -13,6 +14,7 @@ import java.util.UUID;
 import com.adc.da.generate.VO.CompanyinfoVO;
 import com.adc.da.generate.entity.FileUploadEO;
 import com.adc.da.myutil.util.PublicPrompt;
+import com.adc.da.util.utils.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,8 @@ import javax.servlet.http.HttpServletResponse;
 public class CompanyinfoEOController extends BaseController<CompanyinfoEO>{
 
     private static final Logger logger = LoggerFactory.getLogger(CompanyinfoEOController.class);
+
+    private static String filePath = "";
 
     @Autowired
     private CompanyinfoEOService companyinfoEOService;
@@ -96,29 +100,50 @@ public class CompanyinfoEOController extends BaseController<CompanyinfoEO>{
     @ApiOperation(value = "|CompanyinfoEO|企业信息录入")
     @PostMapping("/addCompanyInfo")
     @RequiresPermissions("generate:companyinfo:save")
-    public ResponseMessage<CompanyinfoEO> addCompanyInfo( @RequestBody CompanyinfoEO companyinfoVO,@RequestParam( value = "file",required = false)MultipartFile file) throws Exception {
-       boolean result= companyinfoEOService.insertCompanyInfo(companyinfoVO);
-       //boolean result= companyinfoEOService.insertCompanyInfo(companyinfoVO,file);
-        //获取项目根目录
-        String realPath = ResourceUtils.getURL("classpath:").getPath();
-        String filepath = realPath+"\\fileload\\"+file.getOriginalFilename();
-        System.out.println("---"+filepath);
-        InputStream is = file.getInputStream();
-        FileOutputStream fos = new FileOutputStream(filepath);
-        int b;
-        byte[] bytes = new byte[1024];
-        while((b=is.read(bytes))!=-1){
-            fos.write(bytes,0,b);
+    public ResponseMessage<CompanyinfoEO> addCompanyInfo( @RequestBody CompanyinfoEO companyinfoVO) throws Exception {
+        String path = "";
+	    for(int i=1 ; i<filePath.length() ; i++){
+            if (filePath.charAt(i) == '/'){
+                path+="\\\\";
+                continue;
+            }else{
+                path+=filePath.charAt(i);
+            }
         }
 
-        is.close();
-        fos.close();
-//       companyinfoEOService.Upload(file);
+        companyinfoVO.setFilePath(path);
+
+        boolean result= companyinfoEOService.insertCompanyInfo(companyinfoVO);
        if(result){
            return Result.success(ENTRY_SUCCESS,companyinfoVO);
        }else {
             return Result.error(ENTRY_ERROR);
        }
+    }
+
+
+    @PostMapping("/addCompanyInfo_fileup")
+    public ResponseMessage<CompanyinfoEO> fileup(@RequestParam( value = "file",required = false)MultipartFile file) throws Exception {
+
+        if(file != null && !file.isEmpty()) {
+            //获取项目根目录
+            String realPath = ResourceUtils.getURL("classpath:").getPath();
+            filePath = realPath + "fileload/" + file.getOriginalFilename();
+            File file1 = new File(filePath);
+            if(!file1.getParentFile().exists()) file1.getParentFile().mkdir();
+            InputStream is = file.getInputStream();
+            FileOutputStream fos = new FileOutputStream(file1);
+            int b;
+            byte[] bytes = new byte[1024];
+            while ((b = is.read(bytes)) != -1) {
+                fos.write(bytes, 0, b);
+            }
+
+            is.close();
+            fos.close();
+            return Result.success();
+        }
+        return Result.error(ENTRY_ERROR);
     }
 
     @ApiOperation(value = "|CompanyinfoEO|企业分页查询")
@@ -151,18 +176,25 @@ public class CompanyinfoEOController extends BaseController<CompanyinfoEO>{
 
     @ApiOperation(value = "|CompanyinfoEO|企业信息下载")
     @GetMapping("/CompanyInfoFileDown")
-    public ResponseMessage flieDown(@PathVariable String filePath, HttpServletResponse response) throws Exception {
-        System.out.println(filePath);
-        FileInputStream fis = new FileInputStream(filePath);
+    public ResponseMessage flieDown(String filePath, HttpServletResponse response) throws Exception {
+
+        File file = new File(filePath);
+        if(!file.exists()) return Result.error();
+        response.setCharacterEncoding("iso-8859-1");
+        response.setContentType("application/force-download");// 设置强制下载不打开
+        response.setHeader("content-disposition", "attachment;filename="
+                + new String(file.getName().getBytes(),"iso-8859-1"));
+        System.out.println(file.getName());
+        FileInputStream fis = new FileInputStream(file);
         ServletOutputStream os = response.getOutputStream();
         int b;
         byte[] bytes = new byte[1024];
-        while((b = fis.read(bytes)) != -1){
+        while((b = fis.read(bytes)) > 0){
             os.write(bytes,0,b);
         }
         fis.close();
-        os.close();
-        return Result.success(DELETE_SUCCESS);
+        os.flush();
+        return Result.success();
     }
 
 
