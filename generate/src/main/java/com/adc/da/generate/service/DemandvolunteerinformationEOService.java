@@ -83,4 +83,8 @@ public class DemandvolunteerinformationEOService extends BaseService<Demandvolun
         }
     }
 
+    public int  selectIsPublish(){
+    return  dao.selectIsPublish();
+    }
+
 }

@@ -19,7 +19,7 @@ public interface UserloginEODao extends BaseDao<UserloginEO> {
 
     String checkAccount(String account);
 
-    String checkPassword(String password);
+    String checkPassword(String account);
 
     //查询账户是否存在
     int  selectAccoutCount(String account);

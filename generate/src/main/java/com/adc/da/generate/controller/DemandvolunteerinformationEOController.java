@@ -1,11 +1,9 @@
 package com.adc.da.generate.controller;
 
-import static com.adc.da.generate.util.DemandvolunteerinformationEOPrompt.ENTRY_SUCCESS;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import com.adc.da.generate.VO.DemandvolunteerinformationVO;
@@ -95,4 +93,10 @@ public class DemandvolunteerinformationEOController extends BaseController<Deman
         return Result.success();
     }
 
+    @ApiOperation(value = "|DemandvolunteerinformationEO|查找发布量")
+    @PostMapping("/selectPublishCount")
+    public ResponseMessage<Integer> selectPublishCount() throws Exception {
+      int result =   demandvolunteerinformationEOService.selectIsPublish();
+        return Result.success(result);
+    }
 }

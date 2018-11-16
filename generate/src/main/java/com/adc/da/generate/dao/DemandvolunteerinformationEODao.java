@@ -65,4 +65,6 @@ public interface DemandvolunteerinformationEODao extends BaseDao<Demandvolunteer
     int deleteDemandvolunteerinformation(DemandvolunteerinformationVO demandvolunteerinformationVO);
 
     int queryByDemandCount(BasePage page);
+
+    int selectIsPublish();
 }
